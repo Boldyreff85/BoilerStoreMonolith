@@ -1,0 +1,27 @@
+﻿@model IEnumerable<string>
+
+
+@{
+    List<string> categories = Model.ToList();
+}
+
+
+<div class="container">
+    @for (int i = 0; i < categories.Count;)
+    {
+        <div class="row py-3">
+            @for (int j = 0; j < 2; j++)
+            {
+                if (i >= categories.Count) { break; }
+                <div class="col-6 text-center">
+                    @Html.ActionLink(@categories[i], "FirmList", "Home",
+                                new { category = @categories[i] },
+                                new { @class = "h4 text-info font-weight-bold" })
+                </div>
+                i++;
+            }
+        </div>
+    }
+</div>
+
+

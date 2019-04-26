@@ -1,0 +1,15 @@
+﻿@model IEnumerable<string>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="d-flex justify-content-center align-items-center flex-column">
+    <img class="w-50 mt-3" src="~/Content/images/warmly.png" />
+    <p class="p-5">
+        Наша компания производит установку и настройку котельного оборудования для домов и предприятий.
+        Мы поставляем котлы от ведущих производителей по самым привлекательным ценам.
+    </p>
+
+    @Html.Partial("CategoryList")
+</div>
+

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoilerStoreMonolith", "BoilerStoreMonolith\BoilerStoreMonolith.csproj", "{07278C5E-707E-4075-A5F5-9A50EED7356E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoilerStoreMonolith.Domain", "BoilerStoreMonolith.Domain\BoilerStoreMonolith.Domain.csproj", "{33228CC6-1F8C-4FA4-8879-8CC708777823}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07278C5E-707E-4075-A5F5-9A50EED7356E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07278C5E-707E-4075-A5F5-9A50EED7356E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07278C5E-707E-4075-A5F5-9A50EED7356E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07278C5E-707E-4075-A5F5-9A50EED7356E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33228CC6-1F8C-4FA4-8879-8CC708777823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33228CC6-1F8C-4FA4-8879-8CC708777823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33228CC6-1F8C-4FA4-8879-8CC708777823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33228CC6-1F8C-4FA4-8879-8CC708777823}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5052B46C-D92B-4E7F-8020-842316D13B2E}
+	EndGlobalSection
+EndGlobal

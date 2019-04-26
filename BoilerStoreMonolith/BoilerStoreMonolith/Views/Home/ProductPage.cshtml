@@ -1,0 +1,40 @@
+﻿@model BoilerStoreMonolith.Domain.Entities.Product
+@{
+    ViewBag.Title = "ProductPage";
+}
+
+<style>
+    pre {
+        white-space: pre-wrap;
+    }
+</style>
+
+
+<div class="row bg-light m-3">
+
+    <div class="card mx-auto my-4" style="max-width: 540px;">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img class="card-img bg-light"
+                     src="@Url.Action("GetImage", "Home",
+                                 new { Model.ProductID })" />
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Title</h5>
+                    <p class="card-text">@Model.Price</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <pre>@Model.Description</pre>
+    </div>
+</div>
+
+
+
+
