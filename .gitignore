@@ -2,6 +2,8 @@
 .vs
 obj
 bin
+*.mdf
+*.ldf
 *.com
 *.class
 *.dll
