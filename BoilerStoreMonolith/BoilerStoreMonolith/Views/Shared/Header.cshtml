@@ -1,11 +1,16 @@
-﻿<style>
+﻿@model BoilerStoreMonolith.Domain.Entities.InfoEntity
+
+<style>
     .logo {
         width: 80px;
     }
 </style>
 
 <nav class="top-header navbar navbar-expand-lg navbar-light bg-light py-4">
-    <img class="logo" src="~/Content/images/logo.png" />
+
+    <img class="logo" src="@Url.Action("GetImage", "Admin",
+                    new { infoId = Model.InfoID, imgElementName = "logoImg" })" />
+
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -15,7 +20,7 @@
 
             <li class="nav-item mx-5">
                 <span class="navbar-text">
-                    +7 XXX XXX XXXX
+                    @Model.PhoneMain
                 </span>
             </li>
             <li class="nav-item active mx-5">

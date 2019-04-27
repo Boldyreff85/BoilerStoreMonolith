@@ -1,7 +1,22 @@
-﻿
+﻿@model BoilerStoreMonolith.Domain.Entities.InfoEntity
 @{
     ViewBag.Title = "Contacts";
 }
 
-<h2>Contacts</h2>
-
+<br />
+<br />
+<br />
+<div class="card w-75 m-auto">
+    <div class="card-body">
+        <h5 class="card-title text-center">Контактная информация</h5>
+        <p class="card-text"> @Model.Address</p>
+        <p class="card-text"> @Model.Schedule</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item h4">@Model.PhoneMain</li>
+        <li class="list-group-item h4">@Model.PhoneAdditional</li>
+    </ul>
+    <div class="card-body">
+        <p class="card-text"> @Model.Email</p>
+    </div>
+</div>

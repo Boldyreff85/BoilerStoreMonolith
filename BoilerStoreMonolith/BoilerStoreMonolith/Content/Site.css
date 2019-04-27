@@ -16,3 +16,8 @@ select,
 textarea {
     max-width: 280px;
 }
+
+pre {
+    white-space: pre-wrap;
+}
+

@@ -4,10 +4,13 @@
 }
 
 <div class="d-flex justify-content-center align-items-center flex-column">
-    <img class="w-50 mt-3" src="~/Content/images/warmly.png" />
-    <p class="p-5">
-        @Model.infoEntity.CompanyInfo
-    </p>
+    <img class="w-50 mt-3" src="@Url.Action("GetImage2", "Admin",
+                        new { infoId = Model.infoEntity.InfoID, imgElementName = "homeImg" })" />
+
+    <br />
+    <br />
+    <br />
+    <pre class="h5 font-weight-light">@Model.infoEntity.CompanyInfo</pre>
 
     @Html.Partial("CategoryList", Model.categories)
 </div>

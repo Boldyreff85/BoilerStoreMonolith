@@ -91,12 +91,26 @@ namespace BoilerStoreMonolith.Controllers
 
         public ActionResult Services()
         {
-            return View();
+            return View(siteInfoRepo.InfoEntities.FirstOrDefault());
         }
 
         public ActionResult Contacts()
         {
-            return View();
+            return View(siteInfoRepo.InfoEntities.FirstOrDefault());
+        }
+
+        // child actions
+
+        [ChildActionOnly]
+        public ActionResult Header()
+        {
+            return PartialView("Header", siteInfoRepo.InfoEntities.FirstOrDefault());
+        }
+
+        [ChildActionOnly]
+        public ActionResult Footer()
+        {
+            return PartialView("Footer", siteInfoRepo.InfoEntities.FirstOrDefault());
         }
 
 

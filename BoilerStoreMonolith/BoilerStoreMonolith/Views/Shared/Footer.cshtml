@@ -3,22 +3,26 @@
 
     <ul class="nav flex-column mx-5">
         <li class="nav-item">
-            <a class="nav-link text-secondary" href="#">Компания</a>
+            @Html.ActionLink("Компания", "Index", "Home",
+                        null, new { @class = "nav-link text-secondary" })
         </li>
         <li class="nav-item">
-            <a class="nav-link text-secondary" href="#">Каталог</a>
+            @Html.ActionLink("Каталог", "Catalogue", "Home",
+                        null, new { @class = "nav-link text-secondary" })
         </li>
         <li class="nav-item">
-            <a class="nav-link text-secondary" href="#">Услуги</a>
+            @Html.ActionLink("Услуги", "Services", "Home",
+                        null, new { @class = "nav-link text-secondary" })
         </li>
         <li class="nav-item">
-            <a class="nav-link text-secondary" href="#">Контакты</a>
+            @Html.ActionLink("Контакты", "Contacts", "Home",
+                        null, new { @class = "nav-link text-secondary" })
         </li>
     </ul>
 
 
     <span class="navbar-text mx-5">
-        +7 XXX XXX XXXX
+        @Model.PhoneMain
     </span>
 
 </div>
