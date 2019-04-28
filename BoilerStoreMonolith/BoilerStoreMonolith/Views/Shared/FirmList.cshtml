@@ -18,6 +18,11 @@
     <br />
     <br />
     <div class="container">
+
+        <h4 class="text-center">Производители</h4>
+        <br />
+        <br />
+
         @for (int i = 0; i < firms.Count;)
         {
             <div class="row py-3">
@@ -26,7 +31,7 @@
                     if (i >= firms.Count) { break; }
                     <div class="col-6 text-center">
                         @Html.ActionLink(@firms[i], "BoilerList", "Home",
-                                    new { firm = @firms[i] },
+                                    new { firm = @firms[i], VBCategory = ViewBag.Category },
                                     new { @class = "h4 text-info font-weight-bold" })
                     </div>
                     i++;

@@ -15,9 +15,9 @@
 </head>
 <body>
     <div class="container">
-        @if (TempData["message"] != null)
+        @if (TempData["VBCategory"] != null)
         {
-            <div class="alert alert-success">@TempData["message"]</div>
+            <div class="alert alert-success">@TempData["VBCategory"]</div>
         }
 
         @RenderBody()

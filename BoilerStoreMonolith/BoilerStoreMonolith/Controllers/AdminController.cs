@@ -42,7 +42,7 @@ namespace BoilerStoreMonolith.Controllers
                 }
 
                 productRepo.SaveProduct(product);
-                TempData["message"] = string.Format("{0} has been saved", product.Title);
+                TempData["VBCategory"] = string.Format("{0} has been saved", product.Title);
                 return RedirectToAction("Index");
             }
             else
@@ -64,7 +64,7 @@ namespace BoilerStoreMonolith.Controllers
             var deletedProduct = productRepo.DeleteProduct(ProductID);
             if (deletedProduct != null)
             {
-                TempData["message"] = string.Format("{0} was deleted",
+                TempData["VBCategory"] = string.Format("{0} was deleted",
                 deletedProduct.Title);
             }
             return RedirectToAction("Index");
@@ -98,7 +98,7 @@ namespace BoilerStoreMonolith.Controllers
 
                 siteInfoRepo.SaveInfoEntity(infoEntity);
 
-                TempData["message"] = string.Format("Общая информация о сайте обновлена");
+                TempData["VBCategory"] = string.Format("Общая информация о сайте обновлена");
                 return RedirectToAction("Index");
             }
             else

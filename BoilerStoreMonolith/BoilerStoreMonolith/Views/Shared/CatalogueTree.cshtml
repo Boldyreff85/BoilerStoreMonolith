@@ -1,43 +1,54 @@
-﻿@model BoilerStoreMonolith.Models.CatalogueViewModel
-
+﻿@model BoilerStoreMonolith.Models.CatalogueTreeViewModel
 @{
 
-    //    List<string> categories = new List<string>
-    //{
-    //"котлы настенные",
-    //"котлы наполные(чугунный теплообменник)",
-    //"котлы наполные (стальной теплообменник)",
-    //"котлы парапетные",
-    //"котлы электрические"
-    //};
-
-    //    List<string> labels = new List<string>
-    //{
-    //"WIESSMANN",
-    //"VAILLANT",
-    //"BAXI",
-    //"ARISTON",
-    //"PROTHERM",
-    //"NAVIEN",
-    //};
 
 }
-
-<div class="bg-light p-2">
+<div class="bg-light p-2 d-none d-lg-block">
     <h4 class="mb-3">Котельное оборудование</h4>
     <hr class="my-2" />
     <div class="catalogue">
-        @foreach (var cat in Model.Categories)
+        @foreach (var category in Model.Categories)
         {
             <ul id="myUL">
                 <li class="mt-3">
-                    <span class="caret">@cat</span>
-                    <ul class="nested">
-                        @foreach (var firm in Model.Firms)
-                        {
-                            <li class="mt-2">@firm</li>
-                        }
-                    </ul>
+                    @if (Model.CurrCategory == category.Name || ViewBag.VBCategory == category.Name)
+                    {
+                        @*<span class="caret caret-down">@category.Name</span>*@
+                        @Html.ActionLink(@category.Name, "FirmList", "Home",
+                                        new { category = @category.Name },
+                                        new { @class = "caret" })
+                        <ul class="nested active">
+                            @foreach (var firm in category.Firms)
+                            {
+                                <li class="mt-2">
+                                    @*@firm*@
+                                    @Html.ActionLink(firm, "BoilerList", "Home",
+                                        new { firm = firm, VBCategory = ViewBag.Category },
+                                        null)
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        @*<span class="caret">@category.Name</span>*@
+                        @Html.ActionLink(@category.Name, "FirmList", "Home",
+                                new { category = @category.Name },
+                                new { @class = "caret" })
+                        <ul class="nested">
+                            @foreach (var firm in category.Firms)
+                            {
+                                <li class="mt-2">
+                                    @*@firm*@
+                                    @Html.ActionLink(firm, "BoilerList", "Home",
+                                        new { firm = firm, VBCategory = ViewBag.Category },
+                                        null)
+                                </li>
+                            }
+                        </ul>
+                    }
+
+
                 </li>
             </ul>
         }

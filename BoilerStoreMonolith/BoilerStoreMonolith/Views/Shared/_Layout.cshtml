@@ -20,9 +20,9 @@
         @Html.Partial("Menu")
         <div class="row central my-3 mx-auto">
             <div class="col-3">
-                @Html.Action("CatalogueTree")
+                @Html.Action("CatalogueTree", new { VBCategory = ViewBag.Category })
             </div>
-            <div class="col-9">
+            <div class="col-lg-9">
                 @RenderBody()
             </div>
         </div>

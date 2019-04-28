@@ -35,6 +35,7 @@ namespace BoilerStoreMonolith.Controllers
 
         public ActionResult FirmList(string category)
         {
+            ViewBag.Category = category;
             var res = productRepo.Products.Where(n => n.Category == category).Select(n => n.Firm).ToList().Distinct();
             if (res.FirstOrDefault() != "")
             {
@@ -46,11 +47,11 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-        public ActionResult BoilerList(string firm, int page = 1)
+        public ActionResult BoilerList(string firm, string VBCategory, int page = 1)
         {
-
-            var products = productRepo.Products.Where(n => n.Firm == firm);
-
+            var products = productRepo.Products.Where(n => n.Firm == firm && n.Category == VBCategory);
+            ViewBag.Category = VBCategory;
+            ViewBag.Firm = firm;
             if (products.FirstOrDefault() != null)
             {
                 ProductListViewModel model = new ProductListViewModel
@@ -64,7 +65,7 @@ namespace BoilerStoreMonolith.Controllers
                         CurrentPage = page,
                         ItemsPerPage = PageSize,
                         TotalItems = products.Count()
-                    }
+                    },
                 };
                 return PartialView("BoilerList", model);
             }
@@ -129,25 +130,29 @@ namespace BoilerStoreMonolith.Controllers
             return PartialView("Footer", siteInfoRepo.InfoEntities.FirstOrDefault());
         }
 
-        public ActionResult CatalogueTree(CatalogueViewModel model, int page = 1)
+        [ChildActionOnly]
+        public ActionResult CatalogueTree(CatalogueTreeViewModel model, string VBCategory, int page = 1)
         {
-            var products = productRepo.Products;
-            model.Categories = products.Select(n => n.Category).ToList().Distinct();
-            model.Firms = products.Select(n => n.Firm).ToList().Distinct();
+            var categories = productRepo.Products.Select(n => n.Category);
+            var firms = productRepo.Products.Select(n => n.Firm);
 
-            model.ProductList = new ProductListViewModel
+            model.CurrCategory = VBCategory;
+
+            foreach (var category in categories)
             {
-                Products = products
-                    .OrderBy(p => p.ProductID)
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
-                PagingInfo = new PagingInfo
+                if (model.Categories.Where(n => n.Name == category).Count() > 0)
                 {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = products.Count()
+                    continue;
                 }
-            };
+
+                CategoryModel categoryModel = new CategoryModel
+                {
+                    Name = category,
+                    Firms = productRepo.Products.Where(n => n.Category == category).Select(n => n.Firm).Distinct()
+                };
+
+                model.Categories.Add(categoryModel);
+            }
 
             return PartialView("CatalogueTree", model);
         }

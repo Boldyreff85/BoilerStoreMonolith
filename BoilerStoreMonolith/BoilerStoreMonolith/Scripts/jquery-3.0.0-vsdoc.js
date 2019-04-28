@@ -599,7 +599,7 @@
 			requestHeadersNames = {},
 			// The jqXHR state
 			state = 0,
-			// Default abort message
+			// Default abort VBCategory
 			strAbort = "canceled",
 			// Fake xhr
 			jqXHR = {
@@ -1488,7 +1488,7 @@
         ///     Takes a string and throws an exception containing it.
         /// </summary>
         /// <param name="msg" type="String">
-        ///     The message to send out.
+        ///     The VBCategory to send out.
         /// </param>
 
         throw new Error(msg);

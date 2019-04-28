@@ -16,6 +16,13 @@
 
 <div class="justify-content-center align-items-center flex-column w-100">
 
+    @if (actionName == "BoilerList")
+    {
+        <h4 class="text-center">Продукция компании @ViewBag.Firm </h4>
+        <br />
+        <br />
+    }
+
     <table class="table table-borderless ">
 
         @{
