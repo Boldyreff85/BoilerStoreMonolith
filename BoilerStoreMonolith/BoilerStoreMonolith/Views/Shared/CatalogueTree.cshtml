@@ -16,7 +16,7 @@
                         @*<span class="caret caret-down">@category.Name</span>*@
                         @Html.ActionLink(@category.Name, "FirmList", "Home",
                                         new { category = @category.Name },
-                                        new { @class = "caret" })
+                                        new { @class = "caret caret-down" })
                         <ul class="nested active">
                             @foreach (var firm in category.Firms)
                             {
