@@ -1,4 +1,4 @@
-﻿@model BoilerStoreMonolith.Models.CatalogueModelView
+﻿@model BoilerStoreMonolith.Models.CatalogueViewModel
 @{
     ViewBag.Title = "Catalogue";
 
@@ -14,11 +14,6 @@
     <br />
     <h4>Категории</h4>
     @Html.Partial("CategoryList", Model.Categories)
-    <br />
-    <br />
-    <br />
-    <h4>Производители</h4>
-    @Html.Partial("FirmList", Model.Firms)
     <br />
     <br />
     <br />

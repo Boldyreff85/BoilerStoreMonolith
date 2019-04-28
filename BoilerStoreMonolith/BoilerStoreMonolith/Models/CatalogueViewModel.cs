@@ -2,7 +2,7 @@
 
 namespace BoilerStoreMonolith.Models
 {
-    public class CatalogueModelView
+    public class CatalogueViewModel
     {
         public IEnumerable<string> Categories { get; set; }
         public IEnumerable<string> Firms { get; set; }

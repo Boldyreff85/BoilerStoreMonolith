@@ -36,7 +36,14 @@ namespace BoilerStoreMonolith.Controllers
         public ActionResult FirmList(string category)
         {
             var res = productRepo.Products.Where(n => n.Category == category).Select(n => n.Firm).ToList().Distinct();
-            return PartialView("FirmList", res);
+            if (res.FirstOrDefault() != "")
+            {
+                return PartialView("FirmList", res);
+            }
+            else
+            {
+                return PartialView("ErrorPage", "Производители не найдены");
+            }
         }
 
         public ActionResult BoilerList(string firm, int page = 1)
@@ -44,20 +51,29 @@ namespace BoilerStoreMonolith.Controllers
 
             var products = productRepo.Products.Where(n => n.Firm == firm);
 
-            ProductListViewModel model = new ProductListViewModel
+            if (products.FirstOrDefault() != null)
             {
-                Products = products
-                    .OrderBy(p => p.ProductID)
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
-                PagingInfo = new PagingInfo
+                ProductListViewModel model = new ProductListViewModel
                 {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = products.Count()
-                }
-            };
-            return PartialView("BoilerList", model);
+                    Products = products
+                        .OrderBy(p => p.ProductID)
+                        .Skip((page - 1) * PageSize)
+                        .Take(PageSize),
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = products.Count()
+                    }
+                };
+                return PartialView("BoilerList", model);
+            }
+            else
+            {
+                return PartialView("ErrorPage", "Список товаров не найден");
+            }
+
+
         }
 
         public ActionResult ProductPage(int productId)
@@ -66,7 +82,7 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         // выводим страницу каталога с 3 секциями (категории, производители и полный списко с пагинацией)
-        public ActionResult Catalogue(CatalogueModelView model, int page = 1)
+        public ActionResult Catalogue(CatalogueViewModel model, int page = 1)
         {
             var products = productRepo.Products;
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
@@ -113,6 +129,28 @@ namespace BoilerStoreMonolith.Controllers
             return PartialView("Footer", siteInfoRepo.InfoEntities.FirstOrDefault());
         }
 
+        public ActionResult CatalogueTree(CatalogueViewModel model, int page = 1)
+        {
+            var products = productRepo.Products;
+            model.Categories = products.Select(n => n.Category).ToList().Distinct();
+            model.Firms = products.Select(n => n.Firm).ToList().Distinct();
+
+            model.ProductList = new ProductListViewModel
+            {
+                Products = products
+                    .OrderBy(p => p.ProductID)
+                    .Skip((page - 1) * PageSize)
+                    .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = products.Count()
+                }
+            };
+
+            return PartialView("CatalogueTree", model);
+        }
 
         // helpers
 

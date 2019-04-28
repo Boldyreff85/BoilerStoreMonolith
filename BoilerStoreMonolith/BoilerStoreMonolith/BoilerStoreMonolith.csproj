@@ -169,7 +169,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectRegistrations.cs" />
-    <Compile Include="Models\CatalogueModelView.cs" />
+    <Compile Include="Models\CatalogueViewModel.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
@@ -194,7 +194,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Header.cshtml" />
     <Content Include="Views\Shared\Menu.cshtml" />
-    <Content Include="Views\Shared\СatalogueTree.cshtml" />
+    <Content Include="Views\Shared\CatalogueTree.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Views\Shared\CategoryList.cshtml" />
     <Content Include="Views\Shared\FirmList.cshtml" />
@@ -210,6 +210,7 @@
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Admin\EditSiteInfo.cshtml" />
     <Content Include="Views\Shared\LoadImages.cshtml" />
+    <Content Include="Views\Shared\ErrorPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
