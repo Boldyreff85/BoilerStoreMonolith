@@ -12,6 +12,7 @@
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/ErrorStyles.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/load-content.js"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
             <div class="col-3">
                 @Html.Action("CatalogueTree", new { VBCategory = ViewBag.Category })
             </div>
-            <div class="col-lg-9">
+            <div class="col-lg-9" id="page-content">
                 @RenderBody()
             </div>
         </div>
