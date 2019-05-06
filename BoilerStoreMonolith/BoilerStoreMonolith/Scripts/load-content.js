@@ -1,23 +1,35 @@
-﻿$(function () {
+﻿$(function() {
+  var $catalogue = $(".catalogue");
+  var $links = $catalogue.find("a");
+  var prevHistoryState = "";
 
-    var $catalogue = $('.catalogue');
-    var $links = $catalogue.find('a');
-    $links.each(function (link) {
-        $links[link].addEventListener('click', function (e) {
-            e.preventDefault();
+  $links.each(function(link) {
+    $links[link].addEventListener("click", function(e) {
+      e.preventDefault();
 
-            $href = this.href;
-            getContent($href);
-        });
+      if (prevHistoryState !== this.href) {
+        prevHistoryState = this.href;
+        history.pushState(this.href, this.href, this.href);
+        getContent(this.href);
+      }
     });
+  });
 
-    function getContent(url){
-        $.ajax({
-            type: 'POST',
-            url: url,
+  function getContent(url) {
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: { isAjax: true }
+    }).done(function(data) {
+      $("#page-content").html(data);
+    });
+  }
 
-        }).done(function (data) {
-            $('#page-content').html(data);
-        });
+  window.addEventListener("popstate", function(e) {
+    if (!e.state) {
+      window.location = "/";
+    } else {
+      getContent(e.state);
     }
+  });
 });
