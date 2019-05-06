@@ -4,7 +4,7 @@
         List<string> firms = Model.ToList();
 
         string actionName = this.ViewContext.RouteData.Values["action"].ToString();
-        if (actionName == "FirmList")
+        if (ViewBag.IsAjax == null || ViewBag.IsAjax == false)
         {
             Layout = "~/Views/Shared/_Layout.cshtml";
         }

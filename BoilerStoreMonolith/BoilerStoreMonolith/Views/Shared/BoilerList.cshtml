@@ -2,7 +2,8 @@
 @{
     ViewBag.Title = "BoilerList";
     string actionName = this.ViewContext.RouteData.Values["action"].ToString();
-    if (actionName == "BoilerList")
+
+    if (ViewBag.IsAjax == false)
     {
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
@@ -13,12 +14,11 @@
 }
 
 
-
 <div class="justify-content-center align-items-center flex-column w-100">
 
     @if (actionName == "BoilerList")
     {
-        <h4 class="text-center">Продукция компании @ViewBag.Firm </h4>
+        <h4 class="text-center">Продукция компании @ViewBag.Firm  @ViewBag.IsAjax </h4>
         <br />
         <br />
     }

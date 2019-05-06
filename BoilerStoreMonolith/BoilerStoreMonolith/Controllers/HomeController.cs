@@ -33,9 +33,10 @@ namespace BoilerStoreMonolith.Controllers
             return View(result);
         }
 
-        public ActionResult FirmList(string category)
+        public ActionResult FirmList(string category, bool isAjax = false)
         {
             ViewBag.Category = category;
+            ViewBag.IsAjax = isAjax;
             var res = productRepo.Products.Where(n => n.Category == category).Select(n => n.Firm).ToList().Distinct();
             if (res.FirstOrDefault() != "")
             {
@@ -47,11 +48,12 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-        public ActionResult BoilerList(string firm, string VBCategory, int page = 1)
+        public ActionResult BoilerList(string firm, string VBCategory, int page = 1, bool isAjax = false)
         {
             var products = productRepo.Products.Where(n => n.Firm == firm && n.Category == VBCategory);
             ViewBag.Category = VBCategory;
             ViewBag.Firm = firm;
+            ViewBag.IsAjax = isAjax;
             if (products.FirstOrDefault() != null)
             {
                 ProductListViewModel model = new ProductListViewModel

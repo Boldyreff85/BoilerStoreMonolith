@@ -15,7 +15,7 @@
                     {
                         @*<span class="caret caret-down">@category.Name</span>*@
                         @Html.ActionLink(@category.Name, "FirmList", "Home",
-                                        new { category = @category.Name },
+                                        new { category = @category.Name, isAjax = true },
                                         new { @class = "caret caret-down" })
                         <ul class="nested active">
                             @foreach (var firm in category.Firms)
@@ -23,7 +23,7 @@
                                 <li class="mt-2">
                                     @*@firm*@
                                     @Html.ActionLink(firm, "BoilerList", "Home",
-                                        new { firm = firm, VBCategory = ViewBag.Category },
+                                        new { firm = firm, VBCategory = ViewBag.Category, isAjax = true },
                                         null)
                                 </li>
                             }
@@ -33,7 +33,7 @@
                     {
                         @*<span class="caret">@category.Name</span>*@
                         @Html.ActionLink(@category.Name, "FirmList", "Home",
-                                new { category = @category.Name },
+                                new { category = @category.Name, isAjax = true },
                                 new { @class = "caret" })
                         <ul class="nested">
                             @foreach (var firm in category.Firms)
@@ -41,7 +41,7 @@
                                 <li class="mt-2">
                                     @*@firm*@
                                     @Html.ActionLink(firm, "BoilerList", "Home",
-                                        new { firm = firm, VBCategory = ViewBag.Category },
+                                        new { firm = @firm, VBCategory = @category.Name, isAjax = true },
                                         null)
                                 </li>
                             }
