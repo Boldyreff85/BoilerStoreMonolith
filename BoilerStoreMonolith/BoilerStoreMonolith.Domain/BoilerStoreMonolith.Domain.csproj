@@ -56,12 +56,28 @@
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Entities\InfoEntity.cs" />
     <Compile Include="Entities\Product.cs" />
+    <Compile Include="Migrations\201905111628303_InitialCreate.cs" />
+    <Compile Include="Migrations\201905111628303_InitialCreate.Designer.cs">
+      <DependentUpon>201905111628303_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905111631115_AddPowerColumnToProoductsTable.cs" />
+    <Compile Include="Migrations\201905111631115_AddPowerColumnToProoductsTable.Designer.cs">
+      <DependentUpon>201905111631115_AddPowerColumnToProoductsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201905111628303_InitialCreate.resx">
+      <DependentUpon>201905111628303_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905111631115_AddPowerColumnToProoductsTable.resx">
+      <DependentUpon>201905111631115_AddPowerColumnToProoductsTable.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
