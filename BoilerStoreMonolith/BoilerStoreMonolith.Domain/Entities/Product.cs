@@ -18,6 +18,9 @@ namespace BoilerStoreMonolith.Domain.Entities
         [Required(ErrorMessage = "Введите производителя")]
         [Display(Name = "Производитель")]
         public string Firm { get; set; }
+        [Required(ErrorMessage = "Введите мощность")]
+        [Display(Name = "Мощность")]
+        public string Power { get; set; }
         [Required(ErrorMessage = "Укажите цену")]
         [Display(Name = "Цена")]
         public string Price { get; set; }
