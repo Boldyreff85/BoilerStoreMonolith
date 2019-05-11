@@ -17,7 +17,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
     }
 
-    public class StoreDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationContext>
+    public class StoreDbInitializer : CreateDatabaseIfNotExists<ApplicationContext>
     {
         protected override void Seed(ApplicationContext db)
         {
@@ -32,7 +32,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
                 Firm = "Protherm"
             };
 
-            for (int i = 0; i <= 36; i++)
+            for (int i = 0; i <= 18; i++)
             {
                 product.Title = "Котёл -- " + i;
                 db.Products.Add(product);
