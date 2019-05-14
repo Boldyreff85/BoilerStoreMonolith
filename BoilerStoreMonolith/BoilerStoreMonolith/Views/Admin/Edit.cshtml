@@ -1,82 +1,78 @@
-﻿@model BoilerStoreMonolith.Domain.Entities.Product
+﻿@model BoilerStoreMonolith.Models.AdminEditViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="panel">
     <div class="panel-heading">
-        <h3>Редактирование @Model.Title</h3>
+        <h3>Редактирование @Model.Product.Title</h3>
     </div>
-    @using (Html.BeginForm("Edit", "Admin",
-                             FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
     {
-    <div class="panel-body">
-        @Html.HiddenFor(m => m.ProductID)
-        @Html.HiddenFor(m => m.ImageData)
-        @Html.HiddenFor(m => m.ImageMimeType)
-        @foreach (var property in ViewData.ModelMetadata.Properties)
-        {
-            switch (property.PropertyName)
-            {
-                case "ProductID":
-                case "ImageData":
-                case "ImageMimeType":
-                    // do nothing
-                    break;
-                default:
-                    <div class="form-group">
-                        <label>@(property.DisplayName ?? property.PropertyName)</label>
-                        @if (property.PropertyName == "Description")
-                        {
-                            @Html.TextArea(property.PropertyName, null,
-                                        new { @class = "form-control", rows = 5 })
-                        }
-                        else
-                        {
-                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
-                        }
-                        @Html.ValidationMessage(property.PropertyName)
+        <div class="panel-body">
+            @Html.HiddenFor(m => m.Product.ProductID)
+            @Html.HiddenFor(m => m.Product.ImageData)
+            @Html.HiddenFor(m => m.Product.ImageMimeType)
+
+            <div class="form-group">
+                @Html.LabelFor(p => p.Product.Title)
+                @Html.TextBoxFor(p => p.Product.Title, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.Product.Title)
+
+                @Html.LabelFor(p => p.Product.Description)
+                @Html.TextAreaFor(p => p.Product.Description, 10, 1, new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.Product.Description)
+
+                @Html.LabelFor(p => p.Product.Category)
+                <div class="row">
+                    <div class="col">
+                        @Html.TextBoxFor(p => p.Product.Category, null, new { @class = "form-control" })
                     </div>
-                    break;
-            }
-        }
+                    <div class="col">
+                        @{
+                            Model.ImageToLoad = "categoryImg";
+                        }
+                        @Html.Partial("UploadImg")
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(p => p.Product.Firm)
 
+                @Html.LabelFor(p => p.Product.Firm)
+                <div class="row">
+                    <div class="col">
+                        @Html.TextBoxFor(p => p.Product.Firm, null, new { @class = "form-control" })
+                    </div>
+                    <div class="col">
+                        @{
+                            Model.ImageToLoad = "firmImg";
+                        }
+                        @Html.Partial("UploadImg")
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(p => p.Product.Firm)
 
-        <div class="form-group">
-            <div style="position:relative;">
-                <label>Картинка</label>
-                <a class='btn' href='javascript:;'>
-                    Выбрать файл...
-                    <input type="file" name="Image" size="40"
-                           style="position:absolute;z-index:2;top:0;
-                                    left:0;filter: alpha(opacity=0); opacity:0;
-                                    background-color:transparent;color:transparent;"
-                           onchange='$("#upload-file-info").html($(this).val());'>
-                </a>
-                <span class='label label-info' id="upload-file-info"></span>
+                @Html.LabelFor(p => p.Product.Power)
+                @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.Product.Power)
+
+                @Html.LabelFor(p => p.Product.Price)
+                @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.Product.Price)
             </div>
-            @if (Model.ImageData == null)
-            {
-                <div class="form-control-static">Нет картинки</div>
-            }
-            else
-            {
-                <img class="img-thumbnail" width="150" height="150"
-                     src="@Url.Action("GetImage", "Home",
-                                            new { Model.ProductID })" />
-            }
         </div>
 
-    </div>
-
-
+        {
+            Model.ImageToLoad = "productImg";
+        }
+        @Html.Partial("UploadImg")
 
         <div class="panel-footer mt-3">
             <input type="submit" value="Сохранить" class="btn btn-primary" />
             @Html.ActionLink("Отменить и вернуться к списку", "Index", null, new
-           {
-               @class = "btn btn-default"
-           })
+       {
+           @class = "btn btn-default"
+       })
         </div>
         <br />
         <br />
