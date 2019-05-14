@@ -21,7 +21,7 @@ namespace BoilerStoreMonolith.Controllers
 
         public ViewResult Index()
         {
-            return View(productRepo.Products);
+            return View(productRepo.Products.ToList());
         }
 
 
