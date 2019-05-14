@@ -15,6 +15,9 @@ namespace BoilerStoreMonolith.Domain.Entities
         [Required(ErrorMessage = "Введите категорию")]
         [Display(Name = "Категория")]
         public string Category { get; set; }
+        [Display(Name = "Картинка категории")]
+        public byte[] CategoryImageData { get; set; }
+        public string CategoryImageMimeType { get; set; }
         [Required(ErrorMessage = "Введите производителя")]
         [Display(Name = "Производитель")]
         public string Firm { get; set; }
