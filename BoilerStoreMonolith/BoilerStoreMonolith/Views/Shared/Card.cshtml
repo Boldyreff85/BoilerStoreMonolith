@@ -26,7 +26,8 @@
 
 <div class="boiler_card d-flex flex-column bg-light">
     <img class="boiler_image mx-auto" src=@imgSource>
-    @Html.ActionLink((string)Model.Title, "ProductPage", "Home", new { productId = Model.ProductID }, new { @class = "boiler_title pt-2 mx-auto w-75" })
+    @Html.ActionLink((string)Model.Title + " " + (string)Model.Firm + " " + (string)Model.Category,
+    "ProductPage", "Home", new { productId = Model.ProductID }, new { @class = "boiler_title pt-2 mx-auto w-75" })
     <div class="boiler-price pb-2 mx-auto">@Model.Price</div>
 </div>
 
