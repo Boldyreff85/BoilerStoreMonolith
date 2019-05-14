@@ -7,13 +7,13 @@ namespace BoilerStoreMonolith.Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddPowerColumnToProoductsTable : IMigrationMetadata
+    public sealed partial class AddCategoryImgToProductsTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddPowerColumnToProoductsTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddCategoryImgToProductsTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201905111631115_AddPowerColumnToProoductsTable"; }
+            get { return "201905131914444_AddCategoryImgToProductsTable"; }
         }
         
         string IMigrationMetadata.Source

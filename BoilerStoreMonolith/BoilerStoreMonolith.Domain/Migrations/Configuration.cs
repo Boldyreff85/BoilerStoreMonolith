@@ -1,5 +1,6 @@
 namespace BoilerStoreMonolith.Domain.Migrations
 {
+    using Entities;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -10,15 +11,40 @@ namespace BoilerStoreMonolith.Domain.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "BoilerStoreMonolith.Domain.Concrete.ApplicationContext";
         }
 
-        protected override void Seed(BoilerStoreMonolith.Domain.Concrete.ApplicationContext context)
+        protected override void Seed(BoilerStoreMonolith.Domain.Concrete.ApplicationContext db)
         {
-            //  This method will be called after migrating to the latest version.
+            Product product = new Product
+            {
+                Description =
+        @"Газовый настенный отопительный аппарат со встроенным приготовлением горячей хозяйственной воды, \n
+                    Мощность аппарата регулируется модулирующей горелкой",
+                Category = "Настенные",
+                Price = "от 55 500 руб./шт.",
+                Firm = "Protherm",
+                Power = "28"
+            };
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            for (int i = 0; i <= 18; i++)
+            {
+                product.Title = "Котёл -- " + i;
+                db.Products.Add(product);
+                db.SaveChanges();
+            }
+
+            InfoEntity infoEntity = new InfoEntity
+            {
+                CompanyInfo = "Информация о компании",
+                Services = "Описание услуг",
+                Email = "email",
+                Address = "адрес",
+                Schedule = "часы работы",
+                PhoneMain = "+7 XXX XXX XXXX",
+                PhoneAdditional = "+7 XXX XXX XXXX"
+            };
+            db.InfoEntities.AddOrUpdate(infoEntity);
+            db.SaveChanges();
         }
     }
 }

@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,13 +57,17 @@
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Entities\InfoEntity.cs" />
     <Compile Include="Entities\Product.cs" />
-    <Compile Include="Migrations\201905111628303_InitialCreate.cs" />
-    <Compile Include="Migrations\201905111628303_InitialCreate.Designer.cs">
-      <DependentUpon>201905111628303_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201905131855445_init.cs" />
+    <Compile Include="Migrations\201905131855445_init.Designer.cs">
+      <DependentUpon>201905131855445_init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905111631115_AddPowerColumnToProoductsTable.cs" />
-    <Compile Include="Migrations\201905111631115_AddPowerColumnToProoductsTable.Designer.cs">
-      <DependentUpon>201905111631115_AddPowerColumnToProoductsTable.cs</DependentUpon>
+    <Compile Include="Migrations\201905131856565_AddPowerToProductsTable.cs" />
+    <Compile Include="Migrations\201905131856565_AddPowerToProductsTable.Designer.cs">
+      <DependentUpon>201905131856565_AddPowerToProductsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201905131914444_AddCategoryImgToProductsTable.cs" />
+    <Compile Include="Migrations\201905131914444_AddCategoryImgToProductsTable.Designer.cs">
+      <DependentUpon>201905131914444_AddCategoryImgToProductsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,11 +77,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201905111628303_InitialCreate.resx">
-      <DependentUpon>201905111628303_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905131855445_init.resx">
+      <DependentUpon>201905131855445_init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905111631115_AddPowerColumnToProoductsTable.resx">
-      <DependentUpon>201905111631115_AddPowerColumnToProoductsTable.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905131856565_AddPowerToProductsTable.resx">
+      <DependentUpon>201905131856565_AddPowerToProductsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905131914444_AddCategoryImgToProductsTable.resx">
+      <DependentUpon>201905131914444_AddCategoryImgToProductsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
