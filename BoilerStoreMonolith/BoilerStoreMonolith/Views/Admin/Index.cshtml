@@ -23,13 +23,21 @@
             <tr>
                 <th class="text-right">ID</th>
                 <th>Наименование</th>
+                <th>Картинка</th>
                 <th class="text-center">Действия</th>
             </tr>
             @foreach (var item in Model)
             {
                 <tr>
                     <td class="text-right">@item.ProductID</td>
+
                     <td>@Html.ActionLink(item.Title, "Edit", new { item.ProductID })</td>
+
+                    <td class="text-right">
+                        <img class="img-thumbnail" width="80" height="80"
+                             src="" />
+                    </td>
+
                     <td class="text-center">
                         @using (Html.BeginForm("Delete", "Admin"))
                         {
