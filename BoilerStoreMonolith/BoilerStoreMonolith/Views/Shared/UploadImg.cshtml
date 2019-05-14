@@ -1,0 +1,67 @@
+﻿
+@{
+    var imgId = @Model.ImageToLoad;
+    var uploadFileInfoId = "fakePathLoad_" + imgId;
+    var uploadFileInfoSelector = "\"" + "#" + uploadFileInfoId + "\"";
+}
+
+<div class="form-group">
+    <div style="position:relative;">
+        <label>@imgId</label>
+        <a class='btn' href='javascript:;'>
+            Выбрать файл...
+            <input type="file" name=@imgId size="40"
+                   style="position:absolute;z-index:2;top:0;
+                                    left:0;filter: alpha(opacity=0); opacity:0;
+                                    background-color:transparent;color:transparent;"
+                   onchange='$(@uploadFileInfoSelector).html($(this).val());'>
+        </a>
+        <span class='label label-info' id=@uploadFileInfoId></span>
+    </div>
+
+
+    @if (Model.ImageToLoad == "categoryImg")
+    {
+        if (Model.Product.CategoryImageData == null)
+        {
+            <div class="form-control-static">Нет картинки</div>
+        }
+        else
+        {
+            <img class="img-thumbnail" width="80" height="80"
+                 src="@Url.Action("GetCategoryImage", "Home",
+                                            new { Model.Product.ProductID })" />
+        }
+    }
+    else if (Model.ImageToLoad == "firmImg")
+    {
+        if (Model.Product.FirmImageData == null)
+        {
+            <div class="form-control-static">Нет картинки</div>
+        }
+        else
+        {
+            <img class="img-thumbnail" width="80" height="80"
+                 src="@Url.Action("GetFirmImage", "Home",
+                                            new { Model.Product.ProductID })" />
+        }
+    }
+    else if (Model.ImageToLoad == "productImg")
+    {
+        if (Model.Product.ImageData == null)
+        {
+            <div class="form-control-static">Нет картинки</div>
+        }
+        else
+        {
+            <img class="img-thumbnail" width="150" height="150"
+                 src="@Url.Action("GetImage", "Home",
+                                            new { Model.Product.ProductID })" />
+        }
+    }
+
+
+
+
+</div>
+
