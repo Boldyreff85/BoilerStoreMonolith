@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BoilerStoreMonolith.Domain.Entities.Product>
+﻿@model List<BoilerStoreMonolith.Domain.Entities.Product>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -35,7 +35,8 @@
 
                     <td class="text-right">
                         <img class="img-thumbnail" width="80" height="80"
-                             src="" />
+                             src="@Url.Action("GetImage", "Home",
+                                            new { @item.ProductID })" />
                     </td>
 
                     <td class="text-center">
