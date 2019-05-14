@@ -69,6 +69,10 @@
     <Compile Include="Migrations\201905131914444_AddCategoryImgToProductsTable.Designer.cs">
       <DependentUpon>201905131914444_AddCategoryImgToProductsTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905141057190_AddFirmImgToProductsTable.cs" />
+    <Compile Include="Migrations\201905141057190_AddFirmImgToProductsTable.Designer.cs">
+      <DependentUpon>201905141057190_AddFirmImgToProductsTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -85,6 +89,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905131914444_AddCategoryImgToProductsTable.resx">
       <DependentUpon>201905131914444_AddCategoryImgToProductsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905141057190_AddFirmImgToProductsTable.resx">
+      <DependentUpon>201905141057190_AddFirmImgToProductsTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

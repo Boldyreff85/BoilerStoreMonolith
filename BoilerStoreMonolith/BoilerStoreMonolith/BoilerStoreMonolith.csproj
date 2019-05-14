@@ -168,6 +168,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectRegistrations.cs" />
+    <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\CatalogueTreeViewModel.cs" />
     <Compile Include="Models\CatalogueViewModel.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
@@ -211,6 +212,7 @@
     <Content Include="Views\Admin\EditSiteInfo.cshtml" />
     <Content Include="Views\Shared\LoadImages.cshtml" />
     <Content Include="Views\Shared\ErrorPage.cshtml" />
+    <Content Include="Views\Shared\UploadImg.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -220,9 +222,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
