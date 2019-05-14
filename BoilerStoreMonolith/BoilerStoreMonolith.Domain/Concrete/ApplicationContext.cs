@@ -1,5 +1,8 @@
 ﻿using BoilerStoreMonolith.Domain.Entities;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace BoilerStoreMonolith.Domain.Concrete
 {
@@ -19,21 +22,42 @@ namespace BoilerStoreMonolith.Domain.Concrete
     {
         protected override void Seed(ApplicationContext db)
         {
-            Product product = new Product
-            {
-                Description =
-        @"Газовый настенный отопительный аппарат со встроенным приготовлением горячей хозяйственной воды, \n
-            Мощность аппарата регулируется модулирующей горелкой",
-                Category = "Настенные",
-                Price = "от 55 500 руб./шт.",
-                Firm = "Protherm",
-                Power = "28"
+            Random rnd = new Random();
+            List<string> categories = new List<string>() {
+                "Настенный", "Напольный", "Электрический"
             };
 
-            for (int i = 0; i <= 18; i++)
+            List<string> firms = new List<string>() {
+                "Protherm", "WIESSMANN"
+            };
+
+            List<Product> products = new List<Product>();
+
+            for (int i = 0; i < 36; i++)
             {
-                product.Title = "Котёл -- " + i;
-                db.Products.Add(product);
+                var category = categories[rnd.Next(categories.Count)];
+                Product product = new Product
+                {
+                    Title = "Котёл -- " + i,
+                    Description =
+                    category + @" котёл со встроенным приготовлением горячей хозяйственной воды, \n
+                                Мощность аппарата регулируется модулирующей горелкой",
+                    Category = category,
+                    Price = "от " + rnd.Next(30000, 80000) + " руб./шт.",
+                    Firm = "",
+                    Power = "28"
+                };
+                products.Add(product);
+            }
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                products[i].Firm = firms[rnd.Next(firms.Count)];
+            }
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                db.Products.Add(products[i]);
                 db.SaveChanges();
             }
 
