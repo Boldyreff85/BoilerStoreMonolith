@@ -6,11 +6,9 @@ using System.Web;
 
 namespace BoilerStoreMonolith.Models
 {
-    public enum ImgType { ProductImg, CategoryImg, FirmImg };
-
     public class AdminEditViewModel
     {
         public Product Product { get; set; }
-        public ImgType ImageToLoad { get; set; }
+        public string ImageToLoad { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BoilerStoreMonolith.Domain.Abstract;
 using BoilerStoreMonolith.Domain.Entities;
+using BoilerStoreMonolith.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,21 +25,45 @@ namespace BoilerStoreMonolith.Controllers
         }
 
 
-        public ViewResult Edit(int productId)
+        public ViewResult Edit(AdminEditViewModel model, int productId)
         {
-            return View(productRepo.Products.FirstOrDefault(p => p.ProductID == productId));
+            model.Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
+            Console.WriteLine(model);
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(Product product, HttpPostedFileBase image = null)
+        public ActionResult Edit(AdminEditViewModel model, 
+                HttpPostedFileBase productImg = null, HttpPostedFileBase categoryImg = null, HttpPostedFileBase firmImg = null)
         {
+            Product product = model.Product;
+
             if (ModelState.IsValid)
             {
-                if (image != null)
+
+                
+
+                if (productImg != null)
                 {
-                    product.ImageMimeType = image.ContentType;
-                    product.ImageData = new byte[image.ContentLength];
-                    image.InputStream.Read(product.ImageData, 0, image.ContentLength);
+                    product.ImageMimeType = productImg.ContentType;
+                    product.ImageData = new byte[productImg.ContentLength];
+                    productImg.InputStream.Read(product.ImageData, 0, productImg.ContentLength);
+                }
+                productRepo.SaveProduct(product);
+
+                if (categoryImg != null)
+                {
+                    product.CategoryImageMimeType = categoryImg.ContentType;
+                    product.CategoryImageData = new byte[categoryImg.ContentLength];
+                    categoryImg.InputStream.Read(product.CategoryImageData, 0, categoryImg.ContentLength);
+                }
+                productRepo.SaveProduct(product);
+
+                if (firmImg != null)
+                {
+                    product.FirmImageMimeType = firmImg.ContentType;
+                    product.FirmImageData = new byte[firmImg.ContentLength];
+                    firmImg.InputStream.Read(product.FirmImageData, 0, firmImg.ContentLength);
                 }
 
                 productRepo.SaveProduct(product);
