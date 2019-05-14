@@ -21,6 +21,8 @@ namespace BoilerStoreMonolith.Domain.Entities
         [Required(ErrorMessage = "Введите производителя")]
         [Display(Name = "Производитель")]
         public string Firm { get; set; }
+        public byte[] FirmImageData { get; set; }
+        public string FirmImageMimeType { get; set; }
         [Required(ErrorMessage = "Введите мощность")]
         [Display(Name = "Мощность")]
         public string Power { get; set; }
