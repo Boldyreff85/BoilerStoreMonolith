@@ -13,7 +13,7 @@
             Layout = null;
         }
     }
-
+@Html.Action("Breadcrumb", new { category = ViewBag.Category })
     <br />
     <br />
     <br />
@@ -31,7 +31,7 @@
                     if (i >= firms.Count) { break; }
                     <div class="col-6 text-center">
                         @Html.ActionLink(@firms[i], "BoilerList", "Home",
-                                    new { firm = @firms[i], VBCategory = ViewBag.Category },
+                                    new { firm = @firms[i], category = ViewBag.Category },
                                     new { @class = "h4 text-info font-weight-bold" })
                     </div>
                     i++;

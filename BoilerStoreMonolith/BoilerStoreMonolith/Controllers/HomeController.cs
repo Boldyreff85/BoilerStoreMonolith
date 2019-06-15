@@ -48,10 +48,10 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-        public ActionResult BoilerList(string firm, string VBCategory, int page = 1, bool isAjax = false)
+        public ActionResult BoilerList(string firm, string category, int page = 1, bool isAjax = false)
         {
-            var products = productRepo.Products.Where(n => n.Firm == firm && n.Category == VBCategory);
-            ViewBag.Category = VBCategory;
+            var products = productRepo.Products.Where(n => n.Firm == firm && n.Category == category);
+            ViewBag.Category = category;
             ViewBag.Firm = firm;
             ViewBag.IsAjax = isAjax;
             if (products.FirstOrDefault() != null)
@@ -126,6 +126,14 @@ namespace BoilerStoreMonolith.Controllers
             return PartialView("Header", siteInfoRepo.InfoEntities.FirstOrDefault());
         }
 
+        public ActionResult Breadcrumb(string category = null, string firm = null, string title = null)
+        {
+            var model = new List<string> { category, firm, title };
+
+
+            return PartialView("Breadcrumb", model);
+        }
+
         [ChildActionOnly]
         public ActionResult Footer()
         {
@@ -133,24 +141,24 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult CatalogueTree(CatalogueTreeViewModel model, string VBCategory, int page = 1)
+        public ActionResult CatalogueTree(CatalogueTreeViewModel model, string category, int page = 1)
         {
             var categories = productRepo.Products.Select(n => n.Category);
             var firms = productRepo.Products.Select(n => n.Firm);
 
-            model.CurrCategory = VBCategory;
+            model.CurrCategory = category;
 
-            foreach (var category in categories)
+            foreach (var item in categories)
             {
-                if (model.Categories.Where(n => n.Name == category).Count() > 0)
+                if (model.Categories.Where(n => n.Name == item).Count() > 0)
                 {
                     continue;
                 }
 
                 CategoryModel categoryModel = new CategoryModel
                 {
-                    Name = category,
-                    Firms = productRepo.Products.Where(n => n.Category == category).Select(n => n.Firm).Distinct()
+                    Name = item,
+                    Firms = productRepo.Products.Where(n => n.Category == item).Select(n => n.Firm).Distinct()
                 };
 
                 model.Categories.Add(categoryModel);

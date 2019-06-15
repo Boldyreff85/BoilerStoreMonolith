@@ -9,7 +9,11 @@
     }
 </style>
 
-
+@Html.Action("Breadcrumb", new {
+    category = Model.Category,
+    firm = Model.Firm,
+    title = Model.Title
+})
 <div class="row bg-light m-3">
 
     <div class="card mx-auto my-4" style="max-width: 540px;">

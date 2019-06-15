@@ -1,0 +1,29 @@
+﻿@model List<string>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent">
+
+            <li class="breadcrumb-item">
+                @Html.ActionLink("Каталог", "Catalogue", "Home", null)
+            </li>
+
+            @if(Model[0] != null){
+            <li class="breadcrumb-item">
+                @Html.ActionLink(Model[0], "FirmList", "Home",
+                new { category = Model[0] }, null)
+            </li>
+            }
+            @if(Model[1] != null){
+            <li class="breadcrumb-item">
+                @Html.ActionLink(Model[1], "BoilerList", "Home",
+                new { category = Model[0], firm = Model[1] }, null)
+            </li>
+            }
+            @if(Model[2] != null){
+            <li class="breadcrumb-item">
+                @Model[2]
+            </li>
+            }
+
+        </ol>
+    </nav>
