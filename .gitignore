@@ -1,7 +1,8 @@
-
+﻿
 .vs
 obj
 bin
+Info
 *.mdf
 *.ldf
 *.com
