@@ -215,6 +215,7 @@
     <Content Include="Views\Shared\ErrorPage.cshtml" />
     <Content Include="Views\Shared\UploadImg.cshtml" />
     <Content Include="Views\Shared\Breadcrumb.cshtml" />
+    <Content Include="Views\Shared\FilterBar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,34 @@
+﻿@{
+    string actionName = this.ViewContext.RouteData.Values["action"].ToString();
+}
+
+<ul class="nav">
+
+    <li class="nav-item nav-item d-flex align-items-center">
+        <div>Сортировать:</div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="#">Мощности</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Цене</a>
+    </li>
+    @if (actionName == "Catalogue")
+    {
+        <li class="nav-item">
+            <div class="dropdown">
+                <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Выберите производителя
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#">WIESSMANN</a>
+                    <a class="dropdown-item" href="#">Protherm</a>
+                </div>
+            </div>
+        </li>
+    }
+
+
+
+</ul>
