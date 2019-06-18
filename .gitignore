@@ -1,4 +1,4 @@
-﻿
+
 .vs
 obj
 bin
@@ -30,3 +30,4 @@ publish/
 *.rar
 *.tar
 *.zip
+BoilerStoreMonolith/BoilerStoreMonolith/Properties/
