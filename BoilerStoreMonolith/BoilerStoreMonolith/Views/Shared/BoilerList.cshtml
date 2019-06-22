@@ -15,7 +15,7 @@
 
 @if (actionName != "Catalogue")
 {
-    @Html.Action("Breadcrumb", new { category = ViewBag.Category, firm = @ViewBag.Firm })
+    @Html.Action("Breadcrumb", new { category = ViewBag.Category, firm = ViewBag.Firm })
 }
 
 <div class="justify-content-center align-items-center flex-column w-100">
