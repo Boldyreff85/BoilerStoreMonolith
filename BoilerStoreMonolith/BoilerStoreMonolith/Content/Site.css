@@ -21,3 +21,12 @@ pre {
     white-space: pre-wrap;
 }
 
+.icon-down::after {
+    content: "↓";
+    margin-left: 3px;
+}
+
+.icon-up::after {
+    content: "↑";
+    margin-left: 3px;
+}
