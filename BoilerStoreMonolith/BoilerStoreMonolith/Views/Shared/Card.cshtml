@@ -29,6 +29,7 @@
     @Html.ActionLink((string)Model.Title + " " + (string)Model.Firm + " " + (string)Model.Category,
     "ProductPage", "Home", new { productId = Model.ProductID }, new { @class = "boiler_title pt-2 mx-auto w-75" })
     <div class="boiler-price pb-2 mx-auto">@Model.Price</div>
+    <div class="pb-2 mx-auto">@Model.Power</div>
 </div>
 
 
