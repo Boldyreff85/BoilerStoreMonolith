@@ -1,15 +1,38 @@
 ﻿@{
     string actionName = this.ViewContext.RouteData.Values["action"].ToString();
+
+    // defining filter link appearance
+    var linkClass = "filter_icon nav-link text-dark font-weight-bold";
+    if(ViewBag.powerFilter == "down")
+    {
+        linkClass = "icon-down filter_icon nav-link text-dark font-weight-bold";
+    }
+    else if (ViewBag.powerFilter == "up")
+    {
+        linkClass = "icon-up filter_icon nav-link text-dark font-weight-bold";
+    }
 }
 
 <ul class="nav">
 
     <li class="nav-item nav-item d-flex align-items-center">
-        <div>Сортировать:</div>
+        <div>Сортировать по:</div>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="#">Мощности</a>
+
+        @Html.ActionLink("Мощности", actionName, "Home",
+                                     new
+                                     {
+                                         category = ViewBag.Category,
+                                         firm = ViewBag.Firm,
+                                         powerFilter = ViewBag.powerFilter == "default" ||
+                                                        ViewBag.powerFilter == "up" ?
+                                                        "down" : "up"
+
+
+                                     },
+                                     new { @class = linkClass })
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Цене</a>
@@ -19,7 +42,18 @@
         <li class="nav-item">
             <div class="dropdown">
                 <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Выберите производителя
+                    категория
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="#">Настенный</a>
+                    <a class="dropdown-item" href="#">Напольный</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <div class="dropdown">
+                <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    производитель
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#">WIESSMANN</a>
@@ -32,3 +66,4 @@
 
 
 </ul>
+
