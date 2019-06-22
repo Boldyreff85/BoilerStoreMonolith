@@ -48,18 +48,40 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-        public ActionResult BoilerList(string firm, string category, int page = 1, bool isAjax = false)
+        public ActionResult BoilerList(
+            string firm,
+            string category,
+            int page = 1,
+            bool isAjax = false,
+            string powerFilter = "default")
         {
-            var products = productRepo.Products.Where(n => n.Firm == firm && n.Category == category);
             ViewBag.Category = category;
             ViewBag.Firm = firm;
             ViewBag.IsAjax = isAjax;
+            ViewBag.PowerFilter = powerFilter;
+
+            var products = productRepo.Products.Where(n => n.Firm == firm && n.Category == category);
+
+            // filter by power
+            if (powerFilter == "default")
+            {
+                products = products.OrderBy(p => p.ProductID);
+            }
+            else if (powerFilter == "up")
+            {
+                products = products.OrderBy(p => p.Power);
+            }
+            else
+            {
+                products = products.OrderByDescending(p => p.Power);
+            }
+
+
             if (products.FirstOrDefault() != null)
             {
                 ProductListViewModel model = new ProductListViewModel
                 {
                     Products = products
-                        .OrderBy(p => p.ProductID)
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
                     PagingInfo = new PagingInfo
@@ -85,16 +107,31 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         // выводим страницу каталога с 3 секциями (категории, производители и полный списко с пагинацией)
-        public ActionResult Catalogue(CatalogueViewModel model, int page = 1)
+        public ActionResult Catalogue(CatalogueViewModel model, int page = 1,
+            string powerFilter = "default")
         {
+            ViewBag.PowerFilter = powerFilter;
             var products = productRepo.Products;
+            // filter by power
+            if (powerFilter == "default")
+            {
+                products = products.OrderBy(p => p.ProductID);
+            }
+            else if (powerFilter == "up")
+            {
+                products = products.OrderBy(p => p.Power);
+            }
+            else
+            {
+                products = products.OrderByDescending(p => p.Power);
+            }
+
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
 
             model.ProductList = new ProductListViewModel
             {
                 Products = products
-                    .OrderBy(p => p.ProductID)
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
                 PagingInfo = new PagingInfo
