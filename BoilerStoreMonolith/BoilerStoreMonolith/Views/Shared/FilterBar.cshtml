@@ -2,15 +2,31 @@
     string actionName = this.ViewContext.RouteData.Values["action"].ToString();
 
     // defining filter link appearance
-    var linkClass = "filter_icon nav-link text-dark font-weight-bold";
-    if(ViewBag.powerFilter == "down")
+    var powerLinkClass = "filter_icon nav-link text-dark font-weight-bold";
+    var priceLinkClass = "filter_icon nav-link text-dark font-weight-bold";
+    if(ViewBag.LinkName == "Power")
     {
-        linkClass = "icon-down filter_icon nav-link text-dark font-weight-bold";
+        if (ViewBag.filter == "down")
+        {
+            powerLinkClass = "icon-down filter_icon nav-link text-dark font-weight-bold";
+        }
+        else if (ViewBag.filter == "up")
+        {
+            powerLinkClass = "icon-up filter_icon nav-link text-dark font-weight-bold";
+        }
     }
-    else if (ViewBag.powerFilter == "up")
+    else if (ViewBag.LinkName == "Price")
     {
-        linkClass = "icon-up filter_icon nav-link text-dark font-weight-bold";
+        if (ViewBag.filter == "down")
+        {
+            priceLinkClass = "icon-down filter_icon nav-link text-dark font-weight-bold";
+        }
+        else if (ViewBag.filter == "up")
+        {
+            priceLinkClass = "icon-up filter_icon nav-link text-dark font-weight-bold";
+        }
     }
+
 }
 
 <ul class="nav">
@@ -20,22 +36,36 @@
     </li>
 
     <li class="nav-item">
-
         @Html.ActionLink("Мощности", actionName, "Home",
                                      new
                                      {
                                          category = ViewBag.Category,
                                          firm = ViewBag.Firm,
-                                         powerFilter = ViewBag.powerFilter == "default" ||
-                                                        ViewBag.powerFilter == "up" ?
-                                                        "down" : "up"
+                                         filter = ViewBag.filter == "default" ||
+                                                        ViewBag.filter == "up" ?
+                                                        "down" : "up",
+                                         linkName = "Power"
+
 
 
                                      },
-                                     new { @class = linkClass })
+                                     new { @class = powerLinkClass })
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Цене</a>
+        @*<a class="nav-link" href="#">Цене</a>*@
+        @Html.ActionLink("Цене", actionName, "Home",
+                             new
+                             {
+                                 category = ViewBag.Category,
+                                 firm = ViewBag.Firm,
+                                 filter = ViewBag.filter == "default" ||
+                                                ViewBag.filter == "up" ?
+                                                "down" : "up",
+                                 linkName = "Price"
+
+
+                             },
+                             new { @class = priceLinkClass })
     </li>
     @if (actionName == "Catalogue")
     {

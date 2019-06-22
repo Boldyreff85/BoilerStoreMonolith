@@ -4,6 +4,7 @@ using BoilerStoreMonolith.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -51,30 +52,21 @@ namespace BoilerStoreMonolith.Controllers
         public ActionResult BoilerList(
             string firm,
             string category,
+            string linkName,
             int page = 1,
             bool isAjax = false,
-            string powerFilter = "default")
+            string filter = "default")
         {
             ViewBag.Category = category;
             ViewBag.Firm = firm;
             ViewBag.IsAjax = isAjax;
-            ViewBag.PowerFilter = powerFilter;
+            ViewBag.Filter = filter;
+            ViewBag.LinkName = linkName;
 
             var products = productRepo.Products.Where(n => n.Firm == firm && n.Category == category);
 
             // filter by power
-            if (powerFilter == "default")
-            {
-                products = products.OrderBy(p => p.ProductID);
-            }
-            else if (powerFilter == "up")
-            {
-                products = products.OrderBy(p => p.Power);
-            }
-            else
-            {
-                products = products.OrderByDescending(p => p.Power);
-            }
+            products = OrderProductList(products, linkName, filter);
 
 
             if (products.FirstOrDefault() != null)
@@ -107,24 +99,18 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         // выводим страницу каталога с 3 секциями (категории, производители и полный списко с пагинацией)
-        public ActionResult Catalogue(CatalogueViewModel model, int page = 1,
-            string powerFilter = "default")
+        public ActionResult Catalogue(
+            CatalogueViewModel model, 
+            string linkName, 
+            int page = 1,
+            string filter = "default")
         {
-            ViewBag.PowerFilter = powerFilter;
+            ViewBag.Filter = filter;
+            ViewBag.LinkName = linkName;
             var products = productRepo.Products;
+
             // filter by power
-            if (powerFilter == "default")
-            {
-                products = products.OrderBy(p => p.ProductID);
-            }
-            else if (powerFilter == "up")
-            {
-                products = products.OrderBy(p => p.Power);
-            }
-            else
-            {
-                products = products.OrderByDescending(p => p.Power);
-            }
+            products = OrderProductList(products, linkName, filter);
 
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
@@ -246,6 +232,25 @@ namespace BoilerStoreMonolith.Controllers
             {
                 return null;
             }
+        }
+
+        public IEnumerable<Product> OrderProductList(
+            IEnumerable<Product> products, 
+            string propertyName, 
+            string value = "default")
+        {
+            if(value == "default" || propertyName == null)
+            {
+                return products.OrderBy(p => p.ProductID);
+            }else if(value == "up")
+            {
+                return products.OrderBy(s => s.GetType().GetProperty(propertyName).GetValue(s, null));
+            }
+            else
+            {
+                return products.OrderByDescending(s => s.GetType().GetProperty(propertyName).GetValue(s, null));
+            }
+
         }
 
     }
