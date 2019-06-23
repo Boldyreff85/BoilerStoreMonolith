@@ -1,43 +1,45 @@
 ﻿@model IEnumerable<string>
-    @{
-        ViewBag.Title = "FirmList";
-        List<string> firms = Model.ToList();
+@{
+    ViewBag.Title = "FirmList";
+    List<string> firms = Model.ToList();
 
-        string actionName = this.ViewContext.RouteData.Values["action"].ToString();
-        if (ViewBag.IsAjax == null || ViewBag.IsAjax == false)
-        {
-            Layout = "~/Views/Shared/_Layout.cshtml";
-        }
-        else
-        {
-            Layout = null;
-        }
+    string actionName = this.ViewContext.RouteData.Values["action"].ToString();
+    if (ViewBag.IsAjax == null || ViewBag.IsAjax == false)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
     }
+    else
+    {
+        Layout = null;
+    }
+}
 @Html.Action("Breadcrumb", new { category = ViewBag.Category })
-    <br />
-    <br />
-    <br />
-    <div class="container">
 
-        <h4 class="text-center">Производители</h4>
-        <br />
-        <br />
 
+
+<div class="site-section">
+    <h2 class="text-center mb-5">
+        Оборудование
+    </h2>
+
+    <div class="row d-flex flex-space-around">
         @for (int i = 0; i < firms.Count;)
         {
-            <div class="row py-3">
-                @for (int j = 0; j < 2; j++)
-                {
-                    if (i >= firms.Count) { break; }
-                    <div class="col-6 text-center">
-                        @Html.ActionLink(@firms[i], "BoilerList", "Home",
-                                    new { firm = @firms[i], category = ViewBag.Category },
-                                    new { @class = "h4 text-info font-weight-bold" })
-                    </div>
-                    i++;
-                }
-            </div>
-            <br />
 
+            if (i >= firms.Count) { break; }
+
+            <div class="card shadow-sm" style="width: 14rem;">
+                <a href=@Url.Action("BoilerList", "Home",  new { firm = @firms[i], category = ViewBag.Category })>
+                    <img src="~/Content/images/service-2.jpg"
+                         class="card-img-top"
+                         alt="Настенные" />
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@firms[i]</h5>
+                    </div>
+                </a>
+            </div>
+            i++;
         }
+
     </div>
+</div>

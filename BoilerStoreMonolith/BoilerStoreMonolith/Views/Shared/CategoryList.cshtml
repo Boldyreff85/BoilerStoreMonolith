@@ -5,25 +5,35 @@
     List<string> categories = Model.ToList();
 }
 
-<br />
-<br />
-<div class="container">
-    @for (int i = 0; i < categories.Count;)
-    {
-        <div class="row py-3">
-            @for (int j = 0; j < 2; j++)
-            {
-                if (i >= categories.Count) { break; }
-                <div class="col-6 text-center">
-                    @Html.ActionLink(@categories[i], "FirmList", "Home",
-                                new { category = @categories[i] },
-                                new { @class = "h4 text-info font-weight-bold" })
-                </div>
-                i++;
-            }
-        </div>
-        <br />
-    }
+<div class="site-section">
+    <h2 class="text-center mb-5">
+        Оборудование
+    </h2>
+
+    <div class="row d-flex">
+
+
+        @for (int i = 0; i < categories.Count;)
+        {
+            if (i >= categories.Count) { break; }
+
+            <div class="info-card card shadow-sm" style="width: 14rem;">
+                <a href=@Url.Action("FirmList", "Home", new { category = @categories[i] })>
+                    <img src="~/Content/images/service-2.jpg"
+                    class="card-img-top"
+                    alt="Настенные" />
+                    <div class="card-body">
+                        <h5 class="card-title text-center">@categories[i]</h5>
+                    </div>
+                </a>
+            </div>
+            i++;
+
+        }
+
+    </div>
 </div>
+
+
 
 

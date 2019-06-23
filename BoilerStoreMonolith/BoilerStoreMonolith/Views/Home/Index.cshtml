@@ -5,14 +5,15 @@
 
 
 <div class="d-flex justify-content-center align-items-center flex-column">
-    <img class="w-50 mt-3" src="@Url.Action("GetImage2", "Admin",
-                        new { infoId = Model.infoEntity.InfoID, imgElementName = "homeImg" })" />
+    @*<img class="w-50 mt-3" src="@Url.Action("GetImage2", "Admin",
+                        new { infoId = Model.infoEntity.InfoID, imgElementName = "homeImg" })" />*@
 
-    <br />
-    <br />
-    <pre class="h5 font-weight-light">@Model.infoEntity.CompanyInfo</pre>
-    <br />
-    <br />
+    @*<pre class="h5 font-weight-light">@Model.infoEntity.CompanyInfo</pre>*@
+
+    <div class="site-section">
+        @Html.Partial("ServicesCards")
+    </div>
+
     @Html.Partial("CategoryList", Model.categories)
 </div>
 

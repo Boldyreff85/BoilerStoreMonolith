@@ -1,35 +1,34 @@
 ﻿@model BoilerStoreMonolith.Domain.Entities.InfoEntity
 
-<style>
-    .logo {
-        width: 80px;
-    }
-</style>
 
-<nav class="top-header navbar navbar-expand-lg navbar-light bg-light py-4">
 
-    <img class="logo" src="@Url.Action("GetImage", "Admin",
+
+<nav class="top-header navbar navbar-expand-lg py-4">
+    <div class="container">
+        <img class="logo" src="@Url.Action("GetImage", "Admin",
                     new { infoId = Model.InfoID, imgElementName = "logoImg" })" />
+        <div class="site-title">Оборудование в Воронеже</div>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
 
-            <li class="nav-item mx-5">
-                <span class="navbar-text">
+                <li class="nav-item mx-5">
+                    <i class="fas fa-phone"></i>
                     @Model.PhoneMain
-                </span>
-            </li>
-            <li class="nav-item active mx-5">
-                <a class="nav-link" href="#">Напишите нам<span class="sr-only">(current)</span></a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+                </li>
+                <li class="nav-item active mx-5">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:email-xxxxx@mail.ru">email-xxxxx@mail.ru</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
     </div>
 </nav>
