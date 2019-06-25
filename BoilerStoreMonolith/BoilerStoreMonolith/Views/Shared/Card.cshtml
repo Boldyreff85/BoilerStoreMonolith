@@ -1,35 +1,15 @@
 ﻿@model BoilerStoreMonolith.Domain.Entities.Product
 
-<style>
-    .boiler_title {
-        font-size: 0.8rem;
-    }
-
-    .boiler_card {
-        display: inline-block;
-        vertical-align: top;
-        width: 200px;
-        height: 290px;
-        margin: 0 0 15px 0;
-        text-align: left;
-    }
-
-    .boiler_image {
-        width: 130px;
-    }
-</style>
-
 @{
     var imgSource = Url.Action("GetImage", "Home", new { productId = Model.ProductID });
 }
 
-
-<div class="boiler_card d-flex flex-column bg-light">
-    <img class="boiler_image mx-auto" src=@imgSource>
-    @Html.ActionLink((string)Model.Title + " " + (string)Model.Firm + " " + (string)Model.Category,
-    "ProductPage", "Home", new { productId = Model.ProductID }, new { @class = "boiler_title pt-2 mx-auto w-75" })
+<div class="boiler_card">
     <div class="boiler-price pb-2 mx-auto">@Model.Price</div>
-    <div class="pb-2 mx-auto">@Model.Power</div>
+    <div class="pb-2 mx-auto">Мощность: @Model.Power</div>
+    <img class="boiler_image" src=@imgSource>
+    @Html.ActionLink((string)Model.Title + " " + (string)Model.Firm + " " + (string)Model.Category,
+  "ProductPage", "Home", new { productId = Model.ProductID }, new { @class = "boiler_title" })
 </div>
 
 

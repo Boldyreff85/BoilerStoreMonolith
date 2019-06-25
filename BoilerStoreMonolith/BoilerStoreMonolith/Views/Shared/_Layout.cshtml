@@ -21,12 +21,12 @@
 <body>
     @Html.Action("Header")
     <div class="container body-content main min-vh-100 px-0">
-        
+
         <div class="row central my-3 mx-auto">
-            <div class="col-2">
+            <div class="col-2" id="sidebar-menu" style="display:none;">
                 @Html.Action("CatalogueTree", new { category = ViewBag.Category })
             </div>
-            <div class="col-lg-10">
+            <div class="col">
                 @Html.Partial("Menu")
                 <div id="page-content">
                     @RenderBody()

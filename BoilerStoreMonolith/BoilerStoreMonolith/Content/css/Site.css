@@ -34,7 +34,7 @@ pre {
 
 .logo {
     width: 50px;
-    margin-right:1rem;
+    margin-right: 1rem;
 }
 
 /* HEADER */
@@ -92,17 +92,66 @@ a.nav-link {
 .services-cards {
     display: flex;
     flex-wrap: wrap;
-    justify-content:space-around;
+    justify-content: space-around;
 }
 
-.services-cards .card{
-    margin-bottom:3rem;
-}
+    .services-cards .card {
+        margin-bottom: 3rem;
+    }
 
-.site-section{
+.site-section {
     margin: 3rem 0;
 }
 
-.flex-space-around{
+.flex-space-around {
     justify-content: space-around;
+}
+
+@media screen and (max-width: 400px) and (orientation: portrait) {
+
+    .info-card .card-body {
+        text-align: left;
+        padding-left: 0;
+    }
+
+    .info-card .card-image {
+        border-bottom: none;
+        padding: 1rem;
+    }
+
+    .card.info-card {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 0 1.5rem 0;
+        flex-direction: row;
+    }
+
+    .category-list {
+        justify-content: center;
+    }
+}
+
+.boiler_card {
+    width: 200px;
+    height: 290px;
+    text-align: center;
+    border: solid 1px #eee;
+    margin: 2rem 1rem;
+}
+
+.boiler_image {
+    height: 150px;
+}
+
+.boiler_title {
+    background: #eee;
+    text-align:center;
+    padding: 1rem 0;
+    display:block;
+}
+
+.boiler-price{
+    margin: .5rem 0;
 }
