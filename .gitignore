@@ -31,3 +31,4 @@ publish/
 *.tar
 *.zip
 BoilerStoreMonolith/BoilerStoreMonolith/Properties/
+*.user
