@@ -37,12 +37,8 @@ namespace BoilerStoreMonolith.Controllers
                 HttpPostedFileBase productImg = null, HttpPostedFileBase categoryImg = null, HttpPostedFileBase firmImg = null)
         {
             Product product = model.Product;
-
             if (ModelState.IsValid)
             {
-
-                
-
                 if (productImg != null)
                 {
                     product.ImageMimeType = productImg.ContentType;
@@ -78,7 +74,12 @@ namespace BoilerStoreMonolith.Controllers
 
         public ViewResult Create()
         {
-            return View("Edit", new Product());
+            var model = new AdminEditViewModel
+            {
+                Product = new Product(),
+                ImageToLoad = ""
+            };
+            return View("Edit", model);
         }
 
 
