@@ -4,7 +4,7 @@
     // defining filter link appearance
     var powerLinkClass = "filter_icon nav-link text-dark font-weight-bold";
     var priceLinkClass = "filter_icon nav-link text-dark font-weight-bold";
-    if(ViewBag.LinkName == "Power")
+    if (ViewBag.LinkName == "Power")
     {
         if (ViewBag.filter == "down")
         {
@@ -66,49 +66,60 @@
                              },
                              new { @class = priceLinkClass })
     </li>
-    @if (actionName == "Catalogue")
-    {
-        <li class="nav-item">
-            <div class="dropdown">
-                <a class="btn dropdown-toggle text-dark font-weight-bold" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    категория
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    @foreach (var cat in Model.Categories)
-                    {
-                        @Html.ActionLink((string)cat, actionName, "Home",
-                         new
-                         {
-                             category = ViewBag.Category,
-                             firm = ViewBag.Firm
-                         },
-                         new { @class = "dropdown-item" })
-                    }
-                </div>
-            </div>
-        </li>
-        <li class="nav-item">
-            <div class="dropdown">
-                <a class="btn dropdown-toggle text-dark font-weight-bold" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    производитель
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    @foreach (var firm in Model.Firms)
-                    {
-                        @Html.ActionLink((string)firm, actionName, "Home",
-                         new
-                         {
-                             category = ViewBag.Category,
-                             firm = ViewBag.Firm
-                         },
-                         new { @class = "dropdown-item" })
-                    }
-                </div>
-            </div>
-        </li>
-    }
 
+    <li class="nav-item">
+        <div class="dropdown">
+            <a class="btn dropdown-toggle text-dark font-weight-bold" href="#" role="button"
+               id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @{
+                    var categoryLabel = "категория";
+                    if (ViewBag.Category != null)
+                    {
+                        categoryLabel = ViewBag.Category;
+                    }
+                }
+                @categoryLabel
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                @foreach (var cat in Model.Categories)
+                {
+                    @Html.ActionLink((string)cat, "Catalogue", "Home",
+                         new
+                         {
+                             category = cat,
+                             firm = ViewBag.Firm
+                         },
+                         new { @class = "dropdown-item" })
+                }
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
+        <div class="dropdown">
+            <a class="btn dropdown-toggle text-dark font-weight-bold" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @{
+                    var firmLabel = "Производитель";
+                    if (ViewBag.Firm != null)
+                    {
+                        firmLabel = ViewBag.Firm;
+                    }
+                }
+                @firmLabel
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                @foreach (var firm in Model.Firms)
+                {
+                    @Html.ActionLink((string)firm, "Catalogue", "Home",
+                         new
+                         {
+                             category = ViewBag.Category,
+                             firm = firm
+                         },
+                         new { @class = "dropdown-item" })
+                }
+            </div>
+        </div>
+    </li>
 
 
 </ul>
-

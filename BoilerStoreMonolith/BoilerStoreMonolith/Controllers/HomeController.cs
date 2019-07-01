@@ -50,6 +50,7 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         public ActionResult BoilerList(
+            CatalogueViewModel model,
             string firm,
             string category,
             string linkName,
@@ -63,15 +64,19 @@ namespace BoilerStoreMonolith.Controllers
             ViewBag.Filter = filter;
             ViewBag.LinkName = linkName;
 
-            var products = productRepo.Products.Where(n => n.Firm == firm && n.Category == category);
+            var products = productRepo.Products;
+
+            model.Categories = products.Select(n => n.Category).ToList().Distinct();
+            model.Firms = products.Select(n => n.Firm).ToList().Distinct();
 
             // filter by power
             products = OrderProductList(products, linkName, filter);
-
+            // filter by category and firm
+            products = FilterProductList(products, category, firm);
 
             if (products.FirstOrDefault() != null)
             {
-                ProductListViewModel model = new ProductListViewModel
+                model.ProductList = new ProductListViewModel
                 {
                     Products = products
                         .Skip((page - 1) * PageSize)
@@ -103,17 +108,23 @@ namespace BoilerStoreMonolith.Controllers
             CatalogueViewModel model, 
             string linkName, 
             int page = 1,
-            string filter = "default")
+            string filter = "default",
+            string category = null,
+            string firm = null)
         {
             ViewBag.Filter = filter;
             ViewBag.LinkName = linkName;
+            ViewBag.Category = category;
+            ViewBag.Firm = firm;
             var products = productRepo.Products;
-
-            // filter by power
-            products = OrderProductList(products, linkName, filter);
 
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
+
+            // order by power
+            products = OrderProductList(products, linkName, filter);
+            // filter by category and firm
+            products = FilterProductList(products, category, firm);
 
             model.ProductList = new ProductListViewModel
             {
@@ -251,6 +262,22 @@ namespace BoilerStoreMonolith.Controllers
                 return products.OrderByDescending(s => s.GetType().GetProperty(propertyName).GetValue(s, null));
             }
 
+        }
+
+        public IEnumerable<Product> FilterProductList(
+            IEnumerable<Product> products, 
+            string category = null,
+            string firm = null)
+        {
+            if(category != null)
+            {
+                products = products.Where(p => p.Category == category);
+            } 
+            if(firm != null)
+            {
+                products = products.Where(p => p.Firm == firm);
+            }
+            return products;
         }
 
     }
