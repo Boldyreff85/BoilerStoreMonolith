@@ -52,7 +52,6 @@
                                      new { @class = powerLinkClass })
     </li>
     <li class="nav-item">
-        @*<a class="nav-link" href="#">Цене</a>*@
         @Html.ActionLink("Цене", actionName, "Home",
                              new
                              {
@@ -71,23 +70,39 @@
     {
         <li class="nav-item">
             <div class="dropdown">
-                <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn dropdown-toggle text-dark font-weight-bold" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     категория
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">Настенный</a>
-                    <a class="dropdown-item" href="#">Напольный</a>
+                    @foreach (var cat in Model.Categories)
+                    {
+                        @Html.ActionLink((string)cat, actionName, "Home",
+                         new
+                         {
+                             category = ViewBag.Category,
+                             firm = ViewBag.Firm
+                         },
+                         new { @class = "dropdown-item" })
+                    }
                 </div>
             </div>
         </li>
         <li class="nav-item">
             <div class="dropdown">
-                <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn dropdown-toggle text-dark font-weight-bold" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     производитель
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">WIESSMANN</a>
-                    <a class="dropdown-item" href="#">Protherm</a>
+                    @foreach (var firm in Model.Firms)
+                    {
+                        @Html.ActionLink((string)firm, actionName, "Home",
+                         new
+                         {
+                             category = ViewBag.Category,
+                             firm = ViewBag.Firm
+                         },
+                         new { @class = "dropdown-item" })
+                    }
                 </div>
             </div>
         </li>

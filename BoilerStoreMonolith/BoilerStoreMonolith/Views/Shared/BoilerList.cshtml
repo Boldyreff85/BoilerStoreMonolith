@@ -1,4 +1,4 @@
-﻿@model BoilerStoreMonolith.Models.ProductListViewModel
+﻿@model BoilerStoreMonolith.Models.CatalogueViewModel
 @{
     ViewBag.Title = "BoilerList";
     string actionName = this.ViewContext.RouteData.Values["action"].ToString();
@@ -31,13 +31,13 @@
     <table class="table table-borderless ">
 
         @{
-            var productList = Model.Products.ToList();
+            var productList = Model.ProductList.Products.ToList();
             var index = 0;
         }
 
         @Html.Partial("FilterBar")
 
-        @for (int i = 0; i < Model.PagingInfo.ItemsPerPage && i < productList.Count; i++)
+        @for (int i = 0; i < Model.ProductList.PagingInfo.ItemsPerPage && i < productList.Count; i++)
         {
             <tr>
                 @for (int j = 0; j < 3; j++)
@@ -51,7 +51,7 @@
         }
     </table>
 
-    @Html.Partial("Pagination", Model.PagingInfo)
+    @Html.Partial("Pagination", Model.ProductList.PagingInfo)
 
 </div>
 
