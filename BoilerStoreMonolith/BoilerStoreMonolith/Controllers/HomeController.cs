@@ -1,6 +1,8 @@
 ﻿using BoilerStoreMonolith.Domain.Abstract;
 using BoilerStoreMonolith.Domain.Entities;
 using BoilerStoreMonolith.Models;
+using MailKit.Net.Smtp;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -279,6 +281,28 @@ namespace BoilerStoreMonolith.Controllers
             }
             return products;
         }
+
+        private void SendMail(string toMail, string userName, string subject, string body)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Joey Tribbiani", "vitalisun2@gmail.com"));
+            message.To.Add(new MailboxAddress(userName, toMail));
+            message.Subject = subject;
+            message.Body = new TextPart("plain") { Text = body };
+
+            using (var client = new SmtpClient())
+            {
+                // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
+                client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                client.Connect("smtp.gmail.com", 465, true);
+                string appSpecificPassword = "sliujqaomaazntyf";
+                // Note: only needed if the SMTP server requires authentication
+                client.Authenticate("vitalisun2@gmail.com", appSpecificPassword);
+                client.Send(message);
+                client.Disconnect(true);
+            }
+        }
+
 
     }
 }
