@@ -18,6 +18,10 @@ textarea {
     max-width: 280px;
 }
 
+#messageText{
+    max-width: 100%;
+}
+
 pre {
     white-space: pre-wrap;
 }
