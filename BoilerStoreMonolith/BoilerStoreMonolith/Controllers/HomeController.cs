@@ -203,6 +203,37 @@ namespace BoilerStoreMonolith.Controllers
             return PartialView("CatalogueTree", model);
         }
 
+        [HttpPost]
+        public ActionResult WriteUs(WriteUsViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var body = model.Message + "\n\n" +
+                    "Обратная связь: \n" +
+                     "email:    " + model.Email + "\n" +
+                     "tel:  " + model.Phone;
+
+                var client = "Заявка от клиента - " +
+                    model.Name + " " + model.LastName;
+
+                SendMail(model.Email, "админ", client, body);
+                return RedirectToAction("WriteUsSuccess");
+            }else
+            {
+                return RedirectToAction("WriteUsFail");
+            }
+        }
+
+        public ActionResult WriteUsSuccess() {
+            return View();
+        }
+
+        public ActionResult WriteUsFail()
+        {
+            return View();
+        }
+
+
         // helpers
 
         public FileContentResult GetImage(int productId)
@@ -263,7 +294,6 @@ namespace BoilerStoreMonolith.Controllers
             {
                 return products.OrderByDescending(s => s.GetType().GetProperty(propertyName).GetValue(s, null));
             }
-
         }
 
         public IEnumerable<Product> FilterProductList(
@@ -284,9 +314,24 @@ namespace BoilerStoreMonolith.Controllers
 
         private void SendMail(string toMail, string userName, string subject, string body)
         {
+            // тестовые рабочие настройки для почты vitalisun2gmail.com
+            //var email = "vitalisun2gmail.com";
+            //var password = "sliujqaomaazntyf";
+            //var host = "smtp.gmail.com";
+            //var port = 465;
+            //var doUseSsl = true;
+
+            var infoEntity = siteInfoRepo.InfoEntities.FirstOrDefault();
+            // настройки почты установленные в админке
+            var email = infoEntity.Email;
+            var password = infoEntity.Password;
+            var host = infoEntity.Host;
+            var port = infoEntity.Port;
+            var doUseSsl = infoEntity.doUseSsl;
+
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Joey Tribbiani", "vitalisun2@gmail.com"));
-            message.To.Add(new MailboxAddress(userName, toMail));
+            message.From.Add(new MailboxAddress(subject, infoEntity.Email));
+            message.To.Add(new MailboxAddress(userName, infoEntity.Email));
             message.Subject = subject;
             message.Body = new TextPart("plain") { Text = body };
 
@@ -294,10 +339,9 @@ namespace BoilerStoreMonolith.Controllers
             {
                 // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
                 client.ServerCertificateValidationCallback = (s, c, h, e) => true;
-                client.Connect("smtp.gmail.com", 465, true);
-                string appSpecificPassword = "sliujqaomaazntyf";
+                client.Connect(host, port, doUseSsl);
                 // Note: only needed if the SMTP server requires authentication
-                client.Authenticate("vitalisun2@gmail.com", appSpecificPassword);
+                client.Authenticate(email, password);
                 client.Send(message);
                 client.Disconnect(true);
             }

@@ -187,6 +187,11 @@
     <Content Include="Scripts\jquery-3.0.0.min.js" />
     <Content Include="Scripts\jquery-3.0.0.slim.js" />
     <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\load-content.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\popper-utils.js" />
@@ -215,6 +220,7 @@
     <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\WriteUsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +263,8 @@
     <Content Include="Views\Shared\Breadcrumb.cshtml" />
     <Content Include="Views\Shared\FilterBar.cshtml" />
     <Content Include="Views\Shared\ServicesCards.cshtml" />
+    <Content Include="Views\Home\WriteUsSuccess.cshtml" />
+    <Content Include="Views\Home\WriteUsFail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

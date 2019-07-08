@@ -65,11 +65,14 @@ namespace BoilerStoreMonolith.Domain.Concrete
             {
                 CompanyInfo = "Информация о компании",
                 Services = "Описание услуг",
-                Email = "email",
                 Address = "адрес",
                 Schedule = "часы работы",
                 PhoneMain = "+7 XXX XXX XXXX",
-                PhoneAdditional = "+7 XXX XXX XXXX"
+                PhoneAdditional = "+7 XXX XXX XXXX",
+                Email = "vitalisun2@gmail.com",
+                Host = "smtp.gmail.com",
+                Port = 465,
+                doUseSsl = true
             };
             db.InfoEntities.Add(infoEntity);
             db.SaveChanges();

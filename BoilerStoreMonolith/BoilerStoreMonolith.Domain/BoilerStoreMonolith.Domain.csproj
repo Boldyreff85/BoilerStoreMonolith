@@ -73,6 +73,14 @@
     <Compile Include="Migrations\201905141057190_AddFirmImgToProductsTable.Designer.cs">
       <DependentUpon>201905141057190_AddFirmImgToProductsTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907081817010_AddEmailSettings.cs" />
+    <Compile Include="Migrations\201907081817010_AddEmailSettings.Designer.cs">
+      <DependentUpon>201907081817010_AddEmailSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907081835221_CorrectEmailSettings.cs" />
+    <Compile Include="Migrations\201907081835221_CorrectEmailSettings.Designer.cs">
+      <DependentUpon>201907081835221_CorrectEmailSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -92,6 +100,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905141057190_AddFirmImgToProductsTable.resx">
       <DependentUpon>201905141057190_AddFirmImgToProductsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907081817010_AddEmailSettings.resx">
+      <DependentUpon>201907081817010_AddEmailSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907081835221_CorrectEmailSettings.resx">
+      <DependentUpon>201907081835221_CorrectEmailSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
