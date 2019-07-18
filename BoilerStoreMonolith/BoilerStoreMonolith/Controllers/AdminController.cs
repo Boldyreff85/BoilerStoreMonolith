@@ -22,28 +22,28 @@ namespace BoilerStoreMonolith.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            List<AdminIndexViewModel> productsViewModel = new List<AdminIndexViewModel>();
-            foreach (var product in productRepo.Products)
-            {
-                productsViewModel.Add(
-                    new AdminIndexViewModel
-                    {
-                        ProductID = product.ProductID,
-                        Title = product.Title,
-                        ImageData = product.ImageData,
-                        ImageMimeType = product.ImageMimeType,
-                        IsDelete = false
+            return View(productRepo.Products.ToList());
+        }
 
-                    });
+
+        [HttpPost]
+        public ActionResult DeleteSelected(string[] productIds)
+        {
+            if (productIds == null || productIds.Length == 0)
+            {
+                ModelState.AddModelError("", "No item selected to delete");
+
             }
 
-            AdminIndexListViewModel model = new AdminIndexListViewModel
+            List<int> ids = productIds.Where(ch => ch != "false").Select(x => Int32.Parse(x)).ToList();
+            foreach (var id in ids)
             {
-                IndexList = productsViewModel
-            };
+                productRepo.DeleteProduct(id);
+            }
 
-            return View(model);
+            return RedirectToAction("Index");
         }
+
 
         public ViewResult Edit(AdminEditViewModel model, int productId)
         {
@@ -101,18 +101,6 @@ namespace BoilerStoreMonolith.Controllers
             };
             return View("Edit", model);
         }
-
-
-        [HttpPost]
-        public ActionResult Delete(AdminIndexListViewModel model)
-        {
-
-            Console.WriteLine(model);
-
-            return RedirectToAction("Index");
-        }
-        
-
 
         public ViewResult EditSiteInfo()
         {

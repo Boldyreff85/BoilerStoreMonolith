@@ -1,4 +1,4 @@
-﻿@model BoilerStoreMonolith.Models.AdminIndexListViewModel
+﻿@model List<BoilerStoreMonolith.Domain.Entities.Product>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -15,7 +15,7 @@
 
 
 <div class="panel panel-default">
-    @using (Html.BeginForm("Delete", "Admin",
+    @using (Html.BeginForm("DeleteSelected", "Admin",
         FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
 
@@ -33,23 +33,23 @@
                     <th class="text-center">Выбрать товар</th>
                 </tr>
 
-                @for (int i = 0; i < Model.IndexList.Count; i++)
+                @for (int i = 0; i < Model.Count; i++)
                 {
                     <tr>
-                        <td class="text-right">@Model.IndexList[i].ProductID</td>
+                        <td class="text-right">@Model[i].ProductID</td>
 
                         <td>
-                            @Html.ActionLink(Model.IndexList[i].Title, "Edit",
-                                new { Model.IndexList[i].ProductID})
+                            @Html.ActionLink(Model[i].Title, "Edit",
+                                new { Model[i].ProductID})
                         </td>
 
                         <td class="text-right">
                             <img class="img-thumbnail" width="80" height="80"
                                  src="@Url.Action("GetImage", "Home",
-                                          new {Model.IndexList[i].ProductID})" />
+                                          new {Model[i].ProductID})" />
                         </td>
                         <td class="text-center">
-                            @Html.CheckBox("isDelete", Model.IndexList[i].IsDelete)
+                            @Html.CheckBox("productIds", new{value=@Model[i].ProductID})
                         </td>
                     </tr>
                 }
