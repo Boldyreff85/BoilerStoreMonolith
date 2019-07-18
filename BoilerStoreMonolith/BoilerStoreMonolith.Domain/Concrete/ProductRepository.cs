@@ -59,7 +59,15 @@ namespace BoilerStoreMonolith.Domain.Concrete
             return dbEntry;
         }
 
-
+        public List<Product> DeleteProducts(List<Product> productsToDelete)
+        {
+            if (productsToDelete.Any())
+            {
+                context.Products.RemoveRange(productsToDelete);
+                context.SaveChangesAsync();
+            }
+            return productsToDelete;
+        }
 
     }
 }

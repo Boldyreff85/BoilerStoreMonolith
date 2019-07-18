@@ -19,11 +19,31 @@ namespace BoilerStoreMonolith.Controllers
             siteInfoRepo = rep2;
         }
 
-        public ViewResult Index()
+        [HttpGet]
+        public ActionResult Index()
         {
-            return View(productRepo.Products.ToList());
-        }
+            List<AdminIndexViewModel> productsViewModel = new List<AdminIndexViewModel>();
+            foreach (var product in productRepo.Products)
+            {
+                productsViewModel.Add(
+                    new AdminIndexViewModel
+                    {
+                        ProductID = product.ProductID,
+                        Title = product.Title,
+                        ImageData = product.ImageData,
+                        ImageMimeType = product.ImageMimeType,
+                        IsDelete = false
 
+                    });
+            }
+
+            AdminIndexListViewModel model = new AdminIndexListViewModel
+            {
+                IndexList = productsViewModel
+            };
+
+            return View(model);
+        }
 
         public ViewResult Edit(AdminEditViewModel model, int productId)
         {
@@ -33,7 +53,7 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(AdminEditViewModel model, 
+        public ActionResult Edit(AdminEditViewModel model,
                 HttpPostedFileBase productImg = null, HttpPostedFileBase categoryImg = null, HttpPostedFileBase firmImg = null)
         {
             Product product = model.Product;
@@ -84,17 +104,15 @@ namespace BoilerStoreMonolith.Controllers
 
 
         [HttpPost]
-        public ActionResult Delete(int ProductID)
+        public ActionResult Delete(AdminIndexListViewModel model)
         {
 
-            var deletedProduct = productRepo.DeleteProduct(ProductID);
-            if (deletedProduct != null)
-            {
-                TempData["category"] = string.Format("{0} was deleted",
-                deletedProduct.Title);
-            }
+            Console.WriteLine(model);
+
             return RedirectToAction("Index");
         }
+        
+
 
         public ViewResult EditSiteInfo()
         {
@@ -163,5 +181,9 @@ namespace BoilerStoreMonolith.Controllers
             return null;
         }
 
+    }
+
+    internal class method
+    {
     }
 }
