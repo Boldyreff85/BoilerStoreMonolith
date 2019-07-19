@@ -31,16 +31,18 @@ namespace BoilerStoreMonolith.Controllers
         {
             if (productIds == null || productIds.Length == 0)
             {
-                ModelState.AddModelError("", "No item selected to delete");
-
+                TempData["ProductDeletionStatus"] = "Нет выбранных товаров для удаления.";
             }
 
             List<int> ids = productIds.Where(ch => ch != "false").Select(x => Int32.Parse(x)).ToList();
+            var count = 0;
             foreach (var id in ids)
             {
                 productRepo.DeleteProduct(id);
+                count++;
             }
 
+            TempData["ProductDeletionStatus"] = $"Удалено товаров -  {count}";
             return RedirectToAction("Index");
         }
 

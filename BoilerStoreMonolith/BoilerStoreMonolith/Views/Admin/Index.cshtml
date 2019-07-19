@@ -13,15 +13,18 @@
     }
 </style>
 
-
+@if (TempData["ProductDeletionStatus"] != null)
+{
+<h5 class="text-center text-primary pt-2 pb-2">@TempData["ProductDeletionStatus"]</h5>
+}
 <div class="panel panel-default">
     @using (Html.BeginForm("DeleteSelected", "Admin",
         FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
 
-        <div class="panel-heading">
-            <h3>Все товары</h3>
-        </div>
+    <div class="panel-heading">
+        <h3 class="text-center bg-light pt-2 pb-2 mb-0">Все товары</h3>
+    </div>
 
         <div class="productList panel-body">
 
@@ -49,7 +52,7 @@
                                           new {Model[i].ProductID})" />
                         </td>
                         <td class="text-center">
-                            @Html.CheckBox("productIds", new{value=@Model[i].ProductID})
+                            @Html.CheckBox("productIds", new { value = @Model[i].ProductID })
                         </td>
                     </tr>
                 }
