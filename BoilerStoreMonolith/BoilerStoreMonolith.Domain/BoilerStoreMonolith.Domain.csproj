@@ -55,6 +55,9 @@
     <Compile Include="Concrete\ApplicationContext.cs" />
     <Compile Include="Concrete\InfoEntityRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\CategorySpec.cs" />
+    <Compile Include="Entities\Firm.cs" />
     <Compile Include="Entities\InfoEntity.cs" />
     <Compile Include="Entities\Product.cs" />
     <Compile Include="Migrations\201905131855445_init.cs" />
@@ -81,6 +84,10 @@
     <Compile Include="Migrations\201907081835221_CorrectEmailSettings.Designer.cs">
       <DependentUpon>201907081835221_CorrectEmailSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907201733348_Add_Category_Firm_And_Specs_Entities.cs" />
+    <Compile Include="Migrations\201907201733348_Add_Category_Firm_And_Specs_Entities.Designer.cs">
+      <DependentUpon>201907201733348_Add_Category_Firm_And_Specs_Entities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -106,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907081835221_CorrectEmailSettings.resx">
       <DependentUpon>201907081835221_CorrectEmailSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907201733348_Add_Category_Firm_And_Specs_Entities.resx">
+      <DependentUpon>201907201733348_Add_Category_Firm_And_Specs_Entities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

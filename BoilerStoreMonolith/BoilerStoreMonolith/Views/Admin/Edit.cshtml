@@ -24,43 +24,54 @@
                 @Html.TextAreaFor(p => p.Product.Description, 10, 1, new { @class = "form-control" })
                 @Html.ValidationMessageFor(p => p.Product.Description)
 
+
                 @Html.LabelFor(p => p.Product.Category)
+
                 <div class="row">
                     <div class="col">
-                        @Html.TextBoxFor(p => p.Product.Category, null, new { @class = "form-control" })
-                    </div>
-                    <div class="col">
-                        @{
-                            Model.ImageToLoad = "categoryImg";
-                        }
-                        @Html.Partial("UploadImg")
+                        @Html.DropDownListFor(
+                            p => p.Product.Category, 
+                            ViewBag.categories as SelectList)
                     </div>
                 </div>
-                @Html.ValidationMessageFor(p => p.Product.Firm)
 
-                @Html.LabelFor(p => p.Product.Firm)
-                <div class="row">
-                    <div class="col">
-                        @Html.TextBoxFor(p => p.Product.Firm, null, new { @class = "form-control" })
-                    </div>
-                    <div class="col">
-                        @{
-                            Model.ImageToLoad = "firmImg";
-                        }
-                        @Html.Partial("UploadImg")
-                    </div>
+                    @*@Html.LabelFor(p => p.Product.Category)
+            <div class="row">
+                <div class="col">
+                    @Html.TextBoxFor(p => p.Product.Category, null, new { @class = "form-control" })
                 </div>
-                @Html.ValidationMessageFor(p => p.Product.Firm)
+                <div class="col">
+                    @{
+                        Model.ImageToLoad = "categoryImg";
+                    }
+                    @Html.Partial("UploadImg")
+                </div>
+            </div>*@
+                    @Html.ValidationMessageFor(p => p.Product.Firm)
 
-                @Html.LabelFor(p => p.Product.Power)
-                @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(p => p.Product.Power)
+                    @Html.LabelFor(p => p.Product.Firm)
+                    <div class="row">
+                        <div class="col">
+                            @Html.TextBoxFor(p => p.Product.Firm, null, new { @class = "form-control" })
+                        </div>
+                        <div class="col">
+                            @{
+                                Model.ImageToLoad = "firmImg";
+                            }
+                            @Html.Partial("UploadImg")
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(p => p.Product.Firm)
 
-                @Html.LabelFor(p => p.Product.Price)
-                @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(p => p.Product.Price)
+                    @Html.LabelFor(p => p.Product.Power)
+                    @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Product.Power)
+
+                    @Html.LabelFor(p => p.Product.Price)
+                    @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Product.Price)
+                </div>
             </div>
-        </div>
 
         {
             Model.ImageToLoad = "productImg";

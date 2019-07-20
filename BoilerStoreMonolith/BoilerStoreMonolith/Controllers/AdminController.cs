@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BoilerStoreMonolith.Domain.Concrete;
 
 namespace BoilerStoreMonolith.Controllers
 {
@@ -13,10 +14,14 @@ namespace BoilerStoreMonolith.Controllers
     {
         private IProductRepository productRepo;
         private IInfoEntityRepository siteInfoRepo;
-        public AdminController(IProductRepository rep1, IInfoEntityRepository rep2)
+        private ApplicationContext context = new ApplicationContext();
+        public AdminController(
+            IProductRepository _productRepo,
+            IInfoEntityRepository _siteInfoRepo
+            )
         {
-            productRepo = rep1;
-            siteInfoRepo = rep2;
+            productRepo = _productRepo;
+            siteInfoRepo = _siteInfoRepo;
         }
 
         [HttpGet]
@@ -50,7 +55,12 @@ namespace BoilerStoreMonolith.Controllers
         public ViewResult Edit(AdminEditViewModel model, int productId)
         {
             model.Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
-            Console.WriteLine(model);
+
+            ViewBag.categories = new SelectList(
+                    context.Categories.Select(c => c.Name),
+                    model.Product.Category
+                );
+
             return View(model);
         }
 
@@ -86,6 +96,7 @@ namespace BoilerStoreMonolith.Controllers
 
                 productRepo.SaveProduct(product);
                 TempData["category"] = string.Format("{0} has been saved", product.Title);
+
                 return RedirectToAction("Index");
             }
             else
@@ -173,7 +184,4 @@ namespace BoilerStoreMonolith.Controllers
 
     }
 
-    internal class method
-    {
-    }
 }

@@ -9,6 +9,8 @@ namespace BoilerStoreMonolith.Domain.Concrete
     public class ApplicationContext : DbContext
     {
         public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Firm> Firms { get; set; }
         public DbSet<InfoEntity> InfoEntities { get; set; }
 
         static ApplicationContext()
@@ -23,12 +25,31 @@ namespace BoilerStoreMonolith.Domain.Concrete
         protected override void Seed(ApplicationContext db)
         {
             Random rnd = new Random();
-            List<string> categories = new List<string>() {
-                "Настенный", "Напольный", "Электрический"
+            List<Category> categories = new List<Category>() {
+                new Category()
+                {
+                    Name = "Настенный"
+                },
+                new Category()
+                {
+                    Name = "Напольный"
+                },
+                new Category()
+                {
+                    Name = "Электрический"
+                }
+
             };
 
-            List<string> firms = new List<string>() {
-                "Protherm", "WIESSMANN"
+            List<Firm> firms = new List<Firm>() {
+                new Firm()
+                {
+                    Name = "Protherm"
+                },
+                new Firm()
+                {
+                    Name = "WIESSMANN"
+                }
             };
 
             List<Product> products = new List<Product>();
@@ -40,9 +61,9 @@ namespace BoilerStoreMonolith.Domain.Concrete
                 {
                     Title = "Котёл -- " + i,
                     Description =
-                    category + @" котёл со встроенным приготовлением горячей хозяйственной воды, \n
+                    category.Name + @" котёл со встроенным приготовлением горячей хозяйственной воды, \n
                                 Мощность аппарата регулируется модулирующей горелкой",
-                    Category = category,
+                    Category = category.Name,
                     Price = "от " + rnd.Next(30000, 80000) + " руб./шт.",
                     Firm = "",
                     Power = "28"
@@ -52,7 +73,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
             for (int i = 0; i < products.Count; i++)
             {
-                products[i].Firm = firms[rnd.Next(firms.Count)];
+                products[i].Firm = firms[rnd.Next(firms.Count)].Name;
             }
 
             for (int i = 0; i < products.Count; i++)
