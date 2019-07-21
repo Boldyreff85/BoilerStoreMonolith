@@ -264,6 +264,7 @@
     <Content Include="Views\Shared\ServicesCards.cshtml" />
     <Content Include="Views\Home\WriteUsSuccess.cshtml" />
     <Content Include="Views\Home\WriteUsFail.cshtml" />
+    <Content Include="Views\Shared\NewCategoryForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

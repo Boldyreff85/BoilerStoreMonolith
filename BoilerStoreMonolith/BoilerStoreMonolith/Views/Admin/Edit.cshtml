@@ -25,17 +25,25 @@
                 @Html.ValidationMessageFor(p => p.Product.Description)
 
 
-                @Html.LabelFor(p => p.Product.Category)
 
-                <div class="row">
-                    <div class="col">
-                        @Html.DropDownListFor(
-                            p => p.Product.Category, 
-                            ViewBag.categories as SelectList)
-                    </div>
+                <div class="row mt-3 mb-3">
+                    <div class="m-auto"> Выберите категорию:   </div>
+
+                    @Html.DropDownListFor(
+                        p => p.Product.Category,
+                        ViewBag.categories as SelectList)
+                    
+                    <p class="m-auto"> или </p>
+                    
+                    @Html.Partial("NewCategoryForm")
+                    
+
+                    @*<input id="newCategoryTxt" type="text" class="form-control" placeholder="Username">*@
+                    @*<button id="newCategoryBtn" type="button" class="btn btn-default">Создать новую категорию</button>*@
+
                 </div>
 
-                    @*@Html.LabelFor(p => p.Product.Category)
+                @*@Html.LabelFor(p => p.Product.Category)
             <div class="row">
                 <div class="col">
                     @Html.TextBoxFor(p => p.Product.Category, null, new { @class = "form-control" })
@@ -47,31 +55,31 @@
                     @Html.Partial("UploadImg")
                 </div>
             </div>*@
-                    @Html.ValidationMessageFor(p => p.Product.Firm)
+                @Html.ValidationMessageFor(p => p.Product.Firm)
 
-                    @Html.LabelFor(p => p.Product.Firm)
-                    <div class="row">
-                        <div class="col">
-                            @Html.TextBoxFor(p => p.Product.Firm, null, new { @class = "form-control" })
-                        </div>
-                        <div class="col">
-                            @{
-                                Model.ImageToLoad = "firmImg";
-                            }
-                            @Html.Partial("UploadImg")
-                        </div>
+                @Html.LabelFor(p => p.Product.Firm)
+                <div class="row">
+                    <div class="col">
+                        @Html.TextBoxFor(p => p.Product.Firm, null, new { @class = "form-control" })
                     </div>
-                    @Html.ValidationMessageFor(p => p.Product.Firm)
-
-                    @Html.LabelFor(p => p.Product.Power)
-                    @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(p => p.Product.Power)
-
-                    @Html.LabelFor(p => p.Product.Price)
-                    @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(p => p.Product.Price)
+                    <div class="col">
+                        @{
+                            Model.ImageToLoad = "firmImg";
+                        }
+                        @Html.Partial("UploadImg")
+                    </div>
                 </div>
+                @Html.ValidationMessageFor(p => p.Product.Firm)
+
+                @Html.LabelFor(p => p.Product.Power)
+                @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.Product.Power)
+
+                @Html.LabelFor(p => p.Product.Price)
+                @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
+                @Html.ValidationMessageFor(p => p.Product.Price)
             </div>
+        </div>
 
         {
             Model.ImageToLoad = "productImg";
@@ -81,11 +89,24 @@
         <div class="panel-footer mt-3">
             <input type="submit" value="Сохранить" class="btn btn-primary" />
             @Html.ActionLink("Отменить и вернуться к списку", "Index", null, new
-       {
-           @class = "btn btn-default"
-       })
+            {
+                @class = "btn btn-default"
+            })
         </div>
         <br />
         <br />
     }
+    
+    
+ 
+
 </div>
+
+<script>
+    $("#newCategoryBtn").click(function() {
+        var optionTxt = $("#newCategoryTxt").val();
+        var o = new Option(optionTxt, optionTxt, true, true);
+        $("#Product_Category").append(o);
+
+    });
+</script>

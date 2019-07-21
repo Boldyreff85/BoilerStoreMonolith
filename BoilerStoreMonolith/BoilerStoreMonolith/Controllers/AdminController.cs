@@ -71,6 +71,14 @@ namespace BoilerStoreMonolith.Controllers
             Product product = model.Product;
             if (ModelState.IsValid)
             {
+                // добавляем категорию в таблицу категорий
+                context.Categories.Add(
+                    new Category
+                    {
+                       Name = model.Product.Category
+                    });
+                context.SaveChanges();
+
                 if (productImg != null)
                 {
                     product.ImageMimeType = productImg.ContentType;
@@ -101,7 +109,7 @@ namespace BoilerStoreMonolith.Controllers
             }
             else
             {// there is something wrong with the data values
-                return View(product);
+                return View(model);
             }
         }
 
@@ -151,6 +159,7 @@ namespace BoilerStoreMonolith.Controllers
                 return View(infoEntity);
             }
         }
+
 
         // helpers
 
