@@ -12,6 +12,6 @@ namespace BoilerStoreMonolith.Domain.Entities
         public byte[] ImageData { get; set; }
         public string ImageMimeType { get; set; }
 
-        public ICollection<CategorySpec> Specs { get; set; }
+        public ICollection<CategorySpec> CategorySpecs { get; set; }
     }
 }

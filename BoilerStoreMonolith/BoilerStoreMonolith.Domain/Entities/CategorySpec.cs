@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BoilerStoreMonolith.Domain.Entities
 {
@@ -13,5 +8,6 @@ namespace BoilerStoreMonolith.Domain.Entities
         [Required(ErrorMessage = "Введите название Характеристики")]
         [Display(Name = "Характеристика")]
         public string Name { get; set; }
+
     }
 }

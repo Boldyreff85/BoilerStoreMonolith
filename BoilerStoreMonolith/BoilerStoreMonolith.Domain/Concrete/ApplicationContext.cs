@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Validation;
 
 namespace BoilerStoreMonolith.Domain.Concrete
 {
@@ -10,6 +9,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CategorySpec> CategorySpecs { get; set; }
         public DbSet<Firm> Firms { get; set; }
         public DbSet<InfoEntity> InfoEntities { get; set; }
 
