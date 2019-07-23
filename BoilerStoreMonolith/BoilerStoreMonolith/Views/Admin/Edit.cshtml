@@ -35,7 +35,11 @@
                     
                     <p class="m-auto"> или </p>
                     
-                    @Html.Partial("NewCategoryForm")
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal">
+                        добавить новую категорию
+                    </button>
+                    
+                   
                     
 
                     @*<input id="newCategoryTxt" type="text" class="form-control" placeholder="Username">*@
@@ -97,7 +101,7 @@
         <br />
     }
     
-    
+    @Html.Partial("NewCategoryForm")
  
 
 </div>

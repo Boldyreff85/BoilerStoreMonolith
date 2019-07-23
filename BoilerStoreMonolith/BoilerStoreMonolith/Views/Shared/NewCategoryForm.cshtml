@@ -1,9 +1,7 @@
 ﻿
 
 
-<button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal">
-    добавить новую категорию
-</button>
+
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -24,17 +22,27 @@
                 </div>
 
                 @Html.Partial("UploadImg")
+                
+                <div class="form-group row">
+                    <label for="inputName" class="col col-form-label text-center">Характеристики категории</label>
+                </div>
 
-                <div class="form-group row ">
-                    <p class="text-center m-auto">Характеристики</p>
-                    <button id="addSpecBtn" type="button" class="btn btn-default m-auto">Добавить характеристику</button>
-                </div>
                 <div class="form-group row m-auto">
-                    <label for="inputName" class="col-sm-4 col-form-label text-center">Мощность</label>
-                    <div class="col-sm-8 align-self-center">
-                        <input type="text" name="Name" class="form-control" id="inputName" placeholder="Введите мощность" required="">
+                    <div class="col align-self-center">
+                        <input type="text" name="inputSpec" class="form-control" id="inputSpec" 
+                               placeholder="Введите название характеристики" required="">
                     </div>
+                    <button id="addSpecBtn" type="button" class="btn btn-default m-auto">Добавить</button>
                 </div>
+                
+                <div class="form-group row m-auto">
+                    <div class="col align-self-center">
+                        <ul id="specsList" class="list-group list-group-flush">
+                        </ul>
+                    </div>
+
+                </div>
+
 
             </div>
             <div class="modal-footer d-flex justify-content-center">
@@ -43,3 +51,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    $("#addSpecBtn").click(function () {
+        $("#specsList").append(
+            '<li class="list-group-item">' + 
+            $("#inputSpec").val() + 
+            '<input type="hidden" name="Specs" value="' + 
+            $("#inputSpec").val() + 
+            '" /></li>');
+    });
+</script>
