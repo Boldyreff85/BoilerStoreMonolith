@@ -55,10 +55,27 @@
 <script>
     $("#addSpecBtn").click(function () {
         $("#specsList").append(
-            '<li class="list-group-item">' + 
-            $("#inputSpec").val() + 
+            '<li class="list-group-item d-flex">' +
+
+            '<div class="inputSpecVal">' + $("#inputSpec").val() + '</div>' +
+            '<button type="button" class="specClose ml-auto" aria-label="Close">' +
+            '×' +
+            '</button>' +
+            
+
             '<input type="hidden" name="Specs" value="' + 
             $("#inputSpec").val() + 
             '" /></li>');
     });
+
+    $('body').on("click", '.specClose',
+        function(e) {
+            let target = $(e.target);
+            let specItem = target.parent().siblings('.inputSpecVal')[0];
+            console.log($(specItem).text() + " removed");
+            $(target.parent().parent()).remove();
+
+
+        });
+
 </script>
