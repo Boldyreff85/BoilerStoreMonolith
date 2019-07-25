@@ -1,16 +1,15 @@
 ﻿
 @{
-    var imgId = @Model.ImageToLoad;
-    var uploadFileInfoId = "fakePathLoad_" + imgId;
+    var uploadFileInfoId = "fakePathLoad_" + Model.ImageToLoad;
     var uploadFileInfoSelector = "\"" + "#" + uploadFileInfoId + "\"";
 }
 
 <div class="form-group">
     <div style="position:relative;">
-        <label>@imgId</label>
+        <label>Картинка</label>
         <a class='btn' href='javascript:;'>
             Выбрать изображение...
-            <input type="file" name=@imgId size="40"
+            <input type="file" name=@Model.ImageToLoad size="40"
                    style="position:absolute;z-index:2;top:0;
                                     left:0;filter: alpha(opacity=0); opacity:0;
                                     background-color:transparent;color:transparent;"

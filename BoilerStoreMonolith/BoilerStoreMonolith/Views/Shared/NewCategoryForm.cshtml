@@ -1,7 +1,9 @@
-﻿@model BoilerStoreMonolith.Models.AdminEditViewModel
+﻿@using BoilerStoreMonolith.Models
+@model BoilerStoreMonolith.Models.AdminEditViewModel
 
 @{
     Model.ImageToLoad = "categoryImgFromForm";
+    Model.NewCategory = new NewCategoryViewModel();
 }
 
 
@@ -22,7 +24,7 @@
                         <label for="inputName" class="col-sm-4 col-form-label text-center">Название категории</label>
                         <div class="col-sm-8 align-self-center">
                             @*<input type="text" name="Name" class="form-control" id="inputName" placeholder="Введите название категории" required="">*@
-                            @Html.TextBoxFor(m => m.Category.Name,
+                            @Html.TextBoxFor(m => m.NewCategory.Name,
                                 new { @class = "form-control", id = "inputName", placeholder = "Введите название категории", required="" })
                         </div>
                     </div>
@@ -44,20 +46,6 @@
                     <div class="form-group row m-auto">
                         <div class="col align-self-center">
                             <ul id="specsList" class="list-group list-group-flush"></ul>
-                            @if (Model.Features != null)
-                            {
-                                foreach (var item in Model.Features)
-                                {
-
-                                    <li class="list-group-item d-flex">
-                                        <div class="inputSpecVal">@item</div>
-                                        <button type="button" class="specClose ml-auto" aria-label="Close"></button>
-                                        <input type="hidden" name="Specs" value=@item />
-                                    </li>
-
-                                }
-                            }
-
                         </div>
 
                     </div>
@@ -83,13 +71,11 @@
         $("#specsList").append(
             '<li class="list-group-item d-flex">' +
 
-            '<div class="inputSpecVal" name="Features">' + $("#inputSpec").val() + '</div>' +
+            '<div class="inputSpecVal" name="NewCategory.Features">' + $("#inputSpec").val() + '</div>' +
             '<button type="button" class="specClose ml-auto" aria-label="Close">' +
             '×' +
             '</button>' +
-
-
-            '<input type="hidden" name="Features" value="' +
+            '<input type="hidden" name="NewCategory.Features" value="' +
             $("#inputSpec").val() +
             '" /></li>');
     });

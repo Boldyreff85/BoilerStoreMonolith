@@ -161,9 +161,8 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddNewCategory(AdminEditViewModel model, HttpPostedFileBase categoryImg = null)
+        public ActionResult AddNewCategory(AdminEditViewModel model, HttpPostedFileBase categoryImgFromForm = null)
         {
-            Console.WriteLine(model);
 
             return RedirectToAction("Edit");
         }
