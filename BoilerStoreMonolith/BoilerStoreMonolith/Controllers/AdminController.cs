@@ -1,4 +1,5 @@
 ﻿using BoilerStoreMonolith.Domain.Abstract;
+using BoilerStoreMonolith.Domain.Concrete;
 using BoilerStoreMonolith.Domain.Entities;
 using BoilerStoreMonolith.Models;
 using System;
@@ -6,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BoilerStoreMonolith.Domain.Concrete;
 
 namespace BoilerStoreMonolith.Controllers
 {
@@ -75,7 +75,7 @@ namespace BoilerStoreMonolith.Controllers
                 context.Categories.Add(
                     new Category
                     {
-                       Name = model.Product.Category
+                        Name = model.Product.Category
                     });
                 context.SaveChanges();
 
@@ -159,6 +159,15 @@ namespace BoilerStoreMonolith.Controllers
                 return View(infoEntity);
             }
         }
+
+        [HttpPost]
+        public ActionResult AddNewCategory(AdminEditViewModel model, HttpPostedFileBase categoryImg = null)
+        {
+            Console.WriteLine(model);
+
+            return RedirectToAction("Edit");
+        }
+
 
 
         // helpers

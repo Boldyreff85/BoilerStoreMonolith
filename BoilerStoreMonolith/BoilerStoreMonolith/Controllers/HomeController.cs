@@ -1,13 +1,11 @@
 ﻿using BoilerStoreMonolith.Domain.Abstract;
+using BoilerStoreMonolith.Domain.Concrete;
 using BoilerStoreMonolith.Domain.Entities;
 using BoilerStoreMonolith.Models;
 using MailKit.Net.Smtp;
 using MimeKit;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BoilerStoreMonolith.Controllers
@@ -17,6 +15,7 @@ namespace BoilerStoreMonolith.Controllers
         public int PageSize = 6;
         private IProductRepository productRepo;
         private IInfoEntityRepository siteInfoRepo;
+        private ApplicationContext context = new ApplicationContext();
 
         public HomeController(IProductRepository rep1, IInfoEntityRepository rep2)
         {
@@ -107,8 +106,8 @@ namespace BoilerStoreMonolith.Controllers
 
         // выводим страницу каталога с 3 секциями (категории, производители и полный списко с пагинацией)
         public ActionResult Catalogue(
-            CatalogueViewModel model, 
-            string linkName, 
+            CatalogueViewModel model,
+            string linkName,
             int page = 1,
             string filter = "default",
             string category = null,
@@ -218,13 +217,15 @@ namespace BoilerStoreMonolith.Controllers
 
                 SendMail(model.Email, "админ", client, body);
                 return RedirectToAction("WriteUsSuccess");
-            }else
+            }
+            else
             {
                 return RedirectToAction("WriteUsFail");
             }
         }
 
-        public ActionResult WriteUsSuccess() {
+        public ActionResult WriteUsSuccess()
+        {
             return View();
         }
 
@@ -250,13 +251,28 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-        public FileContentResult GetCategoryImage(int productId)
+        public FileContentResult GetCategoryImage_(int productId) // depricated
         {
 
             Product product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
             if (product != null && product.CategoryImageData != null && product.CategoryImageMimeType != null)
             {
                 return File(product.CategoryImageData, product.CategoryImageMimeType);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public FileContentResult GetCategoryImage(int productId)
+        {
+
+            Product product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
+            var category = context.Categories.FirstOrDefault(cat => cat.Name == product.Category);
+            if (category != null && category.ImageData != null && category.ImageMimeType != null)
+            {
+                return File(category.ImageData, category.ImageMimeType);
             }
             else
             {
@@ -279,14 +295,15 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         public IEnumerable<Product> OrderProductList(
-            IEnumerable<Product> products, 
-            string propertyName, 
+            IEnumerable<Product> products,
+            string propertyName,
             string value = "default")
         {
-            if(value == "default" || propertyName == null)
+            if (value == "default" || propertyName == null)
             {
                 return products.OrderBy(p => p.ProductID);
-            }else if(value == "up")
+            }
+            else if (value == "up")
             {
                 return products.OrderBy(s => s.GetType().GetProperty(propertyName).GetValue(s, null));
             }
@@ -297,15 +314,15 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         public IEnumerable<Product> FilterProductList(
-            IEnumerable<Product> products, 
+            IEnumerable<Product> products,
             string category = null,
             string firm = null)
         {
-            if(category != null)
+            if (category != null)
             {
                 products = products.Where(p => p.Category == category);
-            } 
-            if(firm != null)
+            }
+            if (firm != null)
             {
                 products = products.Where(p => p.Firm == firm);
             }

@@ -20,8 +20,14 @@
     </div>
 
 
-    @if (Model.ImageToLoad == "categoryImg")
+    @if (Model.ImageToLoad == "categoryImgFromForm")
     {
+
+        <div class="form-control-static">Нет картинки</div>
+    }
+    else if (Model.ImageToLoad == "categoryImg")
+    {
+
         if (Model.Product.CategoryImageData == null)
         {
             <div class="form-control-static">Нет картинки</div>
@@ -30,8 +36,9 @@
         {
             <img class="img-thumbnail" width="80" height="80"
                  src="@Url.Action("GetCategoryImage", "Home",
-                                            new { Model.Product.ProductID })" />
+                          new {Model.Product.ProductID})"/>
         }
+
     }
     else if (Model.ImageToLoad == "firmImg")
     {
@@ -44,21 +51,21 @@
             <img class="img-thumbnail" width="80" height="80"
                  src="@Url.Action("GetFirmImage", "Home",
                                             new { Model.Product.ProductID })" />
-        }
-    }
-    else if (Model.ImageToLoad == "productImg")
-    {
-        if (Model.Product.ImageData == null)
-        {
+                    }
+                }
+                else if (Model.ImageToLoad == "productImg")
+                {
+                    if (Model.Product.ImageData == null)
+                    {
             <div class="form-control-static">Нет картинки</div>
-        }
-        else
-        {
+                    }
+                    else
+                    {
             <img class="img-thumbnail" width="150" height="150"
                  src="@Url.Action("GetImage", "Home",
                                             new { Model.Product.ProductID })" />
-        }
-    }
+                    }
+                }
 
 
 

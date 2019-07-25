@@ -1,70 +1,96 @@
-﻿
+﻿@model BoilerStoreMonolith.Models.AdminEditViewModel
+
+@{
+    Model.ImageToLoad = "categoryImgFromForm";
+}
 
 
+@using (Html.BeginForm("AddNewCategory", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
 
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content text-dark">
-            <div class="modal-header align-self-center">
-                <h5 class="modal-title" id="exampleModalLabel">Новая категория товара</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group row">
-                    <label for="inputName" class="col-sm-4 col-form-label text-center">Название категории</label>
-                    <div class="col-sm-8 align-self-center">
-                        <input type="text" name="Name" class="form-control" id="inputName" placeholder="Введите название категории" required="">
-                    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content text-dark">
+                <div class="modal-header align-self-center">
+                    <h5 class="modal-title" id="exampleModalLabel">Новая категория товара</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
                 </div>
-
-                @Html.Partial("UploadImg")
-                
-                <div class="form-group row">
-                    <label for="inputName" class="col col-form-label text-center">Характеристики категории</label>
-                </div>
-
-                <div class="form-group row m-auto">
-                    <div class="col align-self-center">
-                        <input type="text" name="inputSpec" class="form-control" id="inputSpec" 
-                               placeholder="Введите название характеристики" required="">
-                    </div>
-                    <button id="addSpecBtn" type="button" class="btn btn-default m-auto">Добавить</button>
-                </div>
-                
-                <div class="form-group row m-auto">
-                    <div class="col align-self-center">
-                        <ul id="specsList" class="list-group list-group-flush">
-                        </ul>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="inputName" class="col-sm-4 col-form-label text-center">Название категории</label>
+                        <div class="col-sm-8 align-self-center">
+                            @*<input type="text" name="Name" class="form-control" id="inputName" placeholder="Введите название категории" required="">*@
+                            @Html.TextBoxFor(m => m.Category.Name,
+                                new { @class = "form-control", id = "inputName", placeholder = "Введите название категории", required="" })
+                        </div>
                     </div>
 
+                    @Html.Partial("UploadImg")
+
+                    <div class="form-group row">
+                        <label for="inputName" class="col col-form-label text-center">Характеристики категории</label>
+                    </div>
+
+                    <div class="form-group row m-auto">
+                        <div class="col align-self-center">
+                            <input type="text" class="form-control" id="inputSpec"
+                                   placeholder="Введите название характеристики" required="">
+                        </div>
+                        <button id="addSpecBtn" type="button" class="btn btn-default m-auto">Добавить</button>
+                    </div>
+
+                    <div class="form-group row m-auto">
+                        <div class="col align-self-center">
+                            <ul id="specsList" class="list-group list-group-flush"></ul>
+                            @if (Model.Features != null)
+                            {
+                                foreach (var item in Model.Features)
+                                {
+
+                                    <li class="list-group-item d-flex">
+                                        <div class="inputSpecVal">@item</div>
+                                        <button type="button" class="specClose ml-auto" aria-label="Close"></button>
+                                        <input type="hidden" name="Specs" value=@item />
+                                    </li>
+
+                                }
+                            }
+
+                        </div>
+
+                    </div>
+
+
                 </div>
-
-
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <input type="submit" value="Отправить" class="btn btn-info">
+                <div class="modal-footer d-flex justify-content-center">
+                    <input type="submit" value="Отправить" class="btn btn-info">
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+
+}
+
+
+
+
 
 <script>
     $("#addSpecBtn").click(function () {
         $("#specsList").append(
             '<li class="list-group-item d-flex">' +
 
-            '<div class="inputSpecVal">' + $("#inputSpec").val() + '</div>' +
+            '<div class="inputSpecVal" name="Features">' + $("#inputSpec").val() + '</div>' +
             '<button type="button" class="specClose ml-auto" aria-label="Close">' +
             '×' +
             '</button>' +
-            
 
-            '<input type="hidden" name="Specs" value="' + 
-            $("#inputSpec").val() + 
+
+            '<input type="hidden" name="Features" value="' +
+            $("#inputSpec").val() +
             '" /></li>');
     });
 
