@@ -32,15 +32,16 @@
                     @Html.DropDownListFor(
                         p => p.Product.Category,
                         ViewBag.categories as SelectList)
-                    
-                    <p class="m-auto"> или </p>
-                    
-                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal">
+
+
+                    @Html.ActionLink("Редактировать категории", "IndexCategories", "Admin")
+
+                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#newCategoryModal">
                         добавить новую категорию
                     </button>
-                    
-                   
-                    
+
+
+
 
                     @*<input id="newCategoryTxt" type="text" class="form-control" placeholder="Username">*@
                     @*<button id="newCategoryBtn" type="button" class="btn btn-default">Создать новую категорию</button>*@
@@ -48,17 +49,17 @@
                 </div>
 
                 @*@Html.LabelFor(p => p.Product.Category)
-            <div class="row">
-                <div class="col">
-                    @Html.TextBoxFor(p => p.Product.Category, null, new { @class = "form-control" })
-                </div>
-                <div class="col">
-                    @{
-                        Model.ImageToLoad = "categoryImg";
-                    }
-                    @Html.Partial("UploadImg")
-                </div>
-            </div>*@
+                    <div class="row">
+                        <div class="col">
+                            @Html.TextBoxFor(p => p.Product.Category, null, new { @class = "form-control" })
+                        </div>
+                        <div class="col">
+                            @{
+                                Model.ImageToLoad = "categoryImg";
+                            }
+                            @Html.Partial("UploadImg")
+                        </div>
+                    </div>*@
                 @Html.ValidationMessageFor(p => p.Product.Firm)
 
                 @Html.LabelFor(p => p.Product.Firm)
@@ -68,7 +69,7 @@
                     </div>
                     <div class="col">
                         @{
-                            Model.ImageToLoad = "firmImg";
+                            ViewBag.ImageToLoad = "firmImg";
                         }
                         @Html.Partial("UploadImg")
                     </div>
@@ -86,7 +87,7 @@
         </div>
 
         {
-            Model.ImageToLoad = "productImg";
+            ViewBag.ImageToLoad = "productImg";
         }
         @Html.Partial("UploadImg")
 
@@ -100,14 +101,13 @@
         <br />
         <br />
     }
-    
-    @Html.Partial("NewCategoryForm")
- 
+
+
 
 </div>
 
 <script>
-    $("#newCategoryBtn").click(function() {
+    $("#newCategoryBtn").click(function () {
         var optionTxt = $("#newCategoryTxt").val();
         var o = new Option(optionTxt, optionTxt, true, true);
         $("#Product_Category").append(o);

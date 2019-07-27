@@ -3,14 +3,14 @@
 
 @{
     Model.ImageToLoad = "categoryImgFromForm";
-    Model.NewCategory = new NewCategoryViewModel();
+    Model.NewCategory = new EditCategoriesViewModel();
 }
 
 
 @using (Html.BeginForm("AddNewCategory", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="newCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content text-dark">
                 <div class="modal-header align-self-center">

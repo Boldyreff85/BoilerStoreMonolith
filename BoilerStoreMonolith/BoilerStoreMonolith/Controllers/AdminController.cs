@@ -7,21 +7,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace BoilerStoreMonolith.Controllers
 {
     public class AdminController : Controller
     {
         private IProductRepository productRepo;
+        private ICategoryRepository categoryRepo;
         private IInfoEntityRepository siteInfoRepo;
         private ApplicationContext context = new ApplicationContext();
         public AdminController(
             IProductRepository _productRepo,
-            IInfoEntityRepository _siteInfoRepo
-            )
+            IInfoEntityRepository _siteInfoRepo,
+            ICategoryRepository _categoryRepositoryRepo)
         {
             productRepo = _productRepo;
             siteInfoRepo = _siteInfoRepo;
+            categoryRepo = _categoryRepositoryRepo;
         }
 
         [HttpGet]
@@ -60,7 +63,7 @@ namespace BoilerStoreMonolith.Controllers
                     context.Categories.Select(c => c.Name),
                     model.Product.Category
                 );
-
+            ViewBag.ImageToLoad = "categoryImg";
             return View(model);
         }
 
@@ -160,16 +163,115 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult AddNewCategory(AdminEditViewModel model, HttpPostedFileBase categoryImgFromForm = null)
-        {
 
-            return RedirectToAction("Edit");
+        // *************************************************************************************
+        // ******** categories ********
+
+
+        [HttpGet]
+        public ActionResult IndexCategories()
+        {
+            ViewBag.ImageToLoad = "categoryImg";
+            return View(categoryRepo.Categories.ToList());
         }
 
+        [HttpGet]
+        public ActionResult EditCategories(EditCategoriesViewModel model, int categoryId)
+        {
+            model.Category = categoryRepo.Categories
+                .SingleOrDefault(c => c.Id == categoryId);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditCategories(
+            EditCategoriesViewModel model,
+            HttpPostedFileBase categoryImg = null)
+        {
+            var specs = new List<CategorySpec>();
+
+            foreach (var item in model.Specs)
+            {
+                specs.Add(new CategorySpec
+                {
+                    Name = item
+                });
+            }
+
+            // clear specs table
+            var tableSpecs = context.CategorySpecs;
+            context.CategorySpecs.RemoveRange(tableSpecs);
+            // add new specs
+            model.Category.CategorySpecs = specs;
+            context.SaveChangesAsync();
+
+            if (categoryImg != null)
+            {
+                model.Category.ImageMimeType = categoryImg.ContentType;
+                model.Category.ImageData = new byte[categoryImg.ContentLength];
+                categoryImg.InputStream.Read(
+                    model.Category.ImageData, 0, categoryImg.ContentLength);
+            }
+;
+            categoryRepo.SaveCategory(model.Category);
+
+            return RedirectToAction("IndexCategories");
+        }
+
+        public ViewResult CreateCategory()
+        {
+            var model = new EditCategoriesViewModel
+            {
+                Category = new Category()
+            };
+            return View("EditCategories", model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCategoriesSelected(string[] categoriesIds)
+        {
+            if (categoriesIds == null || categoriesIds.Length == 0)
+            {
+                TempData["CategoryDeletionStatus"] = "Нет выбранных категорий для удаления.";
+                return RedirectToAction("IndexCategories");
+            }
+
+            List<int> ids = categoriesIds.Where(ch => ch != "false").Select(x => Int32.Parse(x)).ToList();
+            var count = 0;
+
+            // находим и удаляем категории
+            foreach (var id in ids)
+            {
+                Category dbEntry = context.Categories.Find(id);
+                if (dbEntry != null)
+                {
+                    context.Categories.Remove(dbEntry);
+                    context.SaveChanges();
+                }
+                count++;
+            }
+
+            TempData["CategoryDeletionStatus"] = $"Удалено категорий -  {count}";
+            return RedirectToAction("IndexCategories");
+        }
+
+        // *************************************************************************************
 
 
         // helpers
+        public FileContentResult GetCategoryImageFromCategoryTable(int categoryId)
+        {
+            Category category = categoryRepo.Categories.FirstOrDefault(p => p.Id == categoryId);
+            if (category != null)
+            {
+                if (category.ImageData != null && category.ImageMimeType != null)
+                {
+                    return File(category.ImageData, category.ImageMimeType);
+                }
+            }
+            return null;
+        }
 
         public FileContentResult GetImage(int infoId, string imgElementName)
         {
@@ -183,8 +285,6 @@ namespace BoilerStoreMonolith.Controllers
             }
             return null;
         }
-
-
 
         public FileContentResult GetImage2(int infoId, string imgElementName)
         {

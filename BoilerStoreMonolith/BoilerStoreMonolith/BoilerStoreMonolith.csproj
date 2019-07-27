@@ -265,6 +265,9 @@
     <Content Include="Views\Home\WriteUsSuccess.cshtml" />
     <Content Include="Views\Home\WriteUsFail.cshtml" />
     <Content Include="Views\Shared\NewCategoryForm.cshtml" />
+    <Content Include="Views\Admin\EditCategories.cshtml" />
+    <Content Include="Views\Admin\IndexCategories.cshtml" />
+    <Content Include="Views\Shared\UploadImgById.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

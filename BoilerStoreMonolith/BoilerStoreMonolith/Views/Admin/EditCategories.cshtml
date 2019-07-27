@@ -1,0 +1,114 @@
+﻿@model BoilerStoreMonolith.Models.EditCategoriesViewModel
+
+@{
+    ViewBag.Title = "EditCategories";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="panel">
+    <div class="panel-heading my-3 text-center">
+        <h3>Редактирование @Model.Category.Name</h3>
+    </div>
+    @using (Html.BeginForm("EditCategories", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+    {
+        <div class="panel-body">
+            @Html.HiddenFor(m => m.Category.Id)
+            @Html.HiddenFor(m => m.Category.ImageData)
+            @Html.HiddenFor(m => m.Category.ImageMimeType)
+            <div class="form-group row my-4">
+                <label for="inputName" class="col-sm-4 col-form-label text-center">Название категории</label>
+                @Html.TextBoxFor(m => m.Category.Name,
+                    new
+                    {
+                        @class = "form-control col-sm-8", id = "inputName",
+                        placeholder = "Введите название категории", required=""
+                    })
+            </div>
+
+            @{
+                ViewBag.ImageToLoad = "categoryImg";
+                ViewBag.Id = Model.Category.Id;
+            }
+            <div class="m-4">
+                @Html.Partial("UploadImgById")
+            </div>
+
+
+            <div class="form-group row m-3">
+                <label for="inputName" class="col col-form-label text-center">Характеристики категории</label>
+            </div>
+
+            <div class="form-group row m-auto">
+                <div class="col align-self-center">
+                    <input type="text" class="form-control" id="inputSpec" placeholder="Введите название характеристики">
+                </div>
+                <button id="addSpecBtn" type="button" class="btn btn-default m-auto">Добавить</button>
+            </div>
+
+            <div class="form-group row m-auto">
+                <div class="col align-self-center">
+                    <ul id="specsList" class="list-group list-group-flush"></ul>
+                    @if (Model.Category.CategorySpecs != null)
+                    {
+                        foreach (var item in Model.Category.CategorySpecs)
+                        {
+                            <li class="list-group-item d-flex">
+                                <div class="inputSpecVal" name="Specs">@item.Name</div>
+                                <button type="button" class="specClose ml-auto" aria-label="Close">Х</button>
+                                <input type="hidden" name="Specs" value=@item.Name />
+                            </li>
+                        }
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center">
+                <input type="submit" value="Отправить" class="btn btn-info">
+            </div>
+
+        </div>
+
+
+        <br />
+        <br />
+    }
+
+</div>
+
+
+<script>
+    $("#addSpecBtn").click(function () {
+
+        if ($("#inputSpec").val() !== "" && $("#inputSpec").val() !== undefined) {
+            $("#specsList").append(
+                '<li class="list-group-item d-flex">' +
+
+                '<div class="inputSpecVal" name="Specs">' + $("#inputSpec").val() + '</div>' +
+                '<button type="button" class="specClose ml-auto" aria-label="Close">' +
+                '×' +
+                '</button>' +
+                '<input type="hidden" name="Specs" value="' +
+                $("#inputSpec").val() +
+                '" /></li>');
+        }
+
+    });
+
+    $('body').on("click", '.specClose',
+        function (e) {
+            let target = $(e.target);
+            let specItem = target.parent().siblings('.inputSpecVal')[0];
+            console.log($(specItem).text() + " removed");
+            $(target.parent()).remove();
+
+
+        });
+
+</script>
+
+
+

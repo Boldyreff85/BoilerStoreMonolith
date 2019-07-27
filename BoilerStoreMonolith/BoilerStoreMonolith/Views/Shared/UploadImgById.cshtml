@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     var uploadFileInfoId = "fakePathLoad_" + ViewBag.ImageToLoad;
     var uploadFileInfoSelector = "\"" + "#" + uploadFileInfoId + "\"";
 }
@@ -11,8 +10,8 @@
             Выбрать изображение...
             <input type="file" name=@ViewBag.ImageToLoad size="40"
                    style="position:absolute;z-index:2;top:0;
-                                    left:0;filter: alpha(opacity=0); opacity:0;
-                                    background-color:transparent;color:transparent;"
+                    left:0;filter: alpha(opacity=0); opacity:0;
+                    background-color:transparent;color:transparent;"
                    onchange='$(@uploadFileInfoSelector).html($(this).val());'>
         </a>
         <span class='label label-info' id=@uploadFileInfoId></span>
@@ -24,7 +23,7 @@
     {
         <img class="img-thumbnail" width="80" height="80"
              src="@Url.Action("GetCategoryImageFromCategoryTable", "Admin",
-                      new {categoryId = Model.Category.Id})" />
+                      new {categoryId = ViewBag.Id})" />
     }
     else if (ViewBag.ImageToLoad == "firmImg")
     {
@@ -40,7 +39,7 @@
         {
             <img class="img-thumbnail" width="150" height="150"
                  src="@Url.Action("GetImage", "Home",
-                                            new { Model.Product.ProductID })" />
+                          new { Model.Product.ProductID })" />
         }
     }
 
@@ -48,4 +47,3 @@
 
 
 </div>
-
