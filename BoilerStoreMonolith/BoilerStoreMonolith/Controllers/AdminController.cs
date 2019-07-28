@@ -16,15 +16,19 @@ namespace BoilerStoreMonolith.Controllers
         private IProductRepository productRepo;
         private ICategoryRepository categoryRepo;
         private IInfoEntityRepository siteInfoRepo;
+        private IFirmRepository firmRepo;
         private ApplicationContext context = new ApplicationContext();
         public AdminController(
             IProductRepository _productRepo,
             IInfoEntityRepository _siteInfoRepo,
-            ICategoryRepository _categoryRepositoryRepo)
+            ICategoryRepository _categoryRepositoryRepo,
+            IFirmRepository _firmRepo
+        )
         {
             productRepo = _productRepo;
             siteInfoRepo = _siteInfoRepo;
             categoryRepo = _categoryRepositoryRepo;
+            firmRepo = _firmRepo;
         }
 
         [HttpGet]
@@ -69,44 +73,25 @@ namespace BoilerStoreMonolith.Controllers
 
         [HttpPost]
         public ActionResult Edit(AdminEditViewModel model,
-                HttpPostedFileBase productImg = null, HttpPostedFileBase categoryImg = null, HttpPostedFileBase firmImg = null)
+                HttpPostedFileBase productImg = null,
+                HttpPostedFileBase categoryImg = null,
+                HttpPostedFileBase firmImg = null)
         {
             Product product = model.Product;
             if (ModelState.IsValid)
             {
-                // добавляем категорию в таблицу категорий
-                context.Categories.Add(
-                    new Category
-                    {
-                        Name = model.Product.Category
-                    });
-                context.SaveChanges();
-
-                if (productImg != null)
-                {
-                    product.ImageMimeType = productImg.ContentType;
-                    product.ImageData = new byte[productImg.ContentLength];
-                    productImg.InputStream.Read(product.ImageData, 0, productImg.ContentLength);
-                }
-                productRepo.SaveProduct(product);
-
-                if (categoryImg != null)
-                {
-                    product.CategoryImageMimeType = categoryImg.ContentType;
-                    product.CategoryImageData = new byte[categoryImg.ContentLength];
-                    categoryImg.InputStream.Read(product.CategoryImageData, 0, categoryImg.ContentLength);
-                }
-                productRepo.SaveProduct(product);
-
-                if (firmImg != null)
-                {
-                    product.FirmImageMimeType = firmImg.ContentType;
-                    product.FirmImageData = new byte[firmImg.ContentLength];
-                    firmImg.InputStream.Read(product.FirmImageData, 0, firmImg.ContentLength);
-                }
-
                 productRepo.SaveProduct(product);
                 TempData["category"] = string.Format("{0} has been saved", product.Title);
+
+                var firm = firmRepo.Firms.SingleOrDefault(f => f.Name == product.Firm);
+                if (firmImg != null)
+                {
+                    firm.ImageMimeType = firmImg.ContentType;
+                    firm.ImageData = new byte[firmImg.ContentLength];
+                    firmImg.InputStream.Read(firm.ImageData, 0, firmImg.ContentLength);
+                }
+                firmRepo.SaveFirm(firm);
+
 
                 return RedirectToAction("Index");
             }
@@ -260,7 +245,7 @@ namespace BoilerStoreMonolith.Controllers
 
 
         // helpers
-        public FileContentResult GetCategoryImageFromCategoryTable(int categoryId)
+        public FileContentResult GetImageFromCategoryTable(int categoryId)
         {
             Category category = categoryRepo.Categories.FirstOrDefault(p => p.Id == categoryId);
             if (category != null)
@@ -268,6 +253,19 @@ namespace BoilerStoreMonolith.Controllers
                 if (category.ImageData != null && category.ImageMimeType != null)
                 {
                     return File(category.ImageData, category.ImageMimeType);
+                }
+            }
+            return null;
+        }
+
+        public FileContentResult GetImageFromFirmTable(string firmName)
+        {
+            Firm firm = context.Firms.FirstOrDefault(f => f.Name == firmName);
+            if (firm != null)
+            {
+                if (firm.ImageData != null && firm.ImageMimeType != null)
+                {
+                    return File(firm.ImageData, firm.ImageMimeType);
                 }
             }
             return null;

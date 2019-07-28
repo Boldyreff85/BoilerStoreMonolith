@@ -34,44 +34,28 @@
                         ViewBag.categories as SelectList)
 
 
-                    @Html.ActionLink("Редактировать категории", "IndexCategories", "Admin")
-
-                    <button type="button" class="btn btn-light" data-toggle="modal" data-target="#newCategoryModal">
-                        добавить новую категорию
-                    </button>
-
-
-
-
-                    @*<input id="newCategoryTxt" type="text" class="form-control" placeholder="Username">*@
-                    @*<button id="newCategoryBtn" type="button" class="btn btn-default">Создать новую категорию</button>*@
+                    @Html.ActionLink("Редактировать категории",
+                        "IndexCategories",
+                        "Admin",
+                        new{@class= "btn btn-light" })
 
                 </div>
 
-                @*@Html.LabelFor(p => p.Product.Category)
-                    <div class="row">
-                        <div class="col">
-                            @Html.TextBoxFor(p => p.Product.Category, null, new { @class = "form-control" })
-                        </div>
-                        <div class="col">
-                            @{
-                                Model.ImageToLoad = "categoryImg";
-                            }
-                            @Html.Partial("UploadImg")
-                        </div>
-                    </div>*@
                 @Html.ValidationMessageFor(p => p.Product.Firm)
 
                 @Html.LabelFor(p => p.Product.Firm)
                 <div class="row">
                     <div class="col">
-                        @Html.TextBoxFor(p => p.Product.Firm, null, new { @class = "form-control" })
+                        @Html.TextBoxFor(
+                            p => p.Product.Firm, 
+                            null, 
+                            new { @class = "form-control" })
                     </div>
                     <div class="col">
                         @{
                             ViewBag.ImageToLoad = "firmImg";
                         }
-                        @Html.Partial("UploadImg")
+                        @Html.Partial("UploadImgById")
                     </div>
                 </div>
                 @Html.ValidationMessageFor(p => p.Product.Firm)

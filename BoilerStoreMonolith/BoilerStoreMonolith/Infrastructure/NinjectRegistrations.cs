@@ -15,6 +15,7 @@ namespace BoilerStoreMonolith.Infrastructure
             Bind<IProductRepository>().To<ProductRepository>();
             Bind<IInfoEntityRepository>().To<InfoEntityRepository>();
             Bind<ICategoryRepository>().To<CategoryRepository>();
+            Bind<IFirmRepository>().To<FirmRepository>();
         }
     }
 }

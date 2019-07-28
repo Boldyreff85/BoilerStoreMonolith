@@ -22,12 +22,14 @@
     @if (ViewBag.ImageToLoad == "categoryImg")
     {
         <img class="img-thumbnail" width="80" height="80"
-             src="@Url.Action("GetCategoryImageFromCategoryTable", "Admin",
+             src="@Url.Action("GetImageFromCategoryTable", "Admin",
                       new {categoryId = ViewBag.Id})" />
     }
     else if (ViewBag.ImageToLoad == "firmImg")
     {
-
+        <img class="img-thumbnail" width="80" height="80"
+             src="@Url.Action("GetImageFromFirmTable", "Admin",
+                      new {firmName = Model.Product.Firm})" />
     }
     else if (ViewBag.ImageToLoad == "productImg")
     {

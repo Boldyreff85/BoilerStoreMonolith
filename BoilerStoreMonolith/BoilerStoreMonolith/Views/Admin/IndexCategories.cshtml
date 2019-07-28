@@ -39,11 +39,6 @@
                             @Html.ActionLink(Model[i].Name, "EditCategories",new { categoryId = Model[i].Id })
                         </td>
 
-                        @Html.ActionLink(Model[i].Name,
-                            "EditCategories", "Admin", 
-                            new { categoryId = Model[i].Id }, null)
-                        
-
                         <td class="text-right">
                             @{
                                 ViewBag.ImageToLoad = "categoryImg";
@@ -51,7 +46,7 @@
                             }
                             <div class="m-4">
                                 <img class="img-thumbnail" width="80" height="80"
-                                     src="@Url.Action("GetCategoryImageFromCategoryTable", 
+                                     src="@Url.Action("GetImageFromCategoryTable", 
                                               "Admin",
                                               new {categoryId = ViewBag.Id})" />
                             </div>
