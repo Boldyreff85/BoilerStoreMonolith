@@ -1,0 +1,156 @@
+﻿@model List<BoilerStoreMonolith.Domain.Entities.Firm>
+
+@{
+    ViewBag.Title = "IndexFirms";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.ImageToLoad = "firmImg";
+}
+
+<h2>IndexFirms</h2>
+
+
+@if (TempData["FirmDeletionStatus"] != null)
+{
+    <h5 class="text-center text-primary pt-2 pb-2">@TempData["FirmDeletionStatus"]</h5>
+}
+<div class="panel panel-default">
+    @using (Html.BeginForm("EditFirms", "Admin",
+        FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="panel-heading">
+            <h3 class="text-center bg-light pt-2 pb-2 mb-0">Все производители</h3>
+        </div>
+
+        <div class="productList panel-body">
+
+            <div class="form-group row m-3">
+                <label for="inputName" class="col col-form-label text-center">Производители</label>
+            </div>
+
+            <div class="form-group row m-auto">
+                <div class="col-6 mx-auto my-3 align-self-center">
+                    <input type="text" class="form-control"
+                           id="inputFirm" placeholder="Введите название производителя">
+                </div>
+                <div class="col-3 mx-auto my-3 align-self-center">
+                    @{
+                        ViewBag.ImageToLoad = "firmImg";
+                        ViewBag.firmName = "";
+                    }
+                    @Html.Partial("UploadImgById")
+                </div>
+                <div class="col-3 mx-auto my-3 align-self-center">
+                    <button id="addFirmBtn" type="button"
+                            class="btn btn-default m-auto">
+                        Добавить
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="form-group row m-auto">
+                <div class="col align-self-center">
+                    <ul id="firmList" class="list-group list-group-flush">
+                        @foreach (var item in Model)
+                        {
+
+                            <li class="list-group-item d-flex">
+
+                                <div class="col-6 mx-auto my-3 align-self-center">
+                                    @Html.TextBoxFor(p => item.Name,
+                                        null,
+                                        new
+                                        {
+                                            @class = "form-control",
+                                            id = "inputFirm",
+                                            placeholder = "Введите название производителя"
+                                        })
+
+                                </div>
+                                <div class="col-3 mx-auto my-3 align-self-center">
+                                    @{
+                                        ViewBag.ImageToLoad = "firmImg";
+                                        ViewBag.firmName = item.Name;
+                                    }
+                                    @Html.Partial("UploadImgById")
+                                </div>
+                                <div class="col-3 mx-auto my-3 align-self-center">
+
+                                    @Html.ActionLink("X",
+                                        "DeleteFirm",
+                                        "Admin",
+                                        new { firmName = item.Name },
+                                        new {@class= "btn btn-secondary" })
+
+                                </div>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-center">
+                <input type="submit" value="Сохранить" class="btn btn-info">
+            </div>
+
+        </div>
+
+    }
+</div>
+
+<script>
+
+    $(function () {
+
+
+
+        $("#addFirmBtn").click(function (e) {
+            let methodUrl = "/Admin/GetFirmListItem/?firmName=" + $("#inputFirm").val();
+            console.log(methodUrl);
+            $.ajax({
+                type: "POST",
+                url: methodUrl,
+                data: { isAjax: true }
+            }).done(function (data) {
+                $("#firmList").append(data);
+            });
+
+        });
+
+
+    });
+
+
+    //$("#addFirmBtn").click(function () {
+
+    //    if ($("#inputFirm").val() !== "" && $("#inputFirm").val() !== undefined) {
+    //        $("#firmList").append(
+    //            '<li class="list-group-item d-flex">' +
+
+    //            '<div class="inputFirmVal" name="firmsCheckboxes">' + $("#inputFirm").val() + '</div>' +
+    //            '<button type="button" class="firmRemove ml-auto" aria-label="Close">' +
+    //            '×' +
+    //            '</button>' +
+    //            '<input type="hidden" name="firmsCheckboxes" value="' +
+    //            $("#inputFirm").val() +
+    //            '" /></li>');
+    //    }
+
+    //});
+
+
+    $('body').on("click",
+        '.firmRemove',
+        function (e) {
+            let target = $(e.target);
+            $(target.parent().parent()).remove();
+
+
+        });
+
+</script>
+
+
+

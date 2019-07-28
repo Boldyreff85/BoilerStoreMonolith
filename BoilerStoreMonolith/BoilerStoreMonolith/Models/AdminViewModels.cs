@@ -33,18 +33,17 @@ namespace BoilerStoreMonolith.Models
         public string ImageToLoad { get; set; }
     }
 
-    public class AdminIndexCategoriesListViewModel
+
+
+    // firms view models
+
+
+
+    public class EditFirmsViewModel
     {
-        public List<AdminIndexCategoryViewModel> IndexList { get; set; }
+        public Firm Firm { get; set; }
         public string ImageToLoad { get; set; }
     }
 
-    public class AdminIndexCategoryViewModel
-    {
-        public int CategoryID { get; set; }
-        public string Name { get; set; }
-        public byte[] ImageData { get; set; }
-        public string ImageMimeType { get; set; }
-        public bool IsDelete { get; set; }
-    }
+
 }

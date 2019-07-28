@@ -64,9 +64,15 @@ namespace BoilerStoreMonolith.Controllers
             model.Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
 
             ViewBag.categories = new SelectList(
-                    context.Categories.Select(c => c.Name),
+                    categoryRepo.Categories.Select(c => c.Name),
                     model.Product.Category
                 );
+
+            ViewBag.firms = new SelectList(
+                firmRepo.Firms.Select(c => c.Name),
+                model.Product.Firm
+            );
+
             ViewBag.ImageToLoad = "categoryImg";
             return View(model);
         }
@@ -239,6 +245,97 @@ namespace BoilerStoreMonolith.Controllers
 
             TempData["CategoryDeletionStatus"] = $"Удалено категорий -  {count}";
             return RedirectToAction("IndexCategories");
+        }
+
+        // *************************************************************************************
+        // ******** firms ********
+
+        [HttpGet]
+        public ActionResult IndexFirms()
+        {
+            ViewBag.ImageToLoad = "firmImg";
+            return View(firmRepo.Firms.ToList());
+        }
+
+        [HttpGet]
+        public ActionResult EditFirms(EditFirmsViewModel model, int firmId)
+        {
+            model.Firm = firmRepo.Firms
+                .SingleOrDefault(c => c.Id == firmId);
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditFirms(
+            EditFirmsViewModel model,
+            HttpPostedFileBase firmImg = null)
+        {
+            if (firmImg != null)
+            {
+                model.Firm.ImageMimeType = firmImg.ContentType;
+                model.Firm.ImageData = new byte[firmImg.ContentLength];
+                firmImg.InputStream.Read(
+                    model.Firm.ImageData, 0, firmImg.ContentLength);
+            }
+            ;
+            firmRepo.SaveFirm(model.Firm);
+            return RedirectToAction("IndexCategories");
+        }
+
+        public ViewResult CreateFirm()
+        {
+            var model = new EditFirmsViewModel()
+            {
+                Firm = new Firm()
+            };
+            return View("EditFirms", model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteFirm(string firmName)
+        {
+            firmRepo.DeleteFirmByName(firmName);
+            return RedirectToAction("IndexFirms");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteFirmsSelected(string[] firmsIds)
+        {
+            if (firmsIds == null || firmsIds.Length == 0)
+            {
+                TempData["FirmDeletionStatus"] = "Нет выбранных фирм для удаления.";
+                return RedirectToAction("IndexFirms");
+            }
+            List<int> ids = firmsIds.Where(ch => ch != "false").Select(x => Int32.Parse(x)).ToList();
+            var count = 0;
+            // находим и удаляем категории
+            foreach (var id in ids)
+            {
+                firmRepo.DeleteFirm(id);
+                count++;
+            }
+
+            TempData["FirmDeletionStatus"] = $"Удалено фирм -  {count}";
+            return RedirectToAction("IndexFirms");
+        }
+
+        [HttpPost]
+        public ActionResult GetFirmListItem(
+            string firmName,
+            HttpPostedFileBase firmImg = null
+            )
+        {
+            var model = new Firm();
+            model.Name = firmName;
+            
+            model.ImageMimeType = firmImg.ContentType;
+            model.ImageData = new byte[firmImg.ContentLength];
+            firmImg.InputStream.Read(
+                model.ImageData, 0, firmImg.ContentLength);
+
+
+            
+            return PartialView("FirmListItem", model);
         }
 
         // *************************************************************************************

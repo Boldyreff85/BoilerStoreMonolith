@@ -43,6 +43,17 @@ namespace BoilerStoreMonolith.Domain.Concrete
             return dbEntry;
         }
 
+        public Firm DeleteFirmByName(string firmName)
+        {
+            Firm dbEntry = context.Firms.Find(firmName);
+            if (dbEntry != null)
+            {
+                context.Firms.Remove(dbEntry);
+                context.SaveChanges();
+            }
+            return dbEntry;
+        }
+
         public List<Firm> DeleteFirms(List<Firm> firmsToDelete)
         {
             if (firmsToDelete.Any())

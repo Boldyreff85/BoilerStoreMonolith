@@ -8,6 +8,7 @@ namespace BoilerStoreMonolith.Domain.Abstract
         IEnumerable<Firm> Firms { get; }
         void SaveFirm(Firm firm);
         Firm DeleteFirm(int firmId);
+        Firm DeleteFirmByName(string firmName);
         List<Firm> DeleteFirms(List<Firm> firmsToDelete);
     }
 }
