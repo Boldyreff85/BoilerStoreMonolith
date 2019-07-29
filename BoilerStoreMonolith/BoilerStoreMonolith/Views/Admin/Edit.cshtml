@@ -17,11 +17,15 @@
 
             <div class="form-group">
                 @Html.LabelFor(p => p.Product.Title)
-                @Html.TextBoxFor(p => p.Product.Title, null, new { @class = "form-control" })
+                @Html.TextBoxFor(
+                    p => p.Product.Title, null,
+                    new { @class = "form-control" })
                 @Html.ValidationMessageFor(p => p.Product.Title)
 
                 @Html.LabelFor(p => p.Product.Description)
-                @Html.TextAreaFor(p => p.Product.Description, 10, 1, new { @class = "form-control" })
+                @Html.TextAreaFor(
+                    p => p.Product.Description, 10, 1,
+                    new { @class = "form-control" })
                 @Html.ValidationMessageFor(p => p.Product.Description)
 
 
@@ -42,7 +46,7 @@
                             new{@class= "btn btn-secondary" })
                     </div>
                 </div>
-                
+
                 <div class="row my-4">
                     <div class="col-3 m-auto"> Выберите производителя:   </div>
 
@@ -59,18 +63,28 @@
                             new{@class= "btn btn-secondary" })
                     </div>
                 </div>
-                
 
 
-                @Html.ValidationMessageFor(p => p.Product.Firm)
 
-                @Html.LabelFor(p => p.Product.Power)
-                @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(p => p.Product.Power)
+                @foreach (var item in Model.Category.CategorySpecs)
+                {
+                    @Html.Label(item.Name)
+                    <input type="hidden" value="@item.Value" name=@item.Name />
+                    @Html.TextBox(@item.Name, @item.Value,
+                        new { @class = "form-control" })
 
-                @Html.LabelFor(p => p.Product.Price)
-                @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
-                @Html.ValidationMessageFor(p => p.Product.Price)
+                }
+
+
+
+
+                @*@Html.LabelFor(p => p.Product.Power)
+                    @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Product.Power)*@
+
+                @*@Html.LabelFor(p => p.Product.Price)
+                    @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Product.Price)*@
             </div>
         </div>
 

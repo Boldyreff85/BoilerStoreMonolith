@@ -8,7 +8,7 @@ namespace BoilerStoreMonolith.Models
     {
         public Product Product { get; set; }
         public string ImageToLoad { get; set; }
-        public EditCategoriesViewModel NewCategory { get; set; }
+        public Category Category { get; set; }
     }
 
     public class AdminIndexListViewModel

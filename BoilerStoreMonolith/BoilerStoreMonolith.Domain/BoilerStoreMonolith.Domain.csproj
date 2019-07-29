@@ -92,6 +92,10 @@
     <Compile Include="Migrations\201907201733348_Add_Category_Firm_And_Specs_Entities.Designer.cs">
       <DependentUpon>201907201733348_Add_Category_Firm_And_Specs_Entities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907292130294_AddSpecValue.cs" />
+    <Compile Include="Migrations\201907292130294_AddSpecValue.Designer.cs">
+      <DependentUpon>201907292130294_AddSpecValue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -120,6 +124,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907201733348_Add_Category_Firm_And_Specs_Entities.resx">
       <DependentUpon>201907201733348_Add_Category_Firm_And_Specs_Entities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907292130294_AddSpecValue.resx">
+      <DependentUpon>201907292130294_AddSpecValue.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

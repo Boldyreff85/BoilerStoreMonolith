@@ -62,6 +62,10 @@ namespace BoilerStoreMonolith.Controllers
         {
             model.Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
 
+            model.Category = categoryRepo.Categories
+                .SingleOrDefault(c => c.Name == model.Product.Category);
+
+
             ViewBag.categories = new SelectList(
                     categoryRepo.Categories.Select(c => c.Name),
                     model.Product.Category
@@ -82,12 +86,25 @@ namespace BoilerStoreMonolith.Controllers
                 HttpPostedFileBase categoryImg = null,
                 HttpPostedFileBase firmImg = null)
         {
+
+            model.Category = categoryRepo.Categories
+                .SingleOrDefault(c => c.Name == model.Product.Category);
+
+            ViewBag.categories = new SelectList(
+                categoryRepo.Categories.Select(c => c.Name),
+                model.Product.Category
+            );
+
+            ViewBag.firms = new SelectList(
+                firmRepo.Firms.Select(c => c.Name),
+                model.Product.Firm
+            );
+
             Product product = model.Product;
             if (ModelState.IsValid)
             {
                 productRepo.SaveProduct(product);
                 TempData["category"] = string.Format("{0} has been saved", product.Title);
-
 
                 var category = categoryRepo.Categories
                     .SingleOrDefault(c => c.Name == product.Category);
