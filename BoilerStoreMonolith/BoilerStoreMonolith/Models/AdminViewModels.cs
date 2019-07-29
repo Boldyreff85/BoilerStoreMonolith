@@ -1,5 +1,6 @@
 ﻿using BoilerStoreMonolith.Domain.Entities;
 using System.Collections.Generic;
+using System.Web;
 
 namespace BoilerStoreMonolith.Models
 {
@@ -37,6 +38,13 @@ namespace BoilerStoreMonolith.Models
 
     // firms view models
 
+
+    public class IndexFirmsViewModel
+    {
+        public List<Firm> Firms { get; set; }
+        public List<string> firmName { get; set; }
+        public List<HttpPostedFileBase> firmImg { get; set; }
+    }
 
 
     public class EditFirmsViewModel

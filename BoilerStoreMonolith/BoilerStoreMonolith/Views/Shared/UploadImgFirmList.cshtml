@@ -1,0 +1,27 @@
+﻿
+@{
+    var uploadFileInfoId = "fakePathLoad_" + ViewBag.firmName;
+    var uploadFileInfoSelector = "\"" + "#" + uploadFileInfoId + "\"";
+}
+
+<div class="form-group">
+    <div style="position:relative;">
+        <a class='btn' href='javascript:;'>
+            Выбрать изображение...
+            <input id="imgInput" type="file" name="firmImg" size="40"
+                   style="position:absolute;z-index:2;top:0;
+                    left:0;filter: alpha(opacity=0); opacity:0;
+                    background-color:transparent;color:transparent;"
+                   onchange='$(@uploadFileInfoSelector).html($(this).val());'>
+        </a>
+        <span class='label label-info' id=@uploadFileInfoId></span>
+    </div>
+
+    <img class="img-thumbnail" width="80" height="80"
+         src="@Url.Action("GetImageFromFirmTable", "Admin",
+                  new {firmName = ViewBag.firmName})" />
+
+
+
+
+</div>

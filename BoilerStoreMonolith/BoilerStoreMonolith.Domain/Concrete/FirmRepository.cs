@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BoilerStoreMonolith.Domain.Abstract;
+﻿using BoilerStoreMonolith.Domain.Abstract;
 using BoilerStoreMonolith.Domain.Entities;
+using System.Collections.Generic;
 
 namespace BoilerStoreMonolith.Domain.Concrete
 {
@@ -56,10 +55,10 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public List<Firm> DeleteFirms(List<Firm> firmsToDelete)
         {
-            if (firmsToDelete.Any())
+            if (firmsToDelete != null)
             {
                 context.Firms.RemoveRange(firmsToDelete);
-                context.SaveChangesAsync();
+                context.SaveChanges();
             }
             return firmsToDelete;
         }

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Data.Entity;
 
 namespace BoilerStoreMonolith.Controllers
 {
@@ -254,7 +253,48 @@ namespace BoilerStoreMonolith.Controllers
         public ActionResult IndexFirms()
         {
             ViewBag.ImageToLoad = "firmImg";
-            return View(firmRepo.Firms.ToList());
+
+            var model = new IndexFirmsViewModel
+            {
+                Firms = firmRepo.Firms.ToList()
+            };
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult IndexFirms(IndexFirmsViewModel model)
+        {
+            var names = model.firmName;
+            var images = model.firmImg;
+
+            // clear the table
+            firmRepo.DeleteFirms(firmRepo.Firms.ToList());
+
+            var test = firmRepo.Firms.ToList();
+
+            for (int i = 0; i < names.Count; i++)
+            {
+                var firm = new Firm
+                {
+                    Name = names[i]
+                };
+
+                if (images[i] != null)
+                {
+                    firm.ImageMimeType = images[i].ContentType;
+                    firm.ImageData = new byte[images[i].ContentLength];
+                    images[i].InputStream.Read(
+                        firm.ImageData, 0, images[i].ContentLength);
+                }
+
+                firmRepo.SaveFirm(firm);
+
+                test = firmRepo.Firms.ToList();
+            }
+
+            return RedirectToAction("IndexFirms");
         }
 
         [HttpGet]
@@ -319,23 +359,9 @@ namespace BoilerStoreMonolith.Controllers
             return RedirectToAction("IndexFirms");
         }
 
-        [HttpPost]
-        public ActionResult GetFirmListItem(
-            string firmName,
-            HttpPostedFileBase firmImg = null
-            )
+        public ActionResult GetFirmListItem()
         {
-            var model = new Firm();
-            model.Name = firmName;
-            
-            model.ImageMimeType = firmImg.ContentType;
-            model.ImageData = new byte[firmImg.ContentLength];
-            firmImg.InputStream.Read(
-                model.ImageData, 0, firmImg.ContentLength);
-
-
-            
-            return PartialView("FirmListItem", model);
+            return PartialView("FirmListItem");
         }
 
         // *************************************************************************************
