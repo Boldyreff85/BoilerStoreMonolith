@@ -258,8 +258,6 @@ namespace BoilerStoreMonolith.Controllers
             {
                 Firms = firmRepo.Firms.ToList()
             };
-
-
             return View(model);
         }
 
@@ -268,14 +266,14 @@ namespace BoilerStoreMonolith.Controllers
         {
             var names = model.firmName;
             var images = model.firmImg;
-
+            var firmsFromRepo = firmRepo.Firms.ToList();
             // clear the table
             firmRepo.DeleteFirms(firmRepo.Firms.ToList());
 
-            var test = firmRepo.Firms.ToList();
-
             for (int i = 0; i < names.Count; i++)
             {
+                // checking if firm exists
+
                 var firm = new Firm
                 {
                     Name = names[i]
@@ -288,80 +286,59 @@ namespace BoilerStoreMonolith.Controllers
                     images[i].InputStream.Read(
                         firm.ImageData, 0, images[i].ContentLength);
                 }
-
+                else
+                {
+                    var firmFromRepo = firmsFromRepo.Find(f => f.Name == names[i]);
+                    if (firmFromRepo != null)
+                    {
+                        firm.ImageMimeType = firmFromRepo.ImageMimeType;
+                        firm.ImageData = firmFromRepo.ImageData;
+                    }
+                }
                 firmRepo.SaveFirm(firm);
-
-                test = firmRepo.Firms.ToList();
             }
+
 
             return RedirectToAction("IndexFirms");
         }
 
-        [HttpGet]
-        public ActionResult EditFirms(EditFirmsViewModel model, int firmId)
-        {
-            model.Firm = firmRepo.Firms
-                .SingleOrDefault(c => c.Id == firmId);
-            return View(model);
-        }
+        //[HttpGet]
+        //public ActionResult EditFirms(EditFirmsViewModel model, int firmId)
+        //{
+        //    model.Firm = firmRepo.Firms
+        //        .SingleOrDefault(c => c.Id == firmId);
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        public ActionResult EditFirms(
-            EditFirmsViewModel model,
-            HttpPostedFileBase firmImg = null)
-        {
-            if (firmImg != null)
-            {
-                model.Firm.ImageMimeType = firmImg.ContentType;
-                model.Firm.ImageData = new byte[firmImg.ContentLength];
-                firmImg.InputStream.Read(
-                    model.Firm.ImageData, 0, firmImg.ContentLength);
-            }
-            ;
-            firmRepo.SaveFirm(model.Firm);
-            return RedirectToAction("IndexCategories");
-        }
+        //[HttpPost]
+        //public ActionResult EditFirms(
+        //    EditFirmsViewModel model,
+        //    HttpPostedFileBase firmImg = null)
+        //{
+        //    if (firmImg != null)
+        //    {
+        //        model.Firm.ImageMimeType = firmImg.ContentType;
+        //        model.Firm.ImageData = new byte[firmImg.ContentLength];
+        //        firmImg.InputStream.Read(
+        //            model.Firm.ImageData, 0, firmImg.ContentLength);
+        //    }
+        //    ;
+        //    firmRepo.SaveFirm(model.Firm);
+        //    return RedirectToAction("IndexCategories");
+        //}
 
-        public ViewResult CreateFirm()
-        {
-            var model = new EditFirmsViewModel()
-            {
-                Firm = new Firm()
-            };
-            return View("EditFirms", model);
-        }
+        //public ViewResult CreateFirm()
+        //{
+        //    var model = new EditFirmsViewModel()
+        //    {
+        //        Firm = new Firm()
+        //    };
+        //    return View("EditFirms", model);
+        //}
 
-        [HttpPost]
-        public ActionResult DeleteFirm(string firmName)
+        public ActionResult GetFirmListItem(string imgId)
         {
-            firmRepo.DeleteFirmByName(firmName);
-            return RedirectToAction("IndexFirms");
-        }
-
-        [HttpPost]
-        public ActionResult DeleteFirmsSelected(string[] firmsIds)
-        {
-            if (firmsIds == null || firmsIds.Length == 0)
-            {
-                TempData["FirmDeletionStatus"] = "Нет выбранных фирм для удаления.";
-                return RedirectToAction("IndexFirms");
-            }
-            List<int> ids = firmsIds.Where(ch => ch != "false").Select(x => Int32.Parse(x)).ToList();
-            var count = 0;
-            // находим и удаляем категории
-            foreach (var id in ids)
-            {
-                firmRepo.DeleteFirm(id);
-                count++;
-            }
-
-            TempData["FirmDeletionStatus"] = $"Удалено фирм -  {count}";
-            return RedirectToAction("IndexFirms");
-        }
-
-        public ActionResult GetFirmListItem()
-        {
-            return PartialView("FirmListItem");
+            return PartialView("FirmListItem", imgId);
         }
 
         // *************************************************************************************

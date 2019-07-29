@@ -47,11 +47,4 @@ namespace BoilerStoreMonolith.Models
     }
 
 
-    public class EditFirmsViewModel
-    {
-        public Firm Firm { get; set; }
-        public string ImageToLoad { get; set; }
-    }
-
-
 }

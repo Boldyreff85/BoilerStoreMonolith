@@ -4,6 +4,7 @@
     ViewBag.Title = "IndexFirms";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewBag.ImageToLoad = "firmImg";
+    ViewBag.imgId = 0;
 }
 
 <h2>IndexFirms</h2>
@@ -13,79 +14,73 @@
 {
     <h5 class="text-center text-primary pt-2 pb-2">@TempData["FirmDeletionStatus"]</h5>
 }
-<div class="panel panel-default">
-    @using (Html.BeginForm("IndexFirms", "Admin",
-        FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
+    <div class="panel panel-default">
+        @using (Html.BeginForm("IndexFirms", "Admin",
+            FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="panel-heading">
+                <h3 class="text-center bg-light pt-2 pb-2 mb-0">Все производители</h3>
+            </div>
 
-        <div class="panel-heading">
-            <h3 class="text-center bg-light pt-2 pb-2 mb-0">Все производители</h3>
-        </div>
+            <div class="productList panel-body">
 
-        <div class="productList panel-body">
+                <div class="form-group row m-auto">
+                    <div class="col align-self-center">
+                        <ul id="firmList" class="list-group list-group-flush">
 
+                            @foreach (var item in Model.Firms)
+                            {
 
+                                <li class="list-group-item d-flex">
 
-            <div class="form-group row m-auto">
-                <div class="col align-self-center">
-                    <ul id="firmList" class="list-group list-group-flush">
-                        @foreach (var item in Model.Firms)
-                        {
+                                    <div class="col-6 mx-auto my-3 align-self-center">
+                                        @Html.TextBox("firmName", item.Name, new
+                                   {
+                                       @class = "form-control",
+                                       id = "inputFirm",
+                                       placeholder = "Введите название производителя",
+                                       required = "required"
+                                   })
+                                    </div>
+                                    <div class="col-3 mx-auto my-3 align-self-center">
+                                        @{
+                                            ViewBag.ImageToLoad = "firmImg";
+                                            ViewBag.firmName = item.Name;
+                                            ViewBag.imgId += 1;
+                                        }
+                                        @Html.Partial("UploadImgFirmList")
+                                    </div>
+                                    <div class="col-3 mx-auto my-3 align-self-center">
 
-                            <li class="list-group-item d-flex">
+                                        <button type="button" class="firmRemove ml-auto" aria-label="Close">X</button>
 
-                                <div class="col-6 mx-auto my-3 align-self-center">
-                                    @*@Html.TextBoxFor(p => item.Name,
-                                        null,
-                                        new
-                                        {
-                                            @class = "form-control",
-                                            id = "inputFirm",
-                                            placeholder = "Введите название производителя"
-                                        })*@
-                                    @Html.TextBox("firmName", item.Name, new
-                                    {
-                                        @class = "form-control",
-                                        id = "inputFirm",
-                                        placeholder = "Введите название производителя"
-                                    })
-                                </div>
-                                <div class="col-3 mx-auto my-3 align-self-center">
-                                    @{
-                                        ViewBag.ImageToLoad = "firmImg";
-                                        ViewBag.firmName = item.Name;
-                                    }
-                                    @Html.Partial("UploadImgFirmList")
-                                </div>
-                                <div class="col-3 mx-auto my-3 align-self-center">
+                                    </div>
+                                </li>
+                            }
 
-                                    <button type="button" class="firmRemove ml-auto" aria-label="Close">X</button>
-
-                                </div>
-                            </li>
-                        }
-
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="modal-footer d-flex justify-content-center">
-                <input id="addFirmBtn" type="button" value="Добавить нового производителя" class="btn btn-default">
-                <input type="submit" value="Сохранить" class="btn btn-info">
+
+                <div class="modal-footer d-flex justify-content-center">
+                    <input id="addFirmBtn" type="button" value="Добавить нового производителя" class="btn btn-default">
+                    <input type="submit" value="Сохранить" class="btn btn-info">
+                </div>
+
             </div>
 
-        </div>
-
-    }
-</div>
+        }
+    </div>
 
 <script>
 
     $(function () {
 
         $("#addFirmBtn").click(function (e) {
-            let methodUrl = "/Admin/GetFirmListItem/";
-            console.log(methodUrl);
+
+
+            let imgId = $("#firmList li").length + 1;
+            let methodUrl = "/Admin/GetFirmListItem/?imgId=" + imgId;
             $.ajax({
                 type: "POST",
                 url: methodUrl

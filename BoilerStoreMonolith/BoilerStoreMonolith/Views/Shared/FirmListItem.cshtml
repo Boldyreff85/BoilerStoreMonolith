@@ -1,18 +1,21 @@
-﻿
+﻿@model string
+
 <li class="list-group-item d-flex">
     <div class="col-6 mx-auto my-3 align-self-center">
         @Html.TextBox("firmName", "", new
-        {
-            @class = "form-control",
-            id = "inputFirm",
-            placeholder = "Введите название производителя"
-        })
+   {
+       @class = "form-control",
+       id = "inputFirm",
+       placeholder = "Введите название производителя",
+       required = "required"
+   })
     </div>
     <div class="col-3 mx-auto my-3 align-self-center">
         @{
             ViewBag.ImageToLoad = "firmImg";
+            ViewBag.imgId = Model;
         }
-        @Html.Partial("UploadImgById")
+        @Html.Partial("UploadImgFirmList")
     </div>
     <div class="col-3 mx-auto my-3 align-self-center">
         <button type="button" class="firmRemove ml-auto" aria-label="Close">X</button>
