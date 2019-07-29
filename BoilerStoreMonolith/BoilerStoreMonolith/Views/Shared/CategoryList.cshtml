@@ -17,7 +17,8 @@
                 <a href=@Url.Action("FirmList", 
                             "Home", 
                             new { category = Model[i].Name })>
-                    <img src="@Url.Action("GetImageFromCategoryTable", "Admin",
+                    <img src="@Url.Action("GetImageFromCategoryTable", 
+                                  "Admin",
                                   new {categoryId = Model[i].Id})"
                     class="card-img-top"
                     alt="Настенные" />

@@ -15,16 +15,19 @@ namespace BoilerStoreMonolith.Controllers
         public int PageSize = 6;
         private IProductRepository productRepo;
         private ICategoryRepository categoryRepo;
+        private IFirmRepository firmRepo;
         private IInfoEntityRepository siteInfoRepo;
         private ApplicationContext context = new ApplicationContext();
 
         public HomeController(
             IProductRepository _productRepo, 
+            IFirmRepository _firmRepo, 
             IInfoEntityRepository _siteInfoRepo,
             ICategoryRepository _categoryRepo
             )
         {
             productRepo = _productRepo;
+            firmRepo = _firmRepo;
             categoryRepo = _categoryRepo;
             siteInfoRepo = _siteInfoRepo;
         }
@@ -45,10 +48,15 @@ namespace BoilerStoreMonolith.Controllers
         {
             ViewBag.Category = category;
             ViewBag.IsAjax = isAjax;
-            var res = productRepo.Products.Where(n => n.Category == category).Select(n => n.Firm).ToList().Distinct();
-            if (res.FirstOrDefault() != "")
+            var firmNames = productRepo.Products.Where(n => n.Category == category).Select(n => n.Firm).ToList().Distinct();
+            var firms = firmNames.Join(firmRepo.Firms,
+                p => p, 
+                t => t.Name, 
+                (p, t) => t).ToList();
+
+            if (firms != null)
             {
-                return PartialView("FirmList", res);
+                return PartialView("FirmList", firms);
             }
             else
             {

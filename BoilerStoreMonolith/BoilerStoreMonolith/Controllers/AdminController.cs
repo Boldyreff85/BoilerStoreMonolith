@@ -302,39 +302,6 @@ namespace BoilerStoreMonolith.Controllers
             return RedirectToAction("IndexFirms");
         }
 
-        //[HttpGet]
-        //public ActionResult EditFirms(EditFirmsViewModel model, int firmId)
-        //{
-        //    model.Firm = firmRepo.Firms
-        //        .SingleOrDefault(c => c.Id == firmId);
-        //    return View(model);
-        //}
-
-        //[HttpPost]
-        //public ActionResult EditFirms(
-        //    EditFirmsViewModel model,
-        //    HttpPostedFileBase firmImg = null)
-        //{
-        //    if (firmImg != null)
-        //    {
-        //        model.Firm.ImageMimeType = firmImg.ContentType;
-        //        model.Firm.ImageData = new byte[firmImg.ContentLength];
-        //        firmImg.InputStream.Read(
-        //            model.Firm.ImageData, 0, firmImg.ContentLength);
-        //    }
-        //    ;
-        //    firmRepo.SaveFirm(model.Firm);
-        //    return RedirectToAction("IndexCategories");
-        //}
-
-        //public ViewResult CreateFirm()
-        //{
-        //    var model = new EditFirmsViewModel()
-        //    {
-        //        Firm = new Firm()
-        //    };
-        //    return View("EditFirms", model);
-        //}
 
         public ActionResult GetFirmListItem(string imgId)
         {
