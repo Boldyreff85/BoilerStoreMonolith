@@ -88,12 +88,27 @@ namespace BoilerStoreMonolith.Controllers
                 productRepo.SaveProduct(product);
                 TempData["category"] = string.Format("{0} has been saved", product.Title);
 
-                var firm = firmRepo.Firms.SingleOrDefault(f => f.Name == product.Firm);
+
+                var category = categoryRepo.Categories
+                    .SingleOrDefault(c => c.Name == product.Category);
+
+                if (categoryImg != null)
+                {
+                    category.ImageMimeType = categoryImg.ContentType;
+                    category.ImageData = new byte[categoryImg.ContentLength];
+                    categoryImg.InputStream.Read(
+                        category.ImageData, 0, categoryImg.ContentLength);
+                }
+                categoryRepo.SaveCategory(category);
+
+                var firm = firmRepo.Firms
+                    .SingleOrDefault(f => f.Name == product.Firm);
                 if (firmImg != null)
                 {
                     firm.ImageMimeType = firmImg.ContentType;
                     firm.ImageData = new byte[firmImg.ContentLength];
-                    firmImg.InputStream.Read(firm.ImageData, 0, firmImg.ContentLength);
+                    firmImg.InputStream.Read(
+                        firm.ImageData, 0, firmImg.ContentLength);
                 }
                 firmRepo.SaveFirm(firm);
 
