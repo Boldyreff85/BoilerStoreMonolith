@@ -1,9 +1,5 @@
-﻿@model IEnumerable<string>
+﻿@model List<BoilerStoreMonolith.Domain.Entities.Category>
 
-
-@{
-    List<string> categories = Model.ToList();
-}
 
 <div class="site-section">
     <h2 class="text-center mb-5">
@@ -13,17 +9,20 @@
     <div class="row d-flex category-list">
 
 
-        @for (int i = 0; i < categories.Count;)
+        @for (int i = 0; i < Model.Count();)
         {
-            if (i >= categories.Count) { break; }
+            if (i >= Model.Count()) { break; }
 
             <div class="info-card card shadow-sm" style="width: 14rem;">
-                <a href=@Url.Action("FirmList", "Home", new { category = @categories[i] })>
-                    <img src="~/Content/images/service-2.jpg"
+                <a href=@Url.Action("FirmList", 
+                            "Home", 
+                            new { category = Model[i].Name })>
+                    <img src="@Url.Action("GetImageFromCategoryTable", "Admin",
+                                  new {categoryId = Model[i].Id})"
                     class="card-img-top"
                     alt="Настенные" />
                     <div class="card-body">
-                        <h5 class="card-title text-center">@categories[i]</h5>
+                        <h5 class="card-title text-center">@Model[i].Name</h5>
                     </div>
                 </a>
             </div>

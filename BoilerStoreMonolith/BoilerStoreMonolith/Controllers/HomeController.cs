@@ -14,22 +14,28 @@ namespace BoilerStoreMonolith.Controllers
     {
         public int PageSize = 6;
         private IProductRepository productRepo;
+        private ICategoryRepository categoryRepo;
         private IInfoEntityRepository siteInfoRepo;
         private ApplicationContext context = new ApplicationContext();
 
-        public HomeController(IProductRepository rep1, IInfoEntityRepository rep2)
+        public HomeController(
+            IProductRepository _productRepo, 
+            IInfoEntityRepository _siteInfoRepo,
+            ICategoryRepository _categoryRepo
+            )
         {
-            productRepo = rep1;
-            siteInfoRepo = rep2;
+            productRepo = _productRepo;
+            categoryRepo = _categoryRepo;
+            siteInfoRepo = _siteInfoRepo;
         }
 
         public ActionResult Index()
         {
-            var catList = productRepo.Products.Select(n => n.Category).ToList().Distinct();
+            var catList = categoryRepo.Categories.Distinct();
             var siteInfo = siteInfoRepo.InfoEntities.FirstOrDefault();
             IndexViewModel result = new IndexViewModel
             {
-                categories = catList,
+                Categories = catList.ToList(),
                 infoEntity = siteInfo
             };
             return View(result);

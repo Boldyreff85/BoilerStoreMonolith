@@ -5,7 +5,7 @@ namespace BoilerStoreMonolith.Models
 {
     public class IndexViewModel
     {
-        public IEnumerable<string> categories { get; set; }
+        public List<Category> Categories { get; set; }
         public InfoEntity infoEntity { get; set; }
     }
 }
