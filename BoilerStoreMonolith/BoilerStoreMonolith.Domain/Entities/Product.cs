@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BoilerStoreMonolith.Domain.Entities
 {
@@ -31,5 +32,8 @@ namespace BoilerStoreMonolith.Domain.Entities
         public string Price { get; set; }
         public byte[] ImageData { get; set; }
         public string ImageMimeType { get; set; }
+
+        public ICollection<Feature> Features { get; set; }
+
     }
 }

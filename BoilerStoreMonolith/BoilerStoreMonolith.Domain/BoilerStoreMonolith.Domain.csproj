@@ -61,6 +61,7 @@
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\CategorySpec.cs" />
+    <Compile Include="Entities\Feature.cs" />
     <Compile Include="Entities\Firm.cs" />
     <Compile Include="Entities\InfoEntity.cs" />
     <Compile Include="Entities\Product.cs" />
@@ -96,6 +97,10 @@
     <Compile Include="Migrations\201907292130294_AddSpecValue.Designer.cs">
       <DependentUpon>201907292130294_AddSpecValue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907311846006_AddFeatureEntity.cs" />
+    <Compile Include="Migrations\201907311846006_AddFeatureEntity.Designer.cs">
+      <DependentUpon>201907311846006_AddFeatureEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -127,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907292130294_AddSpecValue.resx">
       <DependentUpon>201907292130294_AddSpecValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907311846006_AddFeatureEntity.resx">
+      <DependentUpon>201907311846006_AddFeatureEntity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
