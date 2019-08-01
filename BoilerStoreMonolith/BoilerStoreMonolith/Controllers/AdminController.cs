@@ -14,6 +14,7 @@ namespace BoilerStoreMonolith.Controllers
     {
         private IProductRepository productRepo;
         private ICategoryRepository categoryRepo;
+        private ICategoryFeatureRepository categoryFeatureRepo;
         private IFeatureRepository featureRepo;
         private IInfoEntityRepository siteInfoRepo;
         private IFirmRepository firmRepo;
@@ -22,6 +23,7 @@ namespace BoilerStoreMonolith.Controllers
         public AdminController(
             IProductRepository _productRepo,
             ICategoryRepository _categoryRepo,
+            ICategoryFeatureRepository _categoryFeatureRepo,
             IFeatureRepository _featureRepo,
             IInfoEntityRepository _siteInfoRepo,
             IFirmRepository _firmRepo
@@ -29,6 +31,7 @@ namespace BoilerStoreMonolith.Controllers
         {
             productRepo = _productRepo;
             categoryRepo = _categoryRepo;
+            categoryFeatureRepo = _categoryFeatureRepo;
             featureRepo = _featureRepo;
             siteInfoRepo = _siteInfoRepo;
             firmRepo = _firmRepo;
@@ -69,6 +72,12 @@ namespace BoilerStoreMonolith.Controllers
             model.Category = categoryRepo.Categories
                 .SingleOrDefault(c => c.Name == model.Product.Category);
 
+
+            model.Features = categoryFeatureRepo.CategoryFeatures.Join(featureRepo.Features,
+                p => p.Name,
+                t => t.Name,
+                (p, t) => t).ToList();
+
             ViewBag.categories = new SelectList(
                     categoryRepo.Categories.Select(c => c.Name),
                     model.Product.Category
@@ -92,6 +101,8 @@ namespace BoilerStoreMonolith.Controllers
 
             model.Category = categoryRepo.Categories
                 .SingleOrDefault(c => c.Name == model.Product.Category);
+
+            Console.WriteLine(model.Features);
 
             ViewBag.categories = new SelectList(
                 categoryRepo.Categories.Select(c => c.Name),

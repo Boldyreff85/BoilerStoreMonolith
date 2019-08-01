@@ -66,10 +66,10 @@
 
 
 
-                @foreach (var item in Model.Category.CategorySpecs)
+                @foreach (var item in Model.Features)
                 {
                     @Html.Label(item.Name)
-                    <input type="hidden" value="@item.Value" name=@item.Name />
+                    <input type="hidden" value=@item.Value name=@item.Name />
                     @Html.TextBox(@item.Name, @item.Value,
                         new { @class = "form-control" })
 
@@ -79,12 +79,12 @@
 
 
                 @*@Html.LabelFor(p => p.Product.Power)
-                    @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(p => p.Product.Power)*@
+        @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.Product.Power)*@
 
                 @*@Html.LabelFor(p => p.Product.Price)
-                    @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(p => p.Product.Price)*@
+        @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
+        @Html.ValidationMessageFor(p => p.Product.Price)*@
             </div>
         </div>
 

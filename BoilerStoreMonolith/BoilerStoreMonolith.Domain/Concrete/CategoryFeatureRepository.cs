@@ -7,17 +7,11 @@ namespace BoilerStoreMonolith.Domain.Concrete
 {
     public class CategoryFeatureRepository : ICategoryFeatureRepository
     {
+        private ApplicationContext context = new ApplicationContext();
 
-        public IEnumerable<CategoryFeature> CategoryFeatures
-        {
-            get
-            {
-                using (var context = new ApplicationContext())
-                {
-                    return context.CategoryFeatures;
-                }
-            }
-        }
+
+        public IEnumerable<CategoryFeature> CategoryFeatures => context.CategoryFeatures;
+
 
         public async void SaveCategoryFeature(CategoryFeature categoryFeature)
         {
