@@ -1,10 +1,6 @@
 ﻿using BoilerStoreMonolith.Domain.Abstract;
 using BoilerStoreMonolith.Domain.Concrete;
 using Ninject.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace BoilerStoreMonolith.Infrastructure
 {
@@ -17,6 +13,7 @@ namespace BoilerStoreMonolith.Infrastructure
             Bind<ICategoryRepository>().To<CategoryRepository>();
             Bind<IFirmRepository>().To<FirmRepository>();
             Bind<IFeatureRepository>().To<FeatureRepository>();
+            Bind<ICategoryFeatureRepository>().To<CategoryFeatureRepository>();
         }
     }
 }
