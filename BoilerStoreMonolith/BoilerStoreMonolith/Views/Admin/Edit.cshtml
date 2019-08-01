@@ -65,16 +65,17 @@
                 </div>
 
 
-
-                @foreach (var item in Model.Features)
+                @if (Model.Features != null && Model.Features.Count > 0)
                 {
-                    @Html.Label(item.Name)
-                    <input type="hidden" value=@item.Value name=@item.Name />
-                    @Html.TextBox(@item.Name, @item.Value,
-                        new { @class = "form-control" })
+                    foreach (var item in Model.Features)
+                    {
+                        @Html.Label(item.Name)
+                        <input type="hidden" value=@item.Value name="Features" />
+                        @Html.TextBox("Features", @item.Value,
+                            new { @class = "form-control" })
 
+                    }
                 }
-
 
 
 

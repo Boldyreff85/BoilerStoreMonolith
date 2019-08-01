@@ -99,10 +99,6 @@ namespace BoilerStoreMonolith.Controllers
                 HttpPostedFileBase firmImg = null)
         {
 
-            model.Category = categoryRepo.Categories
-                .SingleOrDefault(c => c.Name == model.Product.Category);
-
-            Console.WriteLine(model.Features);
 
             ViewBag.categories = new SelectList(
                 categoryRepo.Categories.Select(c => c.Name),
@@ -115,41 +111,36 @@ namespace BoilerStoreMonolith.Controllers
             );
 
             Product product = model.Product;
-            if (ModelState.IsValid)
+
+            productRepo.SaveProduct(product);
+            TempData["category"] = string.Format("{0} has been saved", product.Title);
+
+            var category = categoryRepo.Categories
+                .SingleOrDefault(c => c.Name == product.Category);
+
+            if (categoryImg != null)
             {
-                productRepo.SaveProduct(product);
-                TempData["category"] = string.Format("{0} has been saved", product.Title);
-
-                var category = categoryRepo.Categories
-                    .SingleOrDefault(c => c.Name == product.Category);
-
-                if (categoryImg != null)
-                {
-                    category.ImageMimeType = categoryImg.ContentType;
-                    category.ImageData = new byte[categoryImg.ContentLength];
-                    categoryImg.InputStream.Read(
-                        category.ImageData, 0, categoryImg.ContentLength);
-                }
-                categoryRepo.SaveCategory(category);
-
-                var firm = firmRepo.Firms
-                    .SingleOrDefault(f => f.Name == product.Firm);
-                if (firmImg != null)
-                {
-                    firm.ImageMimeType = firmImg.ContentType;
-                    firm.ImageData = new byte[firmImg.ContentLength];
-                    firmImg.InputStream.Read(
-                        firm.ImageData, 0, firmImg.ContentLength);
-                }
-                firmRepo.SaveFirm(firm);
-
-
-                return RedirectToAction("Index");
+                category.ImageMimeType = categoryImg.ContentType;
+                category.ImageData = new byte[categoryImg.ContentLength];
+                categoryImg.InputStream.Read(
+                    category.ImageData, 0, categoryImg.ContentLength);
             }
-            else
-            {// there is something wrong with the data values
-                return View(model);
+            categoryRepo.SaveCategory(category);
+
+            var firm = firmRepo.Firms
+                .SingleOrDefault(f => f.Name == product.Firm);
+            if (firmImg != null)
+            {
+                firm.ImageMimeType = firmImg.ContentType;
+                firm.ImageData = new byte[firmImg.ContentLength];
+                firmImg.InputStream.Read(
+                    firm.ImageData, 0, firmImg.ContentLength);
             }
+            firmRepo.SaveFirm(firm);
+
+
+            return RedirectToAction("Index");
+
         }
 
         public ViewResult Create()
@@ -217,6 +208,8 @@ namespace BoilerStoreMonolith.Controllers
             model.Category = categoryRepo.Categories
                 .SingleOrDefault(c => c.Id == categoryId);
 
+            model.Features = model.Category.CategoryFeatures.Select(fn => fn.Name).ToList();
+
             return View(model);
         }
 
@@ -225,17 +218,19 @@ namespace BoilerStoreMonolith.Controllers
             EditCategoriesViewModel model,
             HttpPostedFileBase categoryImg = null)
         {
-            var features = new List<Feature>();
+            var catFeatures = new List<CategoryFeature>();
 
             foreach (var item in model.Features)
             {
-                features.Add(new Feature
+                catFeatures.Add(new CategoryFeature
                 {
                     Name = item
                 });
-                //featureRepo.SaveFeature(feature);
             }
 
+            var featuresToRemove = categoryFeatureRepo.CategoryFeatures.ToList();
+            categoryFeatureRepo.DeleteCategoryFeatures(featuresToRemove);
+            model.Category.CategoryFeatures = catFeatures;
 
             if (categoryImg != null)
             {

@@ -50,14 +50,14 @@
             <div class="form-group row m-auto">
                 <div class="col align-self-center">
                     <ul id="specsList" class="list-group list-group-flush"></ul>
-                    @if (Model.Category.Features != null)
+                    @if (Model.Features != null)
                     {
-                        foreach (var item in Model.Category.Features)
+                        foreach (var item in Model.Features)
                         {
                             <li class="list-group-item d-flex">
-                                <div class="inputSpecVal" name="Features">@item.Name</div>
+                                <div class="inputSpecVal" name="Features">@item</div>
                                 <button type="button" class="specClose ml-auto" aria-label="Close">Х</button>
-                                <input type="hidden" name="Features" value=@item.Name />
+                                <input type="hidden" name="Features" value=@item />
                             </li>
                         }
                     }

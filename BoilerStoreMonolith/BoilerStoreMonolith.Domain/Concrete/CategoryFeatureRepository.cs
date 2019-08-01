@@ -50,13 +50,11 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         }
 
-        public async Task<List<CategoryFeature>> DeleteCategoryFeatures(List<CategoryFeature> categoryFeaturesToDelete)
+        public List<CategoryFeature> DeleteCategoryFeatures(List<CategoryFeature> categoryFeaturesToDelete)
         {
-            using (var context = new ApplicationContext())
-            {
-                context.CategoryFeatures.RemoveRange(categoryFeaturesToDelete);
-                await context.SaveChangesAsync();
-            }
+            context.CategoryFeatures.RemoveRange(categoryFeaturesToDelete);
+            context.SaveChanges();
+
             return categoryFeaturesToDelete;
         }
 

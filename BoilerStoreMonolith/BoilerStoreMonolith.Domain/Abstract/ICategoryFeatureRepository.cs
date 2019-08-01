@@ -9,6 +9,6 @@ namespace BoilerStoreMonolith.Domain.Abstract
         IEnumerable<CategoryFeature> CategoryFeatures { get; }
         void SaveCategoryFeature(CategoryFeature categoryFeature);
         Task<CategoryFeature> DeleteCategoryFeature(int categoryFeatureId);
-        Task<List<CategoryFeature>> DeleteCategoryFeatures(List<CategoryFeature> categoryFeaturesToDelete);
+        List<CategoryFeature> DeleteCategoryFeatures(List<CategoryFeature> categoryFeaturesToDelete);
     }
 }
