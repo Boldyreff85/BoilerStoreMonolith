@@ -9,6 +9,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
     {
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryFeature> CategoryFeatures { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<CategorySpec> CategorySpecs { get; set; }
         public DbSet<Firm> Firms { get; set; }

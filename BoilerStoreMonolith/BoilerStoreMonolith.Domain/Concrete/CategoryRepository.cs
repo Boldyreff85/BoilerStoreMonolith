@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using BoilerStoreMonolith.Domain.Abstract;
+using BoilerStoreMonolith.Domain.Entities;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using BoilerStoreMonolith.Domain.Abstract;
-using BoilerStoreMonolith.Domain.Entities;
 
 namespace BoilerStoreMonolith.Domain.Concrete
 {
@@ -12,7 +12,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public IEnumerable<Category> Categories
         {
-            get { return context.Categories.Include(c => c.Features); }
+            get { return context.Categories.Include(c => c.CategoryFeatures); }
         }
 
         public void SaveCategory(Category category)
@@ -28,7 +28,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
                 {
                     dbEntry.Id = category.Id;
                     dbEntry.Name = category.Name;
-                    dbEntry.Features = category.Features;
+                    dbEntry.CategoryFeatures = category.CategoryFeatures;
                     dbEntry.ImageData = category.ImageData;
                     dbEntry.ImageMimeType = category.ImageMimeType;
 
@@ -42,7 +42,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
             Category dbEntry = context.Categories.Find(categoryId);
             if (dbEntry != null)
             {
-                context.CategorySpecs.RemoveRange(dbEntry.CategorySpecs);
+                context.CategoryFeatures.RemoveRange(dbEntry.CategoryFeatures);
                 context.Categories.Remove(dbEntry);
                 context.SaveChanges();
             }
@@ -53,8 +53,12 @@ namespace BoilerStoreMonolith.Domain.Concrete
         {
             if (categoriesToDelete.Any())
             {
+                foreach (var category in categoriesToDelete)
+                {
+                    context.CategoryFeatures.RemoveRange(category.CategoryFeatures);
+                }
                 context.Categories.RemoveRange(categoriesToDelete);
-                context.SaveChangesAsync();
+                context.SaveChanges();
             }
             return categoriesToDelete;
         }

@@ -225,7 +225,6 @@ namespace BoilerStoreMonolith.Controllers
                 //featureRepo.SaveFeature(feature);
             }
 
-            model.Category.Features = features;
 
             if (categoryImg != null)
             {

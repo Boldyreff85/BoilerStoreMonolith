@@ -62,6 +62,7 @@
     <Compile Include="Concrete\InfoEntityRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />
     <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\CategoryFeature.cs" />
     <Compile Include="Entities\CategorySpec.cs" />
     <Compile Include="Entities\Feature.cs" />
     <Compile Include="Entities\Firm.cs" />
@@ -103,6 +104,10 @@
     <Compile Include="Migrations\201907311846006_AddFeatureEntity.Designer.cs">
       <DependentUpon>201907311846006_AddFeatureEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908010815238_AddCategoryFeatureTable.cs" />
+    <Compile Include="Migrations\201908010815238_AddCategoryFeatureTable.Designer.cs">
+      <DependentUpon>201908010815238_AddCategoryFeatureTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -137,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907311846006_AddFeatureEntity.resx">
       <DependentUpon>201907311846006_AddFeatureEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908010815238_AddCategoryFeatureTable.resx">
+      <DependentUpon>201908010815238_AddCategoryFeatureTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
