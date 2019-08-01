@@ -50,14 +50,14 @@
             <div class="form-group row m-auto">
                 <div class="col align-self-center">
                     <ul id="specsList" class="list-group list-group-flush"></ul>
-                    @if (Model.Category.CategorySpecs != null)
+                    @if (Model.Category.Features != null)
                     {
-                        foreach (var item in Model.Category.CategorySpecs)
+                        foreach (var item in Model.Category.Features)
                         {
                             <li class="list-group-item d-flex">
-                                <div class="inputSpecVal" name="Specs">@item.Name</div>
+                                <div class="inputSpecVal" name="Features">@item.Name</div>
                                 <button type="button" class="specClose ml-auto" aria-label="Close">Х</button>
-                                <input type="hidden" name="Specs" value=@item.Name />
+                                <input type="hidden" name="Features" value=@item.Name />
                             </li>
                         }
                     }
@@ -87,11 +87,11 @@
             $("#specsList").append(
                 '<li class="list-group-item d-flex">' +
 
-                '<div class="inputSpecVal" name="Specs">' + $("#inputSpec").val() + '</div>' +
+                '<div class="inputSpecVal" name="Features">' + $("#inputSpec").val() + '</div>' +
                 '<button type="button" class="specClose ml-auto" aria-label="Close">' +
                 '×' +
                 '</button>' +
-                '<input type="hidden" name="Specs" value="' +
+                '<input type="hidden" name="Features" value="' +
                 $("#inputSpec").val() +
                 '" /></li>');
         }

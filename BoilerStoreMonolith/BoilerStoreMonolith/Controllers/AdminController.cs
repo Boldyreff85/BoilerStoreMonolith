@@ -14,19 +14,23 @@ namespace BoilerStoreMonolith.Controllers
     {
         private IProductRepository productRepo;
         private ICategoryRepository categoryRepo;
+        private IFeatureRepository featureRepo;
         private IInfoEntityRepository siteInfoRepo;
         private IFirmRepository firmRepo;
         private ApplicationContext context = new ApplicationContext();
+
         public AdminController(
             IProductRepository _productRepo,
+            ICategoryRepository _categoryRepo,
+            IFeatureRepository _featureRepo,
             IInfoEntityRepository _siteInfoRepo,
-            ICategoryRepository _categoryRepositoryRepo,
             IFirmRepository _firmRepo
         )
         {
             productRepo = _productRepo;
+            categoryRepo = _categoryRepo;
+            featureRepo = _featureRepo;
             siteInfoRepo = _siteInfoRepo;
-            categoryRepo = _categoryRepositoryRepo;
             firmRepo = _firmRepo;
         }
 
@@ -64,7 +68,6 @@ namespace BoilerStoreMonolith.Controllers
 
             model.Category = categoryRepo.Categories
                 .SingleOrDefault(c => c.Name == model.Product.Category);
-
 
             ViewBag.categories = new SelectList(
                     categoryRepo.Categories.Select(c => c.Name),
@@ -211,22 +214,18 @@ namespace BoilerStoreMonolith.Controllers
             EditCategoriesViewModel model,
             HttpPostedFileBase categoryImg = null)
         {
-            var specs = new List<CategorySpec>();
+            var features = new List<Feature>();
 
-            foreach (var item in model.Specs)
+            foreach (var item in model.Features)
             {
-                specs.Add(new CategorySpec
+                features.Add(new Feature
                 {
                     Name = item
                 });
+                //featureRepo.SaveFeature(feature);
             }
 
-            // clear specs table
-            var tableSpecs = context.CategorySpecs;
-            context.CategorySpecs.RemoveRange(tableSpecs);
-            // add new specs
-            model.Category.CategorySpecs = specs;
-            context.SaveChangesAsync();
+            model.Category.Features = features;
 
             if (categoryImg != null)
             {
@@ -235,7 +234,7 @@ namespace BoilerStoreMonolith.Controllers
                 categoryImg.InputStream.Read(
                     model.Category.ImageData, 0, categoryImg.ContentLength);
             }
-;
+
             categoryRepo.SaveCategory(model.Category);
 
             return RedirectToAction("IndexCategories");

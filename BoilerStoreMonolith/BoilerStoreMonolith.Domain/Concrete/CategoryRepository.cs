@@ -12,7 +12,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public IEnumerable<Category> Categories
         {
-            get { return context.Categories.Include(c => c.CategorySpecs); }
+            get { return context.Categories.Include(c => c.Features); }
         }
 
         public void SaveCategory(Category category)
@@ -28,7 +28,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
                 {
                     dbEntry.Id = category.Id;
                     dbEntry.Name = category.Name;
-                    dbEntry.CategorySpecs = category.CategorySpecs;
+                    dbEntry.Features = category.Features;
                     dbEntry.ImageData = category.ImageData;
                     dbEntry.ImageMimeType = category.ImageMimeType;
 

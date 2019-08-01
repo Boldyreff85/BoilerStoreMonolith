@@ -9,6 +9,7 @@ namespace BoilerStoreMonolith.Models
         public Product Product { get; set; }
         public string ImageToLoad { get; set; }
         public Category Category { get; set; }
+        public List<Feature> Features { get; set; }
     }
 
     public class AdminIndexListViewModel
@@ -30,7 +31,7 @@ namespace BoilerStoreMonolith.Models
     public class EditCategoriesViewModel
     {
         public Category Category { get; set; }
-        public List<string> Specs { get; set; }
+        public List<string> Features { get; set; }
         public string ImageToLoad { get; set; }
     }
 
