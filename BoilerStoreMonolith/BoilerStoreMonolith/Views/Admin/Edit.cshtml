@@ -65,16 +65,26 @@
                 </div>
 
 
-                @if (Model.Features != null && Model.Features.Count > 0)
+                @if (Model.FeatureNames?.Count > 0)
                 {
-                    foreach (var item in Model.Features)
+                    for (int i = 0; i < Model.FeatureNames.Count; i++)
                     {
-                        @Html.Label(item.Name)
-                        <input type="hidden" value=@item.Value name="Features" />
-                        @Html.TextBox("Features", @item.Value,
-                            new { @class = "form-control" })
+                        @Html.Label(Model.FeatureNames[i])
+
+                        <input name="FeatureNames" type="hidden" value=@Model.FeatureNames[i] />
+                        if (Model.FeatureValues?.Count > 0)
+                        {
+                            <input class="form-control" name="FeatureValues" type="text"
+                                   value="@Model.FeatureValues[i]" />
+                        }
+                        else
+                        {
+                            <input class="form-control" name="FeatureValues" type="text"
+                                   value="" />
+                        }
 
                     }
+
                 }
 
 

@@ -72,11 +72,17 @@ namespace BoilerStoreMonolith.Controllers
             model.Category = categoryRepo.Categories
                 .SingleOrDefault(c => c.Name == model.Product.Category);
 
+            if (model.Category?.CategoryFeatures != null)
+            {
+                model.FeatureNames = model.Category.CategoryFeatures
+                    .Select(cf => cf.Name).ToList();
 
-            model.Features = categoryFeatureRepo.CategoryFeatures.Join(featureRepo.Features,
-                p => p.Name,
-                t => t.Name,
-                (p, t) => t).ToList();
+                model.FeatureValues = model.Category.CategoryFeatures.Join(featureRepo.Features,
+                    p => p.Name,
+                    t => t.Name,
+                    (p, t) => t.Value).ToList();
+            }
+
 
             ViewBag.categories = new SelectList(
                     categoryRepo.Categories.Select(c => c.Name),
@@ -96,7 +102,8 @@ namespace BoilerStoreMonolith.Controllers
         public ActionResult Edit(AdminEditViewModel model,
                 HttpPostedFileBase productImg = null,
                 HttpPostedFileBase categoryImg = null,
-                HttpPostedFileBase firmImg = null)
+                HttpPostedFileBase firmImg = null
+                )
         {
 
 
@@ -109,6 +116,20 @@ namespace BoilerStoreMonolith.Controllers
                 firmRepo.Firms.Select(c => c.Name),
                 model.Product.Firm
             );
+
+            if (model.FeatureNames?.Count > 0 && model.FeatureValues?.Count > 0)
+            {
+                for (int i = 0; i < model.FeatureNames.Count; i++)
+                {
+                    var feature = new Feature
+                    {
+                        Name = model.FeatureNames[i],
+                        Value = model.FeatureValues[i]
+                    };
+                    featureRepo.SaveFeature(feature);
+                }
+
+            }
 
             Product product = model.Product;
 

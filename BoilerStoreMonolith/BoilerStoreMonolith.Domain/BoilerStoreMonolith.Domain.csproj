@@ -110,6 +110,10 @@
     <Compile Include="Migrations\201908010815238_AddCategoryFeatureTable.Designer.cs">
       <DependentUpon>201908010815238_AddCategoryFeatureTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908011850069_ProductChanges.cs" />
+    <Compile Include="Migrations\201908011850069_ProductChanges.Designer.cs">
+      <DependentUpon>201908011850069_ProductChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -147,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908010815238_AddCategoryFeatureTable.resx">
       <DependentUpon>201908010815238_AddCategoryFeatureTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908011850069_ProductChanges.resx">
+      <DependentUpon>201908011850069_ProductChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

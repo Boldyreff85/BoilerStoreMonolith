@@ -265,19 +265,7 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-        public FileContentResult GetCategoryImage_(int productId) // depricated
-        {
 
-            Product product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
-            if (product != null && product.CategoryImageData != null && product.CategoryImageMimeType != null)
-            {
-                return File(product.CategoryImageData, product.CategoryImageMimeType);
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         public FileContentResult GetCategoryImage(int productId)
         {
@@ -294,19 +282,7 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-        public FileContentResult GetFirmImage(int productId)
-        {
 
-            Product product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
-            if (product != null && product.FirmImageData != null && product.FirmImageMimeType != null)
-            {
-                return File(product.FirmImageData, product.FirmImageMimeType);
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         public IEnumerable<Product> OrderProductList(
             IEnumerable<Product> products,

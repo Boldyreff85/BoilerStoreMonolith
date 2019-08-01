@@ -23,7 +23,7 @@
     @if (ViewBag.ImageToLoad == "categoryImg")
     {
         <img class="img-thumbnail" width="80" height="80"
-             src="@Url.Action("GetCategoryImageFromCategoryTable", "Admin",
+             src="@Url.Action("GetImageFromCategoryTable", "Admin",
                       new {categoryId = Model.Category.Id})" />
     }
     else if (ViewBag.ImageToLoad == "firmImg")
