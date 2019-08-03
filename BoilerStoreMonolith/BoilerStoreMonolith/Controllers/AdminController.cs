@@ -73,34 +73,40 @@ namespace BoilerStoreMonolith.Controllers
                 .SingleOrDefault(c => c.Name == model.Product.Category);
 
 
+            // getting category features into view model
             var catFeatures = new List<CategoryFeature>();
-            var productFeatures = new List<Feature>();
-            var featuresToShow = new List<FeaturesViewModel>();
-
-
-
-            for (int i = 0; i < catFeatures.Count; i++)
+            if (model.Category != null)
             {
-                var feature = new FeaturesViewModel();
-                feature.Name = catFeatures[i].Name;
-                feature.Value = "";
-
-                for (int j = 0; j < productFeatures.Count; j++)
-                {
-                    if (catFeatures[i].Name == productFeatures[j].Name)
-                    {
-                        if (productFeatures[j].Value != null)
-                        {
-                            feature.Value = productFeatures[j].Value;
-                        }
-                        break;
-                    }
-                }
-                featuresToShow.Add(feature);
+                catFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == model.Category.Id)
+                    .ToList();
             }
 
-            //model.Features = featuresToShow;
-            model.Features = model.Product.Features.ToList();
+            model.Features = new List<Feature>();
+            if (catFeatures != null && catFeatures.Any())
+            {
+                foreach (var catFeature in catFeatures)
+                {
+                    // trying to get value if exist
+                    var productCategoryFeatures = featureRepo.Features
+                        .Where(f => f.Name == catFeature.Name
+                                    && f.ProductId == productId).ToList();
+                    var featureValue = "";
+                    if (productCategoryFeatures?.Any() == true)
+                    {
+                        featureValue = productCategoryFeatures
+                            .Select(f => f.Value).Single();
+                    }
+                    // feeding view model
+                    model.Features.Add(new Feature
+                    {
+                        Name = catFeature.Name,
+                        Value = featureValue,
+                        ProductId = productId
+                    });
+
+                }
+            }
 
             ViewBag.categories = new SelectList(
                     categoryRepo.Categories.Select(c => c.Name),
@@ -123,6 +129,7 @@ namespace BoilerStoreMonolith.Controllers
                 HttpPostedFileBase firmImg = null
                 )
         {
+            // viewbags
             ViewBag.categories = new SelectList(
                 categoryRepo.Categories.Select(c => c.Name),
                 model.Product.Category
@@ -133,31 +140,35 @@ namespace BoilerStoreMonolith.Controllers
                 model.Product.Firm
             );
 
+            // save product
             Product product = model.Product;
+            productRepo.SaveProduct(product);
 
-            var productFeatures = new List<Feature>();
-            foreach (var feature in model.Features)
+
+            // crearing product features from table
+            var prodFeatures = featureRepo.Features
+                .Where(pf => pf.ProductId == product.ProductID);
+
+            if (prodFeatures != null && prodFeatures.Any())
             {
-                productFeatures.Add(new Feature
+                featureRepo.DeleteFeatures(prodFeatures.ToList());
+            }
+            // saving features of product
+            if (model.Features?.Count > 0)
+            {
+                foreach (var feature in model.Features)
                 {
-                    Name = feature.Name,
-                    Value = feature.Value
-                });
+                    var productFeature = new Feature
+                    {
+                        Name = feature.Name,
+                        Value = feature.Value,
+                        ProductId = product.ProductID
+                    };
+                    featureRepo.SaveFeature(productFeature);
+                }
             }
 
-            // получаем текущие features товара 
-            var DbProductFeatures = productRepo.Products
-                .Single(p => p.ProductID == model.Product.ProductID)
-                .Features;
 
-            // удаляем текущие feature товара
-            if (DbProductFeatures.Count > 0)
-                featureRepo.DeleteFeatures(DbProductFeatures.ToList());
-
-            // перезаписываем новыми features
-            product.Features = productFeatures;
-
-            productRepo.SaveProduct(product);
             TempData["category"] = string.Format("{0} has been saved", product.Title);
 
             var category = categoryRepo.Categories
@@ -174,14 +185,18 @@ namespace BoilerStoreMonolith.Controllers
 
             var firm = firmRepo.Firms
                 .SingleOrDefault(f => f.Name == product.Firm);
-            if (firmImg != null)
+
+            if (firm != null && firmImg != null)
             {
+
                 firm.ImageMimeType = firmImg.ContentType;
                 firm.ImageData = new byte[firmImg.ContentLength];
                 firmImg.InputStream.Read(
                     firm.ImageData, 0, firmImg.ContentLength);
+
+                firmRepo.SaveFirm(firm);
             }
-            firmRepo.SaveFirm(firm);
+
 
 
             return RedirectToAction("Index");
@@ -276,7 +291,6 @@ namespace BoilerStoreMonolith.Controllers
             categoryRepo.SaveCategory(model.Category);
 
             // saving category features
-            int catFeatureId = 0;
             if (model.CategoryFeaturesNames?.Count > 0)
             {
                 // clear table
@@ -288,7 +302,6 @@ namespace BoilerStoreMonolith.Controllers
                 {
                     var catFeature = new CategoryFeature
                     {
-                        Id = catFeatureId,
                         Name = categoryFeaturesName,
                         CategoryId = model.Category.Id
                     };

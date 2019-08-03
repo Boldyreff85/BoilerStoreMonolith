@@ -33,15 +33,19 @@
                                 new { category = @category.Name },
                                 new { @class = "caret" })
                         <ul class="nested">
-                            @foreach (var firm in category.Firms)
+                            @if (category.Firms?.Any() == true)
                             {
-                                <li class="mt-2">
-                                    @*@firm*@
-                                    @Html.ActionLink(firm, "BoilerList", "Home",
-                                        new { firm = @firm, category = @category.Name },
-                                        null)
-                                </li>
+                                foreach (var firm in category.Firms)
+                                {
+                                    <li class="mt-2">
+                                        @*@firm*@
+                                        @Html.ActionLink(firm, "BoilerList", "Home",
+                                            new {firm = @firm, category = @category.Name},
+                                            null)
+                                    </li>
+                                }
                             }
+
                         </ul>
                     }
 

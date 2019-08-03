@@ -10,8 +10,7 @@ namespace BoilerStoreMonolith.Models
         public string ImageToLoad { get; set; }
         public Category Category { get; set; }
         public List<Feature> Features { get; set; }
-        public List<string> FeatureNames { get; set; }
-        public List<string> FeatureValues { get; set; }
+
     }
 
     public class FeaturesViewModel

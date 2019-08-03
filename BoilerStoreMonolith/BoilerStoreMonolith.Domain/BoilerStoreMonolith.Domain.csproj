@@ -118,6 +118,14 @@
     <Compile Include="Migrations\201908031808351_ChangeToCategoryFeatures.Designer.cs">
       <DependentUpon>201908031808351_ChangeToCategoryFeatures.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908032012001_EditProductTable.cs" />
+    <Compile Include="Migrations\201908032012001_EditProductTable.Designer.cs">
+      <DependentUpon>201908032012001_EditProductTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908032013458_EditFeatureTable.cs" />
+    <Compile Include="Migrations\201908032013458_EditFeatureTable.Designer.cs">
+      <DependentUpon>201908032013458_EditFeatureTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -161,6 +169,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908031808351_ChangeToCategoryFeatures.resx">
       <DependentUpon>201908031808351_ChangeToCategoryFeatures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908032012001_EditProductTable.resx">
+      <DependentUpon>201908032012001_EditProductTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908032013458_EditFeatureTable.resx">
+      <DependentUpon>201908032013458_EditFeatureTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

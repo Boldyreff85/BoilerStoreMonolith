@@ -17,7 +17,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public IEnumerable<Product> Products
         {
-            get { return context.Products.Include(p => p.Features); }
+            get { return context.Products; }
         }
         public void SaveProduct(Product product)
         {
@@ -33,7 +33,6 @@ namespace BoilerStoreMonolith.Domain.Concrete
                     dbEntry.Title = product.Title;
                     dbEntry.Description = product.Description;
                     dbEntry.Category = product.Category;
-                    dbEntry.Features = product.Features;
                     dbEntry.Firm = product.Firm;
                     dbEntry.ImageData = product.ImageData;
                     dbEntry.ImageMimeType = product.ImageMimeType;
