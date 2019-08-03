@@ -13,7 +13,12 @@ namespace BoilerStoreMonolith.Models
         public List<string> FeatureNames { get; set; }
         public List<string> FeatureValues { get; set; }
     }
- 
+
+    public class FeaturesViewModel
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
 
     public class AdminIndexListViewModel
     {
@@ -34,7 +39,7 @@ namespace BoilerStoreMonolith.Models
     public class EditCategoriesViewModel
     {
         public Category Category { get; set; }
-        public List<string> Features { get; set; }
+        public List<string> CategoryFeaturesNames { get; set; }
         public string ImageToLoad { get; set; }
     }
 

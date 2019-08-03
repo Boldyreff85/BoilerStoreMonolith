@@ -44,12 +44,21 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public List<Feature> DeleteFeatures(List<Feature> featuresToDelete)
         {
-            if (featuresToDelete.Any())
+            var removedFeatures = new List<Feature>();
+            using (var context = new ApplicationContext())
             {
-                context.Features.RemoveRange(featuresToDelete);
-                context.SaveChangesAsync();
+                foreach (var feature in featuresToDelete)
+                {
+                    Feature dbEntry = context.Features.Find(feature.Id);
+                    if (dbEntry != null)
+                    {
+                        context.Features.Remove(dbEntry);
+                        context.SaveChanges();
+                        removedFeatures.Add(dbEntry);
+                    }
+                }
             }
-            return featuresToDelete;
+            return removedFeatures;
         }
     }
 }

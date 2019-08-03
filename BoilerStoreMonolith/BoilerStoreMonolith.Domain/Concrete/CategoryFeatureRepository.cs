@@ -13,7 +13,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
         public IEnumerable<CategoryFeature> CategoryFeatures => context.CategoryFeatures;
 
 
-        public async void SaveCategoryFeature(CategoryFeature categoryFeature)
+        public void SaveCategoryFeature(CategoryFeature categoryFeature)
         {
             using (var context = new ApplicationContext())
             {
@@ -29,8 +29,8 @@ namespace BoilerStoreMonolith.Domain.Concrete
                         dbEntry.Id = categoryFeature.Id;
                         dbEntry.Name = categoryFeature.Name;
                     }
-                }
-                await context.SaveChangesAsync();
+                } 
+                context.SaveChanges();
             }
         }
 
@@ -52,10 +52,22 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public List<CategoryFeature> DeleteCategoryFeatures(List<CategoryFeature> categoryFeaturesToDelete)
         {
-            context.CategoryFeatures.RemoveRange(categoryFeaturesToDelete);
-            context.SaveChanges();
 
-            return categoryFeaturesToDelete;
+            var removedCategoryFeature = new List<CategoryFeature>();
+            using (var context = new ApplicationContext())
+            {
+                foreach (var feature in categoryFeaturesToDelete)
+                {
+                    CategoryFeature dbEntry = context.CategoryFeatures.Find(feature.Id);
+                    if (dbEntry != null)
+                    {
+                        context.CategoryFeatures.Remove(dbEntry);
+                        context.SaveChanges();
+                        removedCategoryFeature.Add(dbEntry);
+                    }
+                }
+            }
+            return removedCategoryFeature;
         }
 
     }

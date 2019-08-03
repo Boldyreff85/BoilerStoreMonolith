@@ -2,6 +2,7 @@
 using BoilerStoreMonolith.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,8 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public IEnumerable<Product> Products
         {
-            get { return context.Products; }
+            get { return context.Products.Include(p => p.Features); }
         }
-
         public void SaveProduct(Product product)
         {
             if (product.ProductID == 0)
@@ -33,6 +33,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
                     dbEntry.Title = product.Title;
                     dbEntry.Description = product.Description;
                     dbEntry.Category = product.Category;
+                    dbEntry.Features = product.Features;
                     dbEntry.Firm = product.Firm;
                     dbEntry.ImageData = product.ImageData;
                     dbEntry.ImageMimeType = product.ImageMimeType;

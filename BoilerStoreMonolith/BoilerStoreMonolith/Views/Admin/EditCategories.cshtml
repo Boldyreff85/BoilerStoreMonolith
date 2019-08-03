@@ -49,19 +49,29 @@
 
             <div class="form-group row m-auto">
                 <div class="col align-self-center">
-                    <ul id="specsList" class="list-group list-group-flush"></ul>
-                    @if (Model.Features != null)
-                    {
-                        foreach (var item in Model.Features)
+                    <ul id="specsList" class="list-group list-group-flush">
+                        @if (Model.CategoryFeaturesNames != null)
                         {
-                            <li class="list-group-item d-flex">
-                                <div class="inputSpecVal" name="Features">@item</div>
-                                <button type="button" class="specClose ml-auto" aria-label="Close">Х</button>
-                                <input type="hidden" name="Features" value=@item />
-                            </li>
-                        }
-                    }
 
+                            @*Features[0].Name*@
+                            for (int i = 0; i < Model.CategoryFeaturesNames.Count; i++)
+                            {
+                                <li class="list-group-item d-flex">
+                                    <div class="inputSpecVal">
+                                        @Model.CategoryFeaturesNames[i]
+                                    </div>
+                                    <button type="button" class="specClose ml-auto"
+                                            aria-label="Close">
+                                        Х
+                                    </button>
+                                    <input class="CategoryFeaturesNames" type="hidden" name="CategoryFeaturesNames[@i]"
+                                           value="@Model.CategoryFeaturesNames[i]" />
+                                </li>
+                            }
+
+
+                        }
+                    </ul>
                 </div>
 
             </div>
@@ -79,7 +89,7 @@
 
 </div>
 
-
+@*Features[0].Name*@
 <script>
     $("#addSpecBtn").click(function () {
 
@@ -87,11 +97,13 @@
             $("#specsList").append(
                 '<li class="list-group-item d-flex">' +
 
-                '<div class="inputSpecVal" name="Features">' + $("#inputSpec").val() + '</div>' +
+                '<div class="inputSpecVal">' + $("#inputSpec").val() + '</div>' +
                 '<button type="button" class="specClose ml-auto" aria-label="Close">' +
                 '×' +
                 '</button>' +
-                '<input type="hidden" name="Features" value="' +
+                '<input class="CategoryFeaturesNames" type="hidden" name="CategoryFeaturesNames[' +
+                $('ul#specsList').children('li').length +
+                ']" value="' +
                 $("#inputSpec").val() +
                 '" /></li>');
         }
@@ -106,7 +118,16 @@
             $(target.parent()).remove();
 
 
+            let specsListItems = $(".CategoryFeaturesNames");
+            for (var i = 0; i < specsListItems.length; i++) {
+                $(specsListItems[i]).attr('name', "CategoryFeaturesNames[" + i + "]");
+            }
         });
+
+
+
+
+
 
 </script>
 

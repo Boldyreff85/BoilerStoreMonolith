@@ -72,17 +72,35 @@ namespace BoilerStoreMonolith.Controllers
             model.Category = categoryRepo.Categories
                 .SingleOrDefault(c => c.Name == model.Product.Category);
 
-            if (model.Category?.CategoryFeatures != null)
-            {
-                model.FeatureNames = model.Category.CategoryFeatures
-                    .Select(cf => cf.Name).ToList();
 
-                model.FeatureValues = model.Category.CategoryFeatures.Join(featureRepo.Features,
-                    p => p.Name,
-                    t => t.Name,
-                    (p, t) => t.Value).ToList();
+            var catFeatures = new List<CategoryFeature>();
+            var productFeatures = new List<Feature>();
+            var featuresToShow = new List<FeaturesViewModel>();
+
+
+
+            for (int i = 0; i < catFeatures.Count; i++)
+            {
+                var feature = new FeaturesViewModel();
+                feature.Name = catFeatures[i].Name;
+                feature.Value = "";
+
+                for (int j = 0; j < productFeatures.Count; j++)
+                {
+                    if (catFeatures[i].Name == productFeatures[j].Name)
+                    {
+                        if (productFeatures[j].Value != null)
+                        {
+                            feature.Value = productFeatures[j].Value;
+                        }
+                        break;
+                    }
+                }
+                featuresToShow.Add(feature);
             }
 
+            //model.Features = featuresToShow;
+            model.Features = model.Product.Features.ToList();
 
             ViewBag.categories = new SelectList(
                     categoryRepo.Categories.Select(c => c.Name),
@@ -105,8 +123,6 @@ namespace BoilerStoreMonolith.Controllers
                 HttpPostedFileBase firmImg = null
                 )
         {
-
-
             ViewBag.categories = new SelectList(
                 categoryRepo.Categories.Select(c => c.Name),
                 model.Product.Category
@@ -117,21 +133,29 @@ namespace BoilerStoreMonolith.Controllers
                 model.Product.Firm
             );
 
-            if (model.FeatureNames?.Count > 0 && model.FeatureValues?.Count > 0)
-            {
-                for (int i = 0; i < model.FeatureNames.Count; i++)
-                {
-                    var feature = new Feature
-                    {
-                        Name = model.FeatureNames[i],
-                        Value = model.FeatureValues[i]
-                    };
-                    featureRepo.SaveFeature(feature);
-                }
+            Product product = model.Product;
 
+            var productFeatures = new List<Feature>();
+            foreach (var feature in model.Features)
+            {
+                productFeatures.Add(new Feature
+                {
+                    Name = feature.Name,
+                    Value = feature.Value
+                });
             }
 
-            Product product = model.Product;
+            // получаем текущие features товара 
+            var DbProductFeatures = productRepo.Products
+                .Single(p => p.ProductID == model.Product.ProductID)
+                .Features;
+
+            // удаляем текущие feature товара
+            if (DbProductFeatures.Count > 0)
+                featureRepo.DeleteFeatures(DbProductFeatures.ToList());
+
+            // перезаписываем новыми features
+            product.Features = productFeatures;
 
             productRepo.SaveProduct(product);
             TempData["category"] = string.Format("{0} has been saved", product.Title);
@@ -226,10 +250,11 @@ namespace BoilerStoreMonolith.Controllers
         [HttpGet]
         public ActionResult EditCategories(EditCategoriesViewModel model, int categoryId)
         {
-            model.Category = categoryRepo.Categories
-                .SingleOrDefault(c => c.Id == categoryId);
 
-            model.Features = model.Category.CategoryFeatures.Select(fn => fn.Name).ToList();
+            model.Category = categoryRepo.Categories.Single(c => c.Id == categoryId);
+
+            model.CategoryFeaturesNames = categoryFeatureRepo.CategoryFeatures
+                .Where(cf => cf.CategoryId == categoryId).Select(cfn => cfn.Name).ToList();
 
             return View(model);
         }
@@ -239,19 +264,6 @@ namespace BoilerStoreMonolith.Controllers
             EditCategoriesViewModel model,
             HttpPostedFileBase categoryImg = null)
         {
-            var catFeatures = new List<CategoryFeature>();
-
-            foreach (var item in model.Features)
-            {
-                catFeatures.Add(new CategoryFeature
-                {
-                    Name = item
-                });
-            }
-
-            var featuresToRemove = categoryFeatureRepo.CategoryFeatures.ToList();
-            categoryFeatureRepo.DeleteCategoryFeatures(featuresToRemove);
-            model.Category.CategoryFeatures = catFeatures;
 
             if (categoryImg != null)
             {
@@ -262,6 +274,28 @@ namespace BoilerStoreMonolith.Controllers
             }
 
             categoryRepo.SaveCategory(model.Category);
+
+            // saving category features
+            int catFeatureId = 0;
+            if (model.CategoryFeaturesNames?.Count > 0)
+            {
+                // clear table
+                if (categoryFeatureRepo.CategoryFeatures?.Any() == true)
+                    categoryFeatureRepo
+                        .DeleteCategoryFeatures(categoryFeatureRepo.CategoryFeatures.ToList());
+
+                foreach (var categoryFeaturesName in model.CategoryFeaturesNames)
+                {
+                    var catFeature = new CategoryFeature
+                    {
+                        Id = catFeatureId,
+                        Name = categoryFeaturesName,
+                        CategoryId = model.Category.Id
+                    };
+                    categoryFeatureRepo.SaveCategoryFeature(catFeature);
+                }
+            }
+
 
             return RedirectToAction("IndexCategories");
         }
@@ -371,7 +405,8 @@ namespace BoilerStoreMonolith.Controllers
         // helpers
         public FileContentResult GetImageFromCategoryTable(int categoryId)
         {
-            Category category = categoryRepo.Categories.FirstOrDefault(p => p.Id == categoryId);
+            Category category = categoryRepo.Categories
+                .FirstOrDefault(p => p.Id == categoryId);
             if (category != null)
             {
                 if (category.ImageData != null && category.ImageMimeType != null)

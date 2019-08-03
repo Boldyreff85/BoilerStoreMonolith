@@ -12,7 +12,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public IEnumerable<Category> Categories
         {
-            get { return context.Categories.Include(c => c.CategoryFeatures); }
+            get { return context.Categories; }
         }
 
         public void SaveCategory(Category category)
@@ -28,7 +28,6 @@ namespace BoilerStoreMonolith.Domain.Concrete
                 {
                     dbEntry.Id = category.Id;
                     dbEntry.Name = category.Name;
-                    dbEntry.CategoryFeatures = category.CategoryFeatures;
                     dbEntry.ImageData = category.ImageData;
                     dbEntry.ImageMimeType = category.ImageMimeType;
 
@@ -42,7 +41,6 @@ namespace BoilerStoreMonolith.Domain.Concrete
             Category dbEntry = context.Categories.Find(categoryId);
             if (dbEntry != null)
             {
-                context.CategoryFeatures.RemoveRange(dbEntry.CategoryFeatures);
                 context.Categories.Remove(dbEntry);
                 context.SaveChanges();
             }
@@ -53,10 +51,6 @@ namespace BoilerStoreMonolith.Domain.Concrete
         {
             if (categoriesToDelete.Any())
             {
-                foreach (var category in categoriesToDelete)
-                {
-                    context.CategoryFeatures.RemoveRange(category.CategoryFeatures);
-                }
                 context.Categories.RemoveRange(categoriesToDelete);
                 context.SaveChanges();
             }
