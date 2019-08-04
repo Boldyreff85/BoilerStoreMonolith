@@ -24,7 +24,6 @@
     <div class="row d-flex flex-space-around">
         @for (int i = 0; i < Model.Count();)
         {
-
             if (i >= Model.Count()) { break; }
 
             <div class="card shadow-sm" style="width: 14rem;">
@@ -37,7 +36,7 @@
                                   "Admin",
                                   new {firmName = Model[i].Name})"
                          class="card-img-top"
-                         alt="Настенные"/>
+                         alt="@ViewBag.Category"/>
                     <div class="card-body">
                         <h5 class="card-title text-center">@Model[i].Name</h5>
                     </div>

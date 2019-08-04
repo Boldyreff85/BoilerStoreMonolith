@@ -126,6 +126,10 @@
     <Compile Include="Migrations\201908032013458_EditFeatureTable.Designer.cs">
       <DependentUpon>201908032013458_EditFeatureTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908041248130_AddValidationToProduct.cs" />
+    <Compile Include="Migrations\201908041248130_AddValidationToProduct.Designer.cs">
+      <DependentUpon>201908041248130_AddValidationToProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -175,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908032013458_EditFeatureTable.resx">
       <DependentUpon>201908032013458_EditFeatureTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908041248130_AddValidationToProduct.resx">
+      <DependentUpon>201908041248130_AddValidationToProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,55 +4,64 @@
     <h4 class="mb-3">Котельное оборудование</h4>
     <hr class="my-2" />
     <div class="catalogue">
-        @foreach (var category in Model.Categories)
+        @if (Model.Categories?.Any() == true)
         {
-            <ul id="myUL">
-                <li class="mt-3">
-                    @if (Model.CurrCategory == category.Name || ViewBag.category == category.Name)
-                    {
-                        @*<span class="caret caret-down">@category.Name</span>*@
-                        @Html.ActionLink(@category.Name, "FirmList", "Home",
-                                        new { category = @category.Name },
-                                        new { @class = "caret caret-down" })
-                        <ul class="nested active">
-                            @foreach (var firm in category.Firms)
-                            {
-                                <li class="mt-2">
-                                    @*@firm*@
-                                    @Html.ActionLink(firm, "BoilerList", "Home",
-                                        new { firm = firm, category = ViewBag.Category },
-                                        null)
-                                </li>
-                            }
-                        </ul>
-                    }
-                    else
-                    {
-                        @*<span class="caret">@category.Name</span>*@
-                        @Html.ActionLink(@category.Name, "FirmList", "Home",
-                                new { category = @category.Name },
-                                new { @class = "caret" })
-                        <ul class="nested">
-                            @if (category.Firms?.Any() == true)
-                            {
-                                foreach (var firm in category.Firms)
+            foreach (var category in Model.Categories)
+            {
+                <ul id="myUL">
+                    <li class="mt-3">
+                        @if (Model.CurrCategory == category.Name || ViewBag.category == category.Name)
+                        {
+                            @*<span class="caret caret-down">@category.Name</span>*@
+                            @Html.ActionLink(@category.Name, "FirmList", "Home",
+                                new {category = @category.Name},
+                                new {@class = "caret caret-down"})
+                            <ul class="nested active">
+                                @if (category.Firms?.Any() == true)
                                 {
-                                    <li class="mt-2">
-                                        @*@firm*@
-                                        @Html.ActionLink(firm, "BoilerList", "Home",
-                                            new {firm = @firm, category = @category.Name},
-                                            null)
-                                    </li>
+                                    foreach (var firm in category.Firms)
+                                    {
+                                        <li class="mt-2">
+                                            @*@firm*@
+                                            @Html.ActionLink(firm, "BoilerList", "Home",
+                                                new {firm = firm, category = ViewBag.Category},
+                                                null)
+                                        </li>
+                                    }
                                 }
-                            }
 
-                        </ul>
-                    }
+                            </ul>
+                        }
+                        else
+                        {
+                            @*<span class="caret">@category.Name</span>*@
+                            @Html.ActionLink(@category.Name, "FirmList", "Home",
+                                new {category = @category.Name},
+                                new {@class = "caret"})
+                            <ul class="nested">
+                                @if (category.Firms?.Count() > 0)
+                                {
+                                    foreach (var firm in category.Firms)
+                                    {
+                                        <li class="mt-2">
+                                            @*@firm*@
+                                            @Html.ActionLink(firm, "BoilerList", "Home",
+                                                new {firm = @firm, category = @category.Name},
+                                                null)
+                                        </li>
+                                    }
+                                }
+
+                            </ul>
+                        }
 
 
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            }
         }
+
+
 
     </div>
 </div>

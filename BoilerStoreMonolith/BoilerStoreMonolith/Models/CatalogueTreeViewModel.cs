@@ -12,7 +12,7 @@ namespace BoilerStoreMonolith.Models
     public class CategoryModel
     {
         public string Name { get; set; }
-        public IEnumerable<string> Firms { get; set; }
+        public List<string> Firms { get; set; }
     }
 
 }

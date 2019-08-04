@@ -20,8 +20,8 @@ namespace BoilerStoreMonolith.Controllers
         private ApplicationContext context = new ApplicationContext();
 
         public HomeController(
-            IProductRepository _productRepo, 
-            IFirmRepository _firmRepo, 
+            IProductRepository _productRepo,
+            IFirmRepository _firmRepo,
             IInfoEntityRepository _siteInfoRepo,
             ICategoryRepository _categoryRepo
             )
@@ -48,10 +48,13 @@ namespace BoilerStoreMonolith.Controllers
         {
             ViewBag.Category = category;
             ViewBag.IsAjax = isAjax;
-            var firmNames = productRepo.Products.Where(n => n.Category == category).Select(n => n.Firm).ToList().Distinct();
+            var firmNames = productRepo.Products
+                .Where(n => n.Category == category)
+                .Select(n => n.Firm).Distinct().ToList();
+
             var firms = firmNames.Join(firmRepo.Firms,
-                p => p, 
-                t => t.Name, 
+                p => p,
+                t => t.Name,
                 (p, t) => t).ToList();
 
             if (firms != null)
@@ -84,8 +87,8 @@ namespace BoilerStoreMonolith.Controllers
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
 
-            // filter by power
-            products = OrderProductList(products, linkName, filter);
+            //// filter by power
+            //products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
 
@@ -136,8 +139,9 @@ namespace BoilerStoreMonolith.Controllers
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
 
-            // order by power
-            products = OrderProductList(products, linkName, filter);
+
+            //// order by power
+            //products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
 
@@ -192,24 +196,28 @@ namespace BoilerStoreMonolith.Controllers
         [ChildActionOnly]
         public ActionResult CatalogueTree(CatalogueTreeViewModel model, string category, int page = 1)
         {
-            var categories = productRepo.Products.Select(n => n.Category);
-            var firms = productRepo.Products.Select(n => n.Firm);
+            var categories = productRepo.Products.Select(n => n.Category).ToList();
 
             model.CurrCategory = category;
 
             foreach (var item in categories)
             {
-                if (model.Categories.Where(n => n.Name == item).Count() > 0)
+                if (model.Categories.Count(n => n.Name == item) > 0)
                 {
                     continue;
                 }
 
+                var firmsInCategory = productRepo.Products
+                    .Where(n => n.Category == item)
+                    .Select(n => n.Firm)
+                    .Distinct()
+                    .ToList();
+
                 CategoryModel categoryModel = new CategoryModel
                 {
                     Name = item,
-                    Firms = productRepo.Products.Where(n => n.Category == item).Select(n => n.Firm).Distinct()
+                    Firms = firmsInCategory
                 };
-
                 model.Categories.Add(categoryModel);
             }
 

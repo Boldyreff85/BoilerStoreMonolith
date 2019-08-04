@@ -13,10 +13,10 @@ namespace BoilerStoreMonolith.Domain.Entities
         [Display(Name = "Описание")]
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
-
+        [Required(ErrorMessage = "Выберите категорию")]
         [Display(Name = "Категория")]
         public string Category { get; set; }
-
+        [Required(ErrorMessage = "Выберите производителя")]
         [Display(Name = "Производитель")]
         public string Firm { get; set; }
 
