@@ -140,18 +140,21 @@ namespace BoilerStoreMonolith.Controllers
                 model.Product.Firm
             );
 
+
+
+            ///////////////////////////////  processing products table ///////////////////////////////
             // save product
             Product product = model.Product;
             productRepo.SaveProduct(product);
 
-
-            // crearing product features from table
+            /////////////////////////////// processing features table ///////////////////////////////
+            // clearing product features from table
             var prodFeatures = featureRepo.Features
-                .Where(pf => pf.ProductId == product.ProductID);
+                .Where(pf => pf.ProductId == product.ProductID).ToList();
 
-            if (prodFeatures != null && prodFeatures.Any())
+            if (prodFeatures.Any())
             {
-                featureRepo.DeleteFeatures(prodFeatures.ToList());
+                featureRepo.DeleteFeatures(prodFeatures);
             }
             // saving features of product
             if (model.Features?.Count > 0)
@@ -171,9 +174,14 @@ namespace BoilerStoreMonolith.Controllers
 
             TempData["category"] = string.Format("{0} has been saved", product.Title);
 
-            var category = categoryRepo.Categories
-                .SingleOrDefault(c => c.Name == product.Category);
-
+            ///////////////////////////////  processing categories table ///////////////////////////////
+            // preparing category for saving to table
+            var category = new Category { Name = product.Category };
+            var categories = categoryRepo.Categories.ToList();
+            if (categories.Any(c => c.Name == product.Category))
+            {
+                category = categories.Single(c => c.Name == product.Category);
+            }
             if (categoryImg != null)
             {
                 category.ImageMimeType = categoryImg.ContentType;
@@ -183,21 +191,23 @@ namespace BoilerStoreMonolith.Controllers
             }
             categoryRepo.SaveCategory(category);
 
+            ///////////////////////////////  processing firms table ///////////////////////////////
+            // preparing firm for saving to table
             var firm = firmRepo.Firms
                 .SingleOrDefault(f => f.Name == product.Firm);
-
-            if (firm != null && firmImg != null)
+            if (firm == null)
+            {
+                firm = new Firm { Name = product.Firm };
+            }
+            if (firmImg != null)
             {
 
                 firm.ImageMimeType = firmImg.ContentType;
                 firm.ImageData = new byte[firmImg.ContentLength];
                 firmImg.InputStream.Read(
                     firm.ImageData, 0, firmImg.ContentLength);
-
-                firmRepo.SaveFirm(firm);
             }
-
-
+            firmRepo.SaveFirm(firm);
 
             return RedirectToAction("Index");
 
@@ -210,6 +220,21 @@ namespace BoilerStoreMonolith.Controllers
                 Product = new Product(),
                 ImageToLoad = ""
             };
+
+            // getting categories if exist
+            var categories = categoryRepo.Categories.ToList();
+            if (categories.Any())
+            {
+                model.Product.Category = categories.Select(c => c.Name).First();
+            }
+            // getting firms if exist
+            var firms = firmRepo.Firms.ToList();
+            if (firms.Any())
+            {
+                model.Product.Firm = firms.Select(c => c.Name).First();
+            }
+
+
             return View("Edit", model);
         }
 
@@ -368,8 +393,8 @@ namespace BoilerStoreMonolith.Controllers
         [HttpPost]
         public ActionResult IndexFirms(IndexFirmsViewModel model)
         {
-            var names = model.firmName;
-            var images = model.firmImg;
+            var names = model.firmNames;
+            var images = model.firmImgs;
             var firmsFromRepo = firmRepo.Firms.ToList();
             // clear the table
             firmRepo.DeleteFirms(firmRepo.Firms.ToList());
@@ -377,7 +402,6 @@ namespace BoilerStoreMonolith.Controllers
             for (int i = 0; i < names.Count; i++)
             {
                 // checking if firm exists
-
                 var firm = new Firm
                 {
                     Name = names[i]

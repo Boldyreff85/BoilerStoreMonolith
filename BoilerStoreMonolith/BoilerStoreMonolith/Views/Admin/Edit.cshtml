@@ -34,9 +34,20 @@
                     <div class="col-3 m-auto"> Выберите категорию:   </div>
 
                     <div class="col-3 m-auto text-center">
-                        @Html.DropDownListFor(
-                            p => p.Product.Category,
-                            ViewBag.categories as SelectList, new{@class="w-100"})
+                        @if (Model.Product.Category != null)
+                        {
+                            @Html.DropDownListFor(
+                                p => p.Product.Category,
+                                ViewBag.categories as SelectList, new {@class = "w-100"})
+                        }
+                        else
+                        {
+                            @Html.Label("Категория")
+                            @Html.TextBox(
+                                "Product.Category", Model.Product.Category,
+                                new { @class = "form-control" })
+                        }
+
                     </div>
 
                     <div class="col-6 m-auto pl-5">
@@ -51,9 +62,20 @@
                     <div class="col-3 m-auto"> Выберите производителя:   </div>
 
                     <div class="col-3 m-auto text-center">
-                        @Html.DropDownListFor(
-                            p => p.Product.Firm,
-                            ViewBag.Firms as SelectList, new{@class="w-100"})
+                        @if (Model.Product.Firm != null)
+                        {
+                            @Html.DropDownListFor(
+                                p => p.Product.Firm,
+                                ViewBag.Firms as SelectList, new {@class = "w-100"})
+                        }
+                        else
+                        {
+                            @Html.Label("Производитель")
+                            @Html.TextBox(
+                                "Product.Firm", Model.Product.Firm,
+                                new { @class = "form-control" })
+                        }
+
                     </div>
 
                     <div class="col-6 m-auto pl-5">
