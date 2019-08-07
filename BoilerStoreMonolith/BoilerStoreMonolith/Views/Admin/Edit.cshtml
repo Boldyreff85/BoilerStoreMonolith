@@ -34,18 +34,35 @@
                     <div class="col-3 m-auto"> Выберите категорию:   </div>
 
                     <div class="col-3 m-auto text-center">
-                        @if (Model.Product.Category != null)
+                        @if (Model.Categories?.Any() == true)
                         {
-                            @Html.DropDownListFor(
-                                p => p.Product.Category,
-                                ViewBag.categories as SelectList, new {@class = "w-100"})
+                            <div class="dropdown">
+                                <button class="btn btn-transparent dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    @Model.Categories[0]
+                                </button>
+                                <input type="hidden" name="Product.Category" value="@Model.Categories[0]" />
+                                       
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @foreach (var item in Model.Categories)
+                                    {
+                                        <a class="dropdown-item" href="#">@item</a>
+                                    }
+                                </div>
+                            </div>
                         }
                         else
                         {
-                            @Html.Label("Категория")
-                            @Html.TextBox(
-                                "Product.Category", Model.Product.Category,
-                                new { @class = "form-control" })
+                            <div class="dropdown">
+                                <button class="btn btn-transparent dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Нет доступных категорий.
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                </div>
+                            </div>
                         }
 
                     </div>
@@ -62,18 +79,34 @@
                     <div class="col-3 m-auto"> Выберите производителя:   </div>
 
                     <div class="col-3 m-auto text-center">
-                        @if (Model.Product.Firm != null)
+                        @if (Model.Firms?.Any() == true)
                         {
-                            @Html.DropDownListFor(
-                                p => p.Product.Firm,
-                                ViewBag.Firms as SelectList, new {@class = "w-100"})
+                        <div class="dropdown">
+                            <button class="btn btn-transparent dropdown-toggle" type="button"
+                                    id="dropdownMenuButton" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                @Model.Firms[0]
+                            </button>
+                            <input type="hidden" name="Product.Firm" value="@Model.Firms[0]" />
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @foreach (var item in Model.Firms)
+                                {
+                                    <a class="dropdown-item" href="#">@item</a>
+                                }
+                            </div>
+                        </div>
                         }
                         else
                         {
-                            @Html.Label("Производитель")
-                            @Html.TextBox(
-                                "Product.Firm", Model.Product.Firm,
-                                new { @class = "form-control" })
+                            <div class="dropdown">
+                                <button class="btn btn-transparent dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    Нет доступных производителей.
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                </div>
+                            </div>
                         }
 
                     </div>
@@ -99,34 +132,34 @@
 
 
                 @*@if (Model.FeatureNames?.Count > 0)
-        {
-            for (int i = 0; i < Model.FeatureNames.Count; i++)
-            {
-                @Html.Label(Model.FeatureNames[i])
+                    {
+                        for (int i = 0; i < Model.FeatureNames.Count; i++)
+                        {
+                            @Html.Label(Model.FeatureNames[i])
 
-                <input name="FeatureNames" type="hidden" value=@Model.FeatureNames[i] />
-                if (Model.FeatureValues?.Count > 0)
-                {
-                    <input class="form-control" name="FeatureValues" type="text"
-                           value="@Model.FeatureValues[i]" />
-                }
-                else
-                {
-                    <input class="form-control" name="FeatureValues" type="text"
-                           value="" />
-                }
-            }
-        }*@
+                            <input name="FeatureNames" type="hidden" value=@Model.FeatureNames[i] />
+                            if (Model.FeatureValues?.Count > 0)
+                            {
+                                <input class="form-control" name="FeatureValues" type="text"
+                                       value="@Model.FeatureValues[i]" />
+                            }
+                            else
+                            {
+                                <input class="form-control" name="FeatureValues" type="text"
+                                       value="" />
+                            }
+                        }
+                    }*@
 
 
 
                 @*@Html.LabelFor(p => p.Product.Power)
-        @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.Product.Power)*@
+                    @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Product.Power)*@
 
                 @*@Html.LabelFor(p => p.Product.Price)
-        @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
-        @Html.ValidationMessageFor(p => p.Product.Price)*@
+                    @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(p => p.Product.Price)*@
             </div>
         </div>
 

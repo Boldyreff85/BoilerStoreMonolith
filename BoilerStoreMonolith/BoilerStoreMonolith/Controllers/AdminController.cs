@@ -108,15 +108,8 @@ namespace BoilerStoreMonolith.Controllers
                 }
             }
 
-            ViewBag.categories = new SelectList(
-                    categoryRepo.Categories.Select(c => c.Name),
-                    model.Product.Category
-                );
-
-            ViewBag.firms = new SelectList(
-                firmRepo.Firms.Select(c => c.Name),
-                model.Product.Firm
-            );
+            model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
+            model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
 
             ViewBag.ImageToLoad = "categoryImg";
             return View(model);
@@ -129,18 +122,6 @@ namespace BoilerStoreMonolith.Controllers
                 HttpPostedFileBase firmImg = null
                 )
         {
-            // viewbags
-            ViewBag.categories = new SelectList(
-                categoryRepo.Categories.Select(c => c.Name),
-                model.Product.Category
-            );
-
-            ViewBag.firms = new SelectList(
-                firmRepo.Firms.Select(c => c.Name),
-                model.Product.Firm
-            );
-
-
 
             ///////////////////////////////  processing products table ///////////////////////////////
             // save product
@@ -221,19 +202,8 @@ namespace BoilerStoreMonolith.Controllers
                 ImageToLoad = ""
             };
 
-            // getting categories if exist
-            var categories = categoryRepo.Categories.ToList();
-            if (categories.Any())
-            {
-                model.Product.Category = categories.Select(c => c.Name).First();
-            }
-            // getting firms if exist
-            var firms = firmRepo.Firms.ToList();
-            if (firms.Any())
-            {
-                model.Product.Firm = firms.Select(c => c.Name).First();
-            }
-
+            model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
+            model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
 
             return View("Edit", model);
         }
@@ -399,6 +369,9 @@ namespace BoilerStoreMonolith.Controllers
             // clear the table
             firmRepo.DeleteFirms(firmRepo.Firms.ToList());
 
+            if (names == null)
+                return RedirectToAction("IndexFirms");
+
             for (int i = 0; i < names.Count; i++)
             {
                 // checking if firm exists
@@ -407,7 +380,7 @@ namespace BoilerStoreMonolith.Controllers
                     Name = names[i]
                 };
 
-                if (images[i] != null)
+                if (images != null)
                 {
                     firm.ImageMimeType = images[i].ContentType;
                     firm.ImageData = new byte[images[i].ContentLength];
@@ -425,7 +398,6 @@ namespace BoilerStoreMonolith.Controllers
                 }
                 firmRepo.SaveFirm(firm);
             }
-
 
             return RedirectToAction("IndexFirms");
         }
