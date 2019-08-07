@@ -108,75 +108,82 @@ namespace BoilerStoreMonolith.Controllers
                 HttpPostedFileBase firmImg = null
                 )
         {
-
-            ///////////////////////////////  processing products table ///////////////////////////////
-            // save product
-            Product product = model.Product;
-            productRepo.SaveProduct(product);
-
-            /////////////////////////////// processing features table ///////////////////////////////
-            // clearing product features from table
-            var prodFeatures = featureRepo.Features
-                .Where(pf => pf.ProductId == product.ProductID).ToList();
-
-            if (prodFeatures.Any())
+            if (ModelState.IsValid)
             {
-                featureRepo.DeleteFeatures(prodFeatures);
-            }
-            // saving features of product
-            if (model.Features?.Count > 0)
-            {
-                foreach (var feature in model.Features)
+                ///////////////////////////////  processing products table ///////////////////////////////
+                // save product
+                Product product = model.Product;
+                productRepo.SaveProduct(product);
+
+                /////////////////////////////// processing features table ///////////////////////////////
+                // clearing product features from table
+                var prodFeatures = featureRepo.Features
+                    .Where(pf => pf.ProductId == product.ProductID).ToList();
+
+                if (prodFeatures.Any())
                 {
-                    var productFeature = new Feature
-                    {
-                        Name = feature.Name,
-                        Value = feature.Value,
-                        ProductId = product.ProductID
-                    };
-                    featureRepo.SaveFeature(productFeature);
+                    featureRepo.DeleteFeatures(prodFeatures);
                 }
+                // saving features of product
+                if (model.Features?.Count > 0)
+                {
+                    foreach (var feature in model.Features)
+                    {
+                        var productFeature = new Feature
+                        {
+                            Name = feature.Name,
+                            Value = feature.Value,
+                            ProductId = product.ProductID
+                        };
+                        featureRepo.SaveFeature(productFeature);
+                    }
+                }
+
+
+                TempData["category"] = string.Format("{0} has been saved", product.Title);
+
+                ///////////////////////////////  processing categories table ///////////////////////////////
+                // preparing category for saving to table
+                var category = new Category { Name = product.Category };
+                var categories = categoryRepo.Categories.ToList();
+                if (categories.Any(c => c.Name == product.Category))
+                {
+                    category = categories.Single(c => c.Name == product.Category);
+                }
+                if (categoryImg != null)
+                {
+                    category.ImageMimeType = categoryImg.ContentType;
+                    category.ImageData = new byte[categoryImg.ContentLength];
+                    categoryImg.InputStream.Read(
+                        category.ImageData, 0, categoryImg.ContentLength);
+                }
+                categoryRepo.SaveCategory(category);
+
+                ///////////////////////////////  processing firms table ///////////////////////////////
+                // preparing firm for saving to table
+                var firm = firmRepo.Firms
+                    .SingleOrDefault(f => f.Name == product.Firm);
+                if (firm == null)
+                {
+                    firm = new Firm { Name = product.Firm };
+                }
+                if (firmImg != null)
+                {
+
+                    firm.ImageMimeType = firmImg.ContentType;
+                    firm.ImageData = new byte[firmImg.ContentLength];
+                    firmImg.InputStream.Read(
+                        firm.ImageData, 0, firmImg.ContentLength);
+                }
+                firmRepo.SaveFirm(firm);
+
+                return RedirectToAction("Index");
             }
-
-
-            TempData["category"] = string.Format("{0} has been saved", product.Title);
-
-            ///////////////////////////////  processing categories table ///////////////////////////////
-            // preparing category for saving to table
-            var category = new Category { Name = product.Category };
-            var categories = categoryRepo.Categories.ToList();
-            if (categories.Any(c => c.Name == product.Category))
+            else
             {
-                category = categories.Single(c => c.Name == product.Category);
+                return View("Edit", model);
             }
-            if (categoryImg != null)
-            {
-                category.ImageMimeType = categoryImg.ContentType;
-                category.ImageData = new byte[categoryImg.ContentLength];
-                categoryImg.InputStream.Read(
-                    category.ImageData, 0, categoryImg.ContentLength);
-            }
-            categoryRepo.SaveCategory(category);
 
-            ///////////////////////////////  processing firms table ///////////////////////////////
-            // preparing firm for saving to table
-            var firm = firmRepo.Firms
-                .SingleOrDefault(f => f.Name == product.Firm);
-            if (firm == null)
-            {
-                firm = new Firm { Name = product.Firm };
-            }
-            if (firmImg != null)
-            {
-
-                firm.ImageMimeType = firmImg.ContentType;
-                firm.ImageData = new byte[firmImg.ContentLength];
-                firmImg.InputStream.Read(
-                    firm.ImageData, 0, firmImg.ContentLength);
-            }
-            firmRepo.SaveFirm(firm);
-
-            return RedirectToAction("Index");
 
         }
 
