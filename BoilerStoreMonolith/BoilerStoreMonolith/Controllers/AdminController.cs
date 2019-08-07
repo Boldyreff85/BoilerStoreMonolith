@@ -88,23 +88,9 @@ namespace BoilerStoreMonolith.Controllers
                 foreach (var catFeature in catFeatures)
                 {
                     // trying to get value if exist
-                    var productCategoryFeatures = featureRepo.Features
+                    model.Features = featureRepo.Features
                         .Where(f => f.Name == catFeature.Name
                                     && f.ProductId == productId).ToList();
-                    var featureValue = "";
-                    if (productCategoryFeatures?.Any() == true)
-                    {
-                        featureValue = productCategoryFeatures
-                            .Select(f => f.Value).Single();
-                    }
-                    // feeding view model
-                    model.Features.Add(new Feature
-                    {
-                        Name = catFeature.Name,
-                        Value = featureValue,
-                        ProductId = productId
-                    });
-
                 }
             }
 

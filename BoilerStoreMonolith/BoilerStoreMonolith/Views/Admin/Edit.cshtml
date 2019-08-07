@@ -40,7 +40,16 @@
                                 <button class="btn btn-transparent dropdown-toggle" type="button"
                                         id="dropdownMenuButton" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
-                                    @Model.Categories[0]
+                                    @{
+                                        if (!string.IsNullOrEmpty(Model.Product.Category))
+                                        {
+                                            @Model.Product.Category
+                                        }
+                                        else
+                                        {
+                                            @Model.Categories[0]
+                                        }
+                                    }
                                 </button>
                                 <input type="hidden" name="Product.Category" value="@Model.Categories[0]" />
                                        
