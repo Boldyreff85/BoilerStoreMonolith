@@ -64,38 +64,40 @@ namespace BoilerStoreMonolith.Controllers
             return RedirectToAction("Index");
         }
 
-
+        // тут по id собираем данные и заполняем поля товара
         public ViewResult Edit(AdminEditViewModel model, int productId)
         {
             model.Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
-
-            model.Category = categoryRepo.Categories
-                .SingleOrDefault(c => c.Name == model.Product.Category);
-
-
-            // getting category features into view model
-            var catFeatures = new List<CategoryFeature>();
-            if (model.Category != null)
-            {
-                catFeatures = categoryFeatureRepo.CategoryFeatures
-                    .Where(cf => cf.CategoryId == model.Category.Id)
-                    .ToList();
-            }
-
-            model.Features = new List<Feature>();
-            if (catFeatures != null && catFeatures.Any())
-            {
-                foreach (var catFeature in catFeatures)
-                {
-                    // trying to get value if exist
-                    model.Features = featureRepo.Features
-                        .Where(f => f.Name == catFeature.Name
-                                    && f.ProductId == productId).ToList();
-                }
-            }
-
             model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
             model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
+
+            // getting features of product (category name and product id)
+            model.Features = featureRepo.Features
+                .Where(f => f.ProductId == model.Product.ProductID &&
+                            f.Name == model.Product.Category)
+                .ToList();
+            // if no features of product then getting features of selected category
+            // quering  id of product's category
+            var categoryId = categoryRepo.Categories
+                .Where(c => c.Name == model.Product.Category)
+                .Select(c => c.Id)
+                .Single();
+            if (model.Features == null || model.Features.Count == 0 && (categoryId != null))
+            {
+                // geting feature names of category
+                var catFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == categoryId)
+                    .Select(cf => cf.Name)
+                    .ToList();
+                // feeding feature list with newly created items containing names
+                foreach (var catFeature in catFeatures)
+                {
+                    model.Features.Add(new Feature
+                    {
+                        Name = catFeature
+                    });
+                }
+            }
 
             ViewBag.ImageToLoad = "categoryImg";
             return View(model);
@@ -187,16 +189,25 @@ namespace BoilerStoreMonolith.Controllers
 
         }
 
+        // создаём новую запись (пустые поля товара и списки доступных категорий и фирм)
         public ViewResult Create()
         {
             var model = new AdminEditViewModel
             {
-                Product = new Product(),
-                ImageToLoad = ""
+                Product = new Product()
             };
 
             model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
             model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
+            // getting features of category 
+            if (model.Categories?.Count > 0)
+            {
+                model.Features = featureRepo.Features
+                    .Where(cf => cf.Name == model.Categories[0])
+                    .ToList();
+            }
+
+
 
             return View("Edit", model);
         }

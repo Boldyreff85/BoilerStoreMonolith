@@ -7,17 +7,9 @@ namespace BoilerStoreMonolith.Models
     public class AdminEditViewModel
     {
         public Product Product { get; set; }
-        public Category Category { get; set; }
-        public string ImageToLoad { get; set; }
         public List<string> Categories { get; set; }
         public List<string> Firms { get; set; }
         public List<Feature> Features { get; set; }
-    }
-
-    public class FeaturesViewModel
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }
     }
 
     public class AdminIndexListViewModel
