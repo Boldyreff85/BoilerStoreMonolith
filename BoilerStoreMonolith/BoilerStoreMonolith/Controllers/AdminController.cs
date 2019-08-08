@@ -199,12 +199,29 @@ namespace BoilerStoreMonolith.Controllers
 
             model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
             model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
-            // getting features of category 
+
+            // getting features of category
+
             if (model.Categories?.Count > 0)
             {
-                model.Features = featureRepo.Features
-                    .Where(cf => cf.Name == model.Categories[0])
+                var categoryId = categoryRepo.Categories
+                    .Where(c => c.Name == model.Categories[0])
+                    .Select(c => c.Id)
+                    .Single();
+                // geting feature names of category
+                var catFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == categoryId)
+                    .Select(cf => cf.Name)
                     .ToList();
+                // feeding feature list with newly created items containing names
+                model.Features = new List<Feature>();
+                foreach (var catFeature in catFeatures)
+                {
+                    model.Features.Add(new Feature
+                    {
+                        Name = catFeature
+                    });
+                }
             }
 
 
