@@ -429,6 +429,35 @@ namespace BoilerStoreMonolith.Controllers
             return PartialView("FirmListItem", imgId);
         }
 
+        public ActionResult GetFeatureList(string categoryName)
+        {
+            var model = new List<Feature>();
+
+            var categoryId = categoryRepo.Categories
+                .Where(c => c.Name == categoryName)
+                .Select(c => c.Id)
+                .Single();
+            // geting feature names of category
+
+            var catFeatures = categoryFeatureRepo.CategoryFeatures
+                .Where(cf => cf.CategoryId == categoryId)
+                .Select(cf => cf.Name)
+                .ToList();
+            // feeding feature list with newly created items containing names
+            foreach (var catFeature in catFeatures)
+            {
+                model.Add(new Feature
+                {
+                    Name = catFeature,
+                    Value = ""
+                });
+            }
+
+
+            return PartialView("FeatureListWidget", model);
+        }
+
+
         // *************************************************************************************
 
 

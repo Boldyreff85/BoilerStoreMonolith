@@ -128,7 +128,7 @@
                     </div>
                 </div>
 
-                @if (Model.Features?.Count > 0)
+                @*@if (Model.Features?.Count > 0)
                 {
                     for (int i = 0; i < Model.Features.Count; ++i)
                     {
@@ -137,38 +137,11 @@
                         @Html.TextBoxFor(v => v.Features[i].Value,
                             new { @class = "form-control" })
                     }
-                }
+                }*@
+                
+                <div id="featureList"></div>
+                
 
-
-                @*@if (Model.FeatureNames?.Count > 0)
-                    {
-                        for (int i = 0; i < Model.FeatureNames.Count; i++)
-                        {
-                            @Html.Label(Model.FeatureNames[i])
-
-                            <input name="FeatureNames" type="hidden" value=@Model.FeatureNames[i] />
-                            if (Model.FeatureValues?.Count > 0)
-                            {
-                                <input class="form-control" name="FeatureValues" type="text"
-                                       value="@Model.FeatureValues[i]" />
-                            }
-                            else
-                            {
-                                <input class="form-control" name="FeatureValues" type="text"
-                                       value="" />
-                            }
-                        }
-                    }*@
-
-
-
-                @*@Html.LabelFor(p => p.Product.Power)
-                    @Html.TextBoxFor(p => p.Product.Power, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(p => p.Product.Power)*@
-
-                @*@Html.LabelFor(p => p.Product.Price)
-                    @Html.TextBoxFor(p => p.Product.Price, null, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(p => p.Product.Price)*@
             </div>
         </div>
 
@@ -197,6 +170,24 @@
         var optionTxt = $("#newCategoryTxt").val();
         var o = new Option(optionTxt, optionTxt, true, true);
         $("#Product_Category").append(o);
+    });
+
+    $(".dropdown-item").on("mousedown", function(e){
+        $("#dropdownMenuButton").text($(e.target).text());
+
+
+        let methodUrl = "/Admin/GetFeatureList/?categoryName=" + $(e.target).text();
+        $.ajax({
+            type: "POST",
+            url: methodUrl
+        }).done(function (data) {
+            $("#featureList").empty();
+            $("#featureList").append(data);
+        });
+
 
     });
+
+
+
 </script>

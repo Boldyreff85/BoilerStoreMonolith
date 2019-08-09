@@ -272,6 +272,7 @@
     <Content Include="Views\Admin\EditFirms.cshtml" />
     <Content Include="Views\Shared\FirmListItem.cshtml" />
     <Content Include="Views\Shared\UploadImgFirmList.cshtml" />
+    <Content Include="Views\Shared\FeatureListWidget.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

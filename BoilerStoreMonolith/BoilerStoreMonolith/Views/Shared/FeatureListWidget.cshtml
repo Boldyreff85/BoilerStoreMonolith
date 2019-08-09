@@ -1,0 +1,21 @@
+﻿@model List<BoilerStoreMonolith.Domain.Entities.Feature>
+
+
+@foreach (var feature in Model)
+{
+    @Html.Label(feature.Name)
+    @Html.Hidden(feature.Name, feature.Value)
+    if (!string.IsNullOrEmpty(feature.Value))
+    {
+        @Html.TextBox(feature.Name, feature.Value,
+            new { @class = "form-control" })
+    }
+    else
+    {
+        @Html.TextBox(feature.Name, "",
+            new { @class = "form-control" })
+    }
+
+}
+
+
