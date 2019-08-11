@@ -7,13 +7,10 @@
 
 <div class="panel">
     <div class="panel-heading">
-
-        <h3>Редактирование @Model.Product.Title</h3>
-
-
+        <h3 class="text-center py-2">Редактирование товара</h3>
     </div>
-    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-
+    @using (Html.BeginForm("Edit", "Admin", 
+        FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="panel-body">
             @Html.HiddenFor(m => m.Product.ProductID, new { id = "productId" })
@@ -21,200 +18,58 @@
             @Html.HiddenFor(m => m.Product.ImageMimeType)
 
             <div class="form-group">
-                @Html.LabelFor(p => p.Product.Title)
-                @Html.TextBoxFor(
-                    p => p.Product.Title, null,
-                    new { @class = "form-control" })
-                @Html.ValidationMessageFor(p => p.Product.Title)
 
-                @Html.LabelFor(p => p.Product.Description)
-                @Html.TextAreaFor(
-                    p => p.Product.Description, 10, 1,
-                    new { @class = "form-control" })
-                @Html.ValidationMessageFor(p => p.Product.Description)
-
-
-
-                <div class="row my-4">
-                    <div class="col-3 m-auto"> Выберите категорию:   </div>
-
-                    <div class="col-3 m-auto text-center">
-                        @if (Model.Categories?.Any() == true)
-                        {
-                            <div class="dropdown">
-                                <button class="btn btn-transparent dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-
-                                    @Model.Product.Category
-                                </button>
-                                <input type="hidden" name="Product.Category" value="@Model.Product.Category" />
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    @foreach (var item in Model.Categories)
-                                    {
-                                        if (actionName == "Edit")
-                                        {
-                                            @Html.ActionLink(item,
-                                                "Edit", "Admin",
-                                                new
-                                                {
-                                                    categoryName= item,
-                                                    productId=Model.Product.ProductID
-                                                },
-                                                new{@class= "dropdown-item" })
-                                        }
-                                        else if (actionName == "Create")
-                                        {
-                                            @Html.ActionLink(item,
-                                                "Create", "Admin",
-                                                new
-                                                {
-                                                    categoryName = item,
-                                                    firmName = Model.Product.Firm
-                                                },
-                                                new{@class= "dropdown-item" })
-                                        }
-
-                                    }
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="dropdown">
-                                <button class="btn btn-transparent dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Нет доступных категорий.
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                </div>
-                            </div>
-                        }
-
-                    </div>
-
-                    <div class="col-6 m-auto pl-5">
-                        @Html.ActionLink("Редактировать",
-                            "IndexCategories",
-                            "Admin",
-                            new{@class= "btn btn-secondary" })
-                    </div>
+                <div class="form-group">
+                    @Html.Partial("CategoryDropdown")
+                </div>
+                <div class="form-group">
+                    @Html.Partial("FirmDropdown")
                 </div>
 
-                <div class="row my-4">
-                    <div class="col-3 m-auto"> Выберите производителя:   </div>
+                <div class="form-group">
+                    @Html.LabelFor(p => p.Product.Title)
+                    @Html.TextBoxFor(
+                        p => p.Product.Title, null,
+                        new {@class = "form-control", required = ""})
 
-                    <div class="col-3 m-auto text-center">
-                        @if (Model.Firms?.Any() == true)
-                        {
-                            <div class="dropdown">
-                                <button class="btn btn-transparent dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    @Model.Product.Firm
-                                </button>
-                                <input type="hidden" name="Product.Firm" value="@Model.Product.Firm" />
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    @foreach (var item in Model.Firms)
-                                    {
-                                        if (actionName == "Edit")
-                                        {
-                                            @Html.ActionLink(item,
-                                                "Edit", "Admin",
-                                                new
-                                                {
-                                                    categoryName= Model.Product.Category,
-                                                    productId=Model.Product.ProductID
-                                                },
-                                                new{@class= "dropdown-item" })
-                                        }
-                                        else if (actionName == "Create")
-                                        {
-                                            @Html.ActionLink(item,
-                                                "Create", "Admin",
-                                                new
-                                                {
-                                                    categoryName = Model.Product.Category,
-                                                    firmName = item
-                                                },
-                                                new{@class= "dropdown-item" })
-                                        }
-                                    }
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="dropdown">
-                                <button class="btn btn-transparent dropdown-toggle" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Нет доступных производителей.
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                </div>
-                            </div>
-                        }
-
-                    </div>
-
-                    <div class="col-6 m-auto pl-5">
-                        @Html.ActionLink("Редактировать",
-                            "IndexFirms",
-                            "Admin",
-                            new{@class= "btn btn-secondary" })
-                    </div>
+                    @Html.LabelFor(p => p.Product.Description)
+                    @Html.TextAreaFor(
+                        p => p.Product.Description, 10, 1,
+                        new {@class = "form-control", required = ""})
                 </div>
 
-
-                @if (Model.Features?.Count > 0)
-                {
-                    for (int i = 0; i < Model.Features.Count; i++)
+                <div class="form-group">
+                    @if (Model.Features?.Count > 0)
                     {
-                        @Html.LabelFor(m => m.Features[i].Name, Model.Features[i].Name)
-                        @Html.HiddenFor(m => m.Features[i].Name)
-
-                        @Html.TextBoxFor(
-                            m => m.Features[i].Value, null,
-                            new { @class = "form-control" })
-
-                    }
-                }
-
-
-                @*<div id="featureList">
-                        @if (Model.Features?.Count > 0)
+                        for (int i = 0; i < Model.Features.Count; i++)
                         {
-                            for (int i = 0; i < Model.Features.Count; i++)
-                            {
-                                @Html.Label(Model.Features[i].Name)
+                            @Html.LabelFor(m => m.Features[i].Name, Model.Features[i].Name)
+                            @Html.HiddenFor(m => m.Features[i].Name)
 
-                                if (!string.IsNullOrEmpty(Model.Features[i].Value))
-                                {
-                                    <input type="text" name="Features[@i]"
-                                           value="@Model.Features[i].Value" class="form-control">
-                                }
-                                else
-                                {
-                                    <input type="text" name="Features[@i]" value="" class="form-control">
-                                }
-                            }
+                            @Html.TextBoxFor(
+                                m => m.Features[i].Value, null,
+                                new {@class = "form-control", required = ""})
+
                         }
+                    }
+                </div>
 
-                    </div>*@
+                <div class="form-group">
+                    @{
+                        ViewBag.ImageToLoad = "productImg";
+                    }
+                    @Html.Partial("UploadImg")
+                </div>
+
 
 
             </div>
         </div>
 
-        ViewBag.ImageToLoad = "productImg";
-        @Html.Partial("UploadImg")
-
         <div class="panel-footer mt-3">
             <input type="submit" value="Сохранить" class="btn btn-primary" />
-            @Html.ActionLink("Отменить и вернуться к списку", "Index", null, new
+            @Html.ActionLink("Отменить и вернуться к списку", 
+                "Index", null, new
             {
                 @class = "btn btn-default"
             })
@@ -228,40 +83,36 @@
 </div>
 
 <script>
-    $("#newCategoryBtn").click(function () {
-        var optionTxt = $("#newCategoryTxt").val();
-        var o = new Option(optionTxt, optionTxt, true, true);
-        $("#Product_Category").append(o);
-    });
-
-
-
-    $(".dropdown-item").on("mousedown", function (e) {
-        $("#dropdownMenuButton").text($(e.target).text());
-
-
-    });
 
 
 
 
-    function reloadEditWithFeatures() {
+    //$(".dropdown-item").on("mousedown", function (e) {
+    //    $("#dropdownMenuButton").text($(e.target).text());
 
-        let methodUrl = "";
 
-        if ($("#productId").val() === 0) {
-            methodUrl = "/Admin/Edit/?categoryName="
-                + $("#dropdownMenuButton").text().trim();
-        } else {
-            methodUrl = "/Admin/Edit/?categoryName="
-                + $("#dropdownMenuButton").text().trim() + "&productId="
-                + $("#productId").val();
-        }
+    //});
 
-        $.ajax({
-            type: "GET",
-            url: methodUrl
-        });
-    }
+
+
+
+    //function reloadEditWithFeatures() {
+
+    //    let methodUrl = "";
+
+    //    if ($("#productId").val() === 0) {
+    //        methodUrl = "/Admin/Edit/?categoryName="
+    //            + $("#dropdownMenuButton").text().trim();
+    //    } else {
+    //        methodUrl = "/Admin/Edit/?categoryName="
+    //            + $("#dropdownMenuButton").text().trim() + "&productId="
+    //            + $("#productId").val();
+    //    }
+
+    //    $.ajax({
+    //        type: "GET",
+    //        url: methodUrl
+    //    });
+    //}
 
 </script>

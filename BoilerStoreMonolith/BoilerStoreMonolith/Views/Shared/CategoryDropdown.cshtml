@@ -1,4 +1,7 @@
-﻿@model BoilerStoreMonolith.Models.AdminCreateViewModel
+﻿@model BoilerStoreMonolith.Models.AdminEditViewModel
+@{
+    string actionName = this.ViewContext.RouteData.Values["action"].ToString();
+}
 
 <div class="row my-4">
     <div class="col-3 m-auto"> Выберите категорию:   </div>
@@ -18,15 +21,30 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach (var item in Model.Categories)
                     {
+                        if (actionName == "Create")
+                        {
+                            @Html.ActionLink(item,
+                                "Create", "Admin",
+                                new
+                                {
+                                    categoryName = item,
+                                    firmName = Model.Product.Firm
+                                },
+                                new{@class= "dropdown-item" })
+                        }
+                        else if (actionName == "Edit")
+                        {
+                            @Html.ActionLink(item,
+                                "Edit", "Admin",
+                                new
+                                {
+                                    productId = Model.Product.ProductID,
+                                    categoryName = item,
+                                    firmName = Model.Product.Firm
+                                },
+                                new{@class= "dropdown-item" })
+                        }
 
-                        @Html.ActionLink(item,
-                            "Create", "Admin",
-                            new
-                            {
-                                categoryName = item,
-                                firmName = Model.Product.Firm
-                            },
-                            new{@class= "dropdown-item" })
                     }
 
                 </div>
@@ -51,6 +69,7 @@
         @Html.ActionLink("Редактировать",
             "IndexCategories",
             "Admin",
+            null,
             new{@class= "btn btn-secondary" })
     </div>
 </div>

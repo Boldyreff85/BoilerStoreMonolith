@@ -1,5 +1,7 @@
-﻿@model BoilerStoreMonolith.Models.AdminCreateViewModel
-
+﻿@model BoilerStoreMonolith.Models.AdminEditViewModel
+@{
+    string actionName = this.ViewContext.RouteData.Values["action"].ToString();
+}
 <div class="row my-4">
     <div class="col-3 m-auto"> Выберите производителя:   </div>
 
@@ -16,14 +18,30 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     @foreach (var item in Model.Firms)
                     {
-                        @Html.ActionLink(item,
-                            "Create", "Admin",
-                            new
-                            {
-                                categoryName = Model.Product.Category,
-                                firmName = item
-                            },
-                            new{@class= "dropdown-item" })
+                        if (actionName == "Create")
+                        {
+                            @Html.ActionLink(item,
+                                "Create", "Admin",
+                                new
+                                {
+                                    categoryName = Model.Product.Category,
+                                    firmName = item
+                                },
+                                new{@class= "dropdown-item" })
+                        }
+                        else if (actionName == "Edit")
+                        {
+                            @Html.ActionLink(item,
+                                "Edit", "Admin",
+                                new
+                                {
+                                    productId = Model.Product.ProductID,
+                                    categoryName = Model.Product.Category,
+                                    firmName = item
+                                },
+                                new{@class= "dropdown-item" })
+                        }
+                        
                     }
                 </div>
             </div>

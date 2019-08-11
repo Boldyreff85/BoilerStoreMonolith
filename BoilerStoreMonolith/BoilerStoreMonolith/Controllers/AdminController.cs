@@ -53,11 +53,18 @@ namespace BoilerStoreMonolith.Controllers
                 TempData["ProductDeletionStatus"] = "Нет выбранных товаров для удаления.";
             }
 
-            List<int> ids = productIds.Where(ch => ch != "false").Select(x => Int32.Parse(x)).ToList();
+            List<int> ids = productIds
+                .Where(ch => ch != "false").Select(x => Int32.Parse(x)).ToList();
             var count = 0;
             foreach (var id in ids)
             {
+                // удаляем товар по id 
                 productRepo.DeleteProduct(id);
+                // и его features если есть
+                var prodFeatures = featureRepo.Features
+                    .Where(pf => pf.ProductId == id).ToList();
+                if (prodFeatures.Any())
+                    featureRepo.DeleteFeatures(prodFeatures);
                 count++;
             }
 
@@ -66,6 +73,7 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         // тут по id собираем данные и заполняем поля товара
+        [HttpGet]
         public ViewResult Edit(AdminEditViewModel model,
              int productId, string categoryName = null, string firmName = null)
         {
@@ -73,7 +81,8 @@ namespace BoilerStoreMonolith.Controllers
             model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
             model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
 
-            model.Product.Firm = firmName ?? model.Firms[0];
+            if(firmName != null)
+                model.Product.Firm = firmName;
 
             if (categoryName != null)
             {
@@ -85,18 +94,11 @@ namespace BoilerStoreMonolith.Controllers
                 model.Features = GetFeatureList(model.Product.Category, productId);
             }
 
-
-
-            ViewBag.ImageToLoad = "categoryImg";
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(AdminEditViewModel model,
-                HttpPostedFileBase productImg = null,
-                HttpPostedFileBase categoryImg = null,
-                HttpPostedFileBase firmImg = null
-                )
+        public ActionResult Edit(AdminEditViewModel model,HttpPostedFileBase productImg = null)
         {
             if (ModelState.IsValid)
             {
@@ -117,7 +119,6 @@ namespace BoilerStoreMonolith.Controllers
                 // clearing product features from table
                 var prodFeatures = featureRepo.Features
                     .Where(pf => pf.ProductId == product.ProductID).ToList();
-
                 if (prodFeatures.Any())
                 {
                     featureRepo.DeleteFeatures(prodFeatures);
@@ -140,40 +141,40 @@ namespace BoilerStoreMonolith.Controllers
 
                 TempData["category"] = string.Format("{0} has been saved", product.Title);
 
-                ///////////////////////////////  processing categories table ///////////////////////////////
-                // preparing category for saving to table
-                var category = new Category { Name = product.Category };
-                var categories = categoryRepo.Categories.ToList();
-                if (categories.Any(c => c.Name == product.Category))
-                {
-                    category = categories.Single(c => c.Name == product.Category);
-                }
-                if (categoryImg != null)
-                {
-                    category.ImageMimeType = categoryImg.ContentType;
-                    category.ImageData = new byte[categoryImg.ContentLength];
-                    categoryImg.InputStream.Read(
-                        category.ImageData, 0, categoryImg.ContentLength);
-                }
-                categoryRepo.SaveCategory(category);
+                /////////////////////////////////  processing categories table ///////////////////////////////
+                //// preparing category for saving to table
+                //var category = new Category { Name = product.Category };
+                //var categories = categoryRepo.Categories.ToList();
+                //if (categories.Any(c => c.Name == product.Category))
+                //{
+                //    category = categories.Single(c => c.Name == product.Category);
+                //}
+                //if (categoryImg != null)
+                //{
+                //    category.ImageMimeType = categoryImg.ContentType;
+                //    category.ImageData = new byte[categoryImg.ContentLength];
+                //    categoryImg.InputStream.Read(
+                //        category.ImageData, 0, categoryImg.ContentLength);
+                //}
+                //categoryRepo.SaveCategory(category);
 
-                ///////////////////////////////  processing firms table ///////////////////////////////
-                // preparing firm for saving to table
-                var firm = firmRepo.Firms
-                    .SingleOrDefault(f => f.Name == product.Firm);
-                if (firm == null)
-                {
-                    firm = new Firm { Name = product.Firm };
-                }
-                if (firmImg != null)
-                {
+                /////////////////////////////////  processing firms table ///////////////////////////////
+                //// preparing firm for saving to table
+                //var firm = firmRepo.Firms
+                //    .SingleOrDefault(f => f.Name == product.Firm);
+                //if (firm == null)
+                //{
+                //    firm = new Firm { Name = product.Firm };
+                //}
+                //if (firmImg != null)
+                //{
 
-                    firm.ImageMimeType = firmImg.ContentType;
-                    firm.ImageData = new byte[firmImg.ContentLength];
-                    firmImg.InputStream.Read(
-                        firm.ImageData, 0, firmImg.ContentLength);
-                }
-                firmRepo.SaveFirm(firm);
+                //    firm.ImageMimeType = firmImg.ContentType;
+                //    firm.ImageData = new byte[firmImg.ContentLength];
+                //    firmImg.InputStream.Read(
+                //        firm.ImageData, 0, firmImg.ContentLength);
+                //}
+                //firmRepo.SaveFirm(firm);
 
                 return RedirectToAction("Index");
             }
@@ -189,7 +190,7 @@ namespace BoilerStoreMonolith.Controllers
         [HttpGet]
         public ViewResult Create(string categoryName = null, string firmName = null)
         {
-            var model = new AdminCreateViewModel();
+            var model = new AdminEditViewModel();
             model.Product = new Product();
             model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
             model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
@@ -204,7 +205,7 @@ namespace BoilerStoreMonolith.Controllers
 
         [HttpPost]
         public ActionResult Create(
-            AdminCreateViewModel model, HttpPostedFileBase productImg = null)
+            AdminEditViewModel model, HttpPostedFileBase productImg = null)
         {
             if (ModelState.IsValid)
             {
@@ -234,7 +235,7 @@ namespace BoilerStoreMonolith.Controllers
                         featureRepo.SaveFeature(productFeature);
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToRoute(new{controller = "Admin", action="Index"});
             }
             return View(model);
         }
