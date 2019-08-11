@@ -28,7 +28,9 @@
     }
     else if (ViewBag.ImageToLoad == "firmImg")
     {
-
+        <img class="img-thumbnail" width="80" height="80"
+             src="@Url.Action("GetImageFromFirmTable", "Admin",
+                      new {firmName = Model.NewFirmName})" />
     }
     else if (ViewBag.ImageToLoad == "productImg")
     {

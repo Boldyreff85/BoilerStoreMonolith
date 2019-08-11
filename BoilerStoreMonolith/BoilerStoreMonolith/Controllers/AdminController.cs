@@ -390,9 +390,8 @@ namespace BoilerStoreMonolith.Controllers
         // ******** firms ********
 
         [HttpGet]
-        public ActionResult IndexFirms()
+        public ActionResult EditFirms()
         {
-            ViewBag.ImageToLoad = "firmImg";
 
             var model = new IndexFirmsViewModel
             {
@@ -400,54 +399,31 @@ namespace BoilerStoreMonolith.Controllers
             };
             return View(model);
         }
-
         [HttpPost]
-        public ActionResult IndexFirms(IndexFirmsViewModel model)
+        public ActionResult EditFirms(IndexFirmsViewModel model,
+            HttpPostedFileBase firmImg = null)
         {
-            var names = model.firmNames;
-            var images = model.firmImgs;
-            var firmsFromRepo = firmRepo.Firms.ToList();
-            // clear the table
-            firmRepo.DeleteFirms(firmRepo.Firms.ToList());
-
-            if (names == null)
-                return RedirectToAction("IndexFirms");
-
-            for (int i = 0; i < names.Count; i++)
+            var firm = new Firm();
+            firm.Name = model.NewFirmName;
+            if (firmImg != null)
             {
-                // checking if firm exists
-                var firm = new Firm
-                {
-                    Name = names[i]
-                };
-
-                if (images != null)
-                {
-                    firm.ImageMimeType = images[i].ContentType;
-                    firm.ImageData = new byte[images[i].ContentLength];
-                    images[i].InputStream.Read(
-                        firm.ImageData, 0, images[i].ContentLength);
-                }
-                else
-                {
-                    var firmFromRepo = firmsFromRepo.Find(f => f.Name == names[i]);
-                    if (firmFromRepo != null)
-                    {
-                        firm.ImageMimeType = firmFromRepo.ImageMimeType;
-                        firm.ImageData = firmFromRepo.ImageData;
-                    }
-                }
-                firmRepo.SaveFirm(firm);
+                firm.ImageMimeType = firmImg.ContentType;
+                firm.ImageData = new byte[firmImg.ContentLength];
+                firmImg.InputStream.Read(
+                    firm.ImageData, 0, firmImg.ContentLength);
             }
-
-            return RedirectToAction("IndexFirms");
+            firmRepo.SaveFirm(firm);
+            return RedirectToRoute(new{controller = "Admin", action="EditFirms"});
         }
 
-
-        public ActionResult GetFirmListItem(string imgId)
+ 
+        public ActionResult DeleteFirm(int firmId)
         {
-            return PartialView("FirmListItem", imgId);
+
+            firmRepo.DeleteFirm(firmId);
+            return RedirectToRoute(new{controller = "Admin", action="EditFirms"});
         }
+
 
         public List<Feature> GetCategoryFeatureList(string categoryName)
         {

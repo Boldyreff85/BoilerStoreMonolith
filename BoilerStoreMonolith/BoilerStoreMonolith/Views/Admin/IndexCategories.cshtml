@@ -36,7 +36,8 @@
                         <td class="text-right">@Model[i].Id</td>
 
                         <td>
-                            @Html.ActionLink(Model[i].Name, "EditCategories",new { categoryId = Model[i].Id })
+                            @Html.ActionLink(Model[i].Name, 
+                                "EditCategories",new { categoryId = Model[i].Id })
                         </td>
 
                         <td class="text-right">

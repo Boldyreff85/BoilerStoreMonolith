@@ -40,12 +40,16 @@ namespace BoilerStoreMonolith.Models
     // firms view models
 
 
-    public class IndexFirmsViewModel
+    public class IndexFirmsViewModel_
     {
         public List<Firm> Firms { get; set; }
         public List<string> firmNames { get; set; }
         public List<HttpPostedFileBase> firmImgs { get; set; }
     }
 
-
+    public class IndexFirmsViewModel
+    {
+        public List<Firm> Firms { get; set; }
+        public string NewFirmName { get; set; }
+    }
 }
