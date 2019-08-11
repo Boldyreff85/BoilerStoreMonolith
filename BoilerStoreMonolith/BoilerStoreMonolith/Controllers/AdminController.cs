@@ -40,7 +40,8 @@ namespace BoilerStoreMonolith.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            return View(productRepo.Products.ToList());
+            var products = productRepo.Products.ToList();
+            return View(products);
         }
 
 
@@ -65,39 +66,26 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         // тут по id собираем данные и заполняем поля товара
-        public ViewResult Edit(AdminEditViewModel model, int productId)
+        public ViewResult Edit(AdminEditViewModel model,
+             int productId, string categoryName = null, string firmName = null)
         {
             model.Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId);
             model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
             model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
 
-            // getting features of product (category name and product id)
-            model.Features = featureRepo.Features
-                .Where(f => f.ProductId == model.Product.ProductID &&
-                            f.Name == model.Product.Category)
-                .ToList();
-            // if no features of product then getting features of selected category
-            // quering  id of product's category
-            var categoryId = categoryRepo.Categories
-                .Where(c => c.Name == model.Product.Category)
-                .Select(c => c.Id)
-                .Single();
-            if (model.Features == null || model.Features.Count == 0 && (categoryId != null))
+            model.Product.Firm = firmName ?? model.Firms[0];
+
+            if (categoryName != null)
             {
-                // geting feature names of category
-                var catFeatures = categoryFeatureRepo.CategoryFeatures
-                    .Where(cf => cf.CategoryId == categoryId)
-                    .Select(cf => cf.Name)
-                    .ToList();
-                // feeding feature list with newly created items containing names
-                foreach (var catFeature in catFeatures)
-                {
-                    model.Features.Add(new Feature
-                    {
-                        Name = catFeature
-                    });
-                }
+                model.Product.Category = categoryName;
+                model.Features = GetFeatureList(categoryName, productId);
             }
+            else
+            {
+                model.Features = GetFeatureList(model.Product.Category, productId);
+            }
+
+
 
             ViewBag.ImageToLoad = "categoryImg";
             return View(model);
@@ -113,8 +101,16 @@ namespace BoilerStoreMonolith.Controllers
             if (ModelState.IsValid)
             {
                 ///////////////////////////////  processing products table ///////////////////////////////
-                // save product
+                // сохраняем товар
                 Product product = model.Product;
+                if (productImg != null)
+                {
+
+                    product.ImageMimeType = productImg.ContentType;
+                    product.ImageData = new byte[productImg.ContentLength];
+                    productImg.InputStream.Read(
+                        product.ImageData, 0, productImg.ContentLength);
+                }
                 productRepo.SaveProduct(product);
 
                 /////////////////////////////// processing features table ///////////////////////////////
@@ -189,45 +185,60 @@ namespace BoilerStoreMonolith.Controllers
 
         }
 
-        // создаём новую запись (пустые поля товара и списки доступных категорий и фирм)
-        public ViewResult Create()
-        {
-            var model = new AdminEditViewModel
-            {
-                Product = new Product()
-            };
 
+        [HttpGet]
+        public ViewResult Create(string categoryName = null, string firmName = null)
+        {
+            var model = new AdminCreateViewModel();
+            model.Product = new Product();
             model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
             model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
 
-            // getting features of category
+            model.Product.Category = categoryName ?? model.Categories[0];
+            model.Product.Firm = firmName ?? model.Firms[0];
 
-            if (model.Categories?.Count > 0)
-            {
-                var categoryId = categoryRepo.Categories
-                    .Where(c => c.Name == model.Categories[0])
-                    .Select(c => c.Id)
-                    .Single();
-                // geting feature names of category
-                var catFeatures = categoryFeatureRepo.CategoryFeatures
-                    .Where(cf => cf.CategoryId == categoryId)
-                    .Select(cf => cf.Name)
-                    .ToList();
-                // feeding feature list with newly created items containing names
-                model.Features = new List<Feature>();
-                foreach (var catFeature in catFeatures)
-                {
-                    model.Features.Add(new Feature
-                    {
-                        Name = catFeature
-                    });
-                }
-            }
+            model.Features = GetCategoryFeatureList(model.Product.Category);
 
-
-
-            return View("Edit", model);
+            return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Create(
+            AdminCreateViewModel model, HttpPostedFileBase productImg = null)
+        {
+            if (ModelState.IsValid)
+            {
+                // сохраняем товар
+                Product product = model.Product;
+                if (productImg != null)
+                {
+
+                    product.ImageMimeType = productImg.ContentType;
+                    product.ImageData = new byte[productImg.ContentLength];
+                    productImg.InputStream.Read(
+                        product.ImageData, 0, productImg.ContentLength);
+                }
+                productRepo.SaveProduct(product);
+
+                // сохраняем features 
+                if (model.Features?.Count > 0)
+                {
+                    foreach (var feature in model.Features)
+                    {
+                        var productFeature = new Feature
+                        {
+                            Name = feature.Name,
+                            Value = feature.Value,
+                            ProductId = product.ProductID
+                        };
+                        featureRepo.SaveFeature(productFeature);
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+
 
         public ViewResult EditSiteInfo()
         {
@@ -309,10 +320,18 @@ namespace BoilerStoreMonolith.Controllers
             // saving category features
             if (model.CategoryFeaturesNames?.Count > 0)
             {
-                // clear table
-                if (categoryFeatureRepo.CategoryFeatures?.Any() == true)
-                    categoryFeatureRepo
-                        .DeleteCategoryFeatures(categoryFeatureRepo.CategoryFeatures.ToList());
+                //// clear table
+                //if (categoryFeatureRepo.CategoryFeatures?.Any() == true)
+                //    categoryFeatureRepo
+                //        .DeleteCategoryFeatures(categoryFeatureRepo.CategoryFeatures.ToList());
+
+                // clear features if this category
+                var categoryFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == model.Category.Id)
+                    .ToList();
+                if (categoryFeatures.Any())
+                    categoryFeatureRepo.DeleteCategoryFeatures(categoryFeatures);
+
 
                 foreach (var categoryFeaturesName in model.CategoryFeaturesNames)
                 {
@@ -429,32 +448,76 @@ namespace BoilerStoreMonolith.Controllers
             return PartialView("FirmListItem", imgId);
         }
 
-        public ActionResult GetFeatureList(string categoryName)
+        public List<Feature> GetCategoryFeatureList(string categoryName)
         {
-            var model = new List<Feature>();
+            var categories = categoryRepo.Categories.ToList();
+            var catFeatures = new List<string>();
+            // getting category features
+            if (categories.Any() && categoryName != null)
+            {
+                var categoryId = categories
+                    .Where(c => c.Name == categoryName)
+                    .Select(c => c.Id)
+                    .Single();
+                catFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == categoryId)
+                    .Select(cf => cf.Name)
+                    .ToList();
+            }
 
-            var categoryId = categoryRepo.Categories
-                .Where(c => c.Name == categoryName)
-                .Select(c => c.Id)
-                .Single();
-            // geting feature names of category
-
-            var catFeatures = categoryFeatureRepo.CategoryFeatures
-                .Where(cf => cf.CategoryId == categoryId)
-                .Select(cf => cf.Name)
-                .ToList();
+            var featuresList = new List<Feature>();
             // feeding feature list with newly created items containing names
             foreach (var catFeature in catFeatures)
             {
-                model.Add(new Feature
+                featuresList.Add(new Feature
                 {
                     Name = catFeature,
                     Value = ""
                 });
             }
+            return featuresList;
+        }
 
+        public List<Feature> GetFeatureList(string categoryName, int productId)
+        {
 
-            return PartialView("FeatureListWidget", model);
+            var categories = categoryRepo.Categories.ToList();
+            var catFeatures = new List<string>();
+            // getting category features
+            if (categories.Any() && categoryName != null)
+            {
+                var categoryId = categories
+                    .Where(c => c.Name == categoryName)
+                    .Select(c => c.Id)
+                    .Single();
+                catFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == categoryId)
+                    .Select(cf => cf.Name)
+                    .ToList();
+            }
+
+            var featuresList = new List<Feature>();
+            // feeding feature list with newly created items containing names
+            foreach (var catFeature in catFeatures)
+            {
+                var featureValue = "";
+                var prodFeatures = featureRepo.Features
+                    .Where(f => f.Name == catFeature && f.ProductId == productId)
+                    .ToList();
+                if (prodFeatures.Any())
+                    featureValue = prodFeatures
+                        .Where(f => f.Name == catFeature && f.ProductId == productId)
+                        .Select(f => f.Value)
+                        .Single();
+
+                featuresList.Add(new Feature
+                {
+                    Name = catFeature,
+                    Value = featureValue ?? ""
+                });
+            }
+
+            return featuresList;
         }
 
 

@@ -273,6 +273,9 @@
     <Content Include="Views\Shared\FirmListItem.cshtml" />
     <Content Include="Views\Shared\UploadImgFirmList.cshtml" />
     <Content Include="Views\Shared\FeatureListWidget.cshtml" />
+    <Content Include="Views\Admin\Create.cshtml" />
+    <Content Include="Views\Shared\CategoryDropdown.cshtml" />
+    <Content Include="Views\Shared\FirmDropdown.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

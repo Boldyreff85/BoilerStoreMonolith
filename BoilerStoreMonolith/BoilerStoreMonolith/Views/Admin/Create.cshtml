@@ -1,0 +1,76 @@
+﻿@model BoilerStoreMonolith.Models.AdminCreateViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel">
+    <div class="panel-heading">
+
+        <h3 class="text-center py-2">Новый товар</h3>
+    </div>
+
+    @using (Html.BeginForm("Create", "Admin", FormMethod.Post,
+        new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="panel-body">
+
+            <div class="form-group">
+                @Html.Partial("CategoryDropdown")
+            </div>
+            <div class="form-group">
+                @Html.Partial("FirmDropdown")
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(p => p.Product.Title)
+                @Html.TextBoxFor(
+                    p => p.Product.Title, null,
+                    new {@class = "form-control", required = ""})
+
+                @Html.LabelFor(p => p.Product.Description)
+                @Html.TextAreaFor(
+                    p => p.Product.Description, 10, 1,
+                    new {@class = "form-control", required = ""})
+            </div>
+
+            <div class="form-group">
+                @if (Model.Features?.Count > 0)
+                {
+                    for (int i = 0; i < Model.Features.Count; i++)
+                    {
+                        @Html.LabelFor(m => m.Features[i].Name, Model.Features[i].Name)
+                        @Html.HiddenFor(m => m.Features[i].Name)
+
+                        @Html.TextBoxFor(
+                            m => m.Features[i].Value, null,
+                            new {@class = "form-control", required = ""})
+
+                    }
+                }
+            </div>
+
+            <div class="form-group">
+                @{
+                    ViewBag.ImageToLoad = "productImg";
+                }
+                @Html.Partial("UploadImg")
+            </div>
+
+        </div>
+
+        <div class="panel-footer mt-3">
+            <input type="submit" value="Сохранить" class="btn btn-primary" />
+            @Html.ActionLink("Отменить и вернуться к списку",
+                "Index", "Admin",null, new
+                {
+                    @class = "btn btn-default"
+                })
+        </div>
+
+    }
+</div>
+
+<br />
+<br />

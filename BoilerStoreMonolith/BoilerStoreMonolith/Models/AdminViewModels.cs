@@ -12,6 +12,14 @@ namespace BoilerStoreMonolith.Models
         public List<Feature> Features { get; set; }
     }
 
+    public class AdminCreateViewModel
+    {
+        public Product Product { get; set; }
+        public List<string> Categories { get; set; }
+        public List<string> Firms { get; set; }
+        public List<Feature> Features { get; set; }
+    }
+
     public class AdminIndexListViewModel
     {
         public List<AdminIndexViewModel> IndexList { get; set; }

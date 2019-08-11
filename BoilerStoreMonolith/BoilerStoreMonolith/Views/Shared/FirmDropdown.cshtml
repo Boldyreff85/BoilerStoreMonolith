@@ -1,0 +1,52 @@
+﻿@model BoilerStoreMonolith.Models.AdminCreateViewModel
+
+<div class="row my-4">
+    <div class="col-3 m-auto"> Выберите производителя:   </div>
+
+    <div class="col-3 m-auto text-center">
+        @if (Model.Firms?.Any() == true)
+        {
+            <div class="dropdown">
+                <button class="btn btn-transparent dropdown-toggle" type="button"
+                        id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    @Model.Product.Firm
+                </button>
+                <input type="hidden" name="Product.Firm" value="@Model.Product.Firm" />
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach (var item in Model.Firms)
+                    {
+                        @Html.ActionLink(item,
+                            "Create", "Admin",
+                            new
+                            {
+                                categoryName = Model.Product.Category,
+                                firmName = item
+                            },
+                            new{@class= "dropdown-item" })
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="dropdown">
+                <button class="btn btn-transparent dropdown-toggle" type="button"
+                        id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    Нет доступных производителей.
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                </div>
+            </div>
+        }
+
+    </div>
+
+    <div class="col-6 m-auto pl-5">
+        @Html.ActionLink("Редактировать",
+            "IndexFirms", "Admin",
+            null,
+            new{@class= "btn btn-secondary" })
+    </div>
+</div>

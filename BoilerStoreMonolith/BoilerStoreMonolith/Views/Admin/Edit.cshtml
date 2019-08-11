@@ -1,17 +1,22 @@
 ﻿@model BoilerStoreMonolith.Models.AdminEditViewModel
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    string actionName = this.ViewContext.RouteData.Values["action"].ToString();
+
 }
 
 <div class="panel">
     <div class="panel-heading">
+
         <h3>Редактирование @Model.Product.Title</h3>
+
+
     </div>
     @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 
     {
         <div class="panel-body">
-            @Html.HiddenFor(m => m.Product.ProductID)
+            @Html.HiddenFor(m => m.Product.ProductID, new { id = "productId" })
             @Html.HiddenFor(m => m.Product.ImageData)
             @Html.HiddenFor(m => m.Product.ImageMimeType)
 
@@ -40,23 +45,37 @@
                                 <button class="btn btn-transparent dropdown-toggle" type="button"
                                         id="dropdownMenuButton" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
-                                    @{
-                                        if (!string.IsNullOrEmpty(Model.Product.Category))
-                                        {
-                                            @Model.Product.Category
-                                        }
-                                        else
-                                        {
-                                            @Model.Categories[0]
-                                        }
-                                    }
+
+                                    @Model.Product.Category
                                 </button>
-                                <input type="hidden" name="Product.Category" value="@Model.Categories[0]" />
-                                       
+                                <input type="hidden" name="Product.Category" value="@Model.Product.Category" />
+
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     @foreach (var item in Model.Categories)
                                     {
-                                        <a class="dropdown-item" href="#">@item</a>
+                                        if (actionName == "Edit")
+                                        {
+                                            @Html.ActionLink(item,
+                                                "Edit", "Admin",
+                                                new
+                                                {
+                                                    categoryName= item,
+                                                    productId=Model.Product.ProductID
+                                                },
+                                                new{@class= "dropdown-item" })
+                                        }
+                                        else if (actionName == "Create")
+                                        {
+                                            @Html.ActionLink(item,
+                                                "Create", "Admin",
+                                                new
+                                                {
+                                                    categoryName = item,
+                                                    firmName = Model.Product.Firm
+                                                },
+                                                new{@class= "dropdown-item" })
+                                        }
+
                                     }
                                 </div>
                             </div>
@@ -90,20 +109,41 @@
                     <div class="col-3 m-auto text-center">
                         @if (Model.Firms?.Any() == true)
                         {
-                        <div class="dropdown">
-                            <button class="btn btn-transparent dropdown-toggle" type="button"
-                                    id="dropdownMenuButton" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                @Model.Firms[0]
-                            </button>
-                            <input type="hidden" name="Product.Firm" value="@Model.Firms[0]" />
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                @foreach (var item in Model.Firms)
-                                {
-                                    <a class="dropdown-item" href="#">@item</a>
-                                }
+                            <div class="dropdown">
+                                <button class="btn btn-transparent dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                    @Model.Product.Firm
+                                </button>
+                                <input type="hidden" name="Product.Firm" value="@Model.Product.Firm" />
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @foreach (var item in Model.Firms)
+                                    {
+                                        if (actionName == "Edit")
+                                        {
+                                            @Html.ActionLink(item,
+                                                "Edit", "Admin",
+                                                new
+                                                {
+                                                    categoryName= Model.Product.Category,
+                                                    productId=Model.Product.ProductID
+                                                },
+                                                new{@class= "dropdown-item" })
+                                        }
+                                        else if (actionName == "Create")
+                                        {
+                                            @Html.ActionLink(item,
+                                                "Create", "Admin",
+                                                new
+                                                {
+                                                    categoryName = Model.Product.Category,
+                                                    firmName = item
+                                                },
+                                                new{@class= "dropdown-item" })
+                                        }
+                                    }
+                                </div>
                             </div>
-                        </div>
                         }
                         else
                         {
@@ -128,26 +168,48 @@
                     </div>
                 </div>
 
-                @*@if (Model.Features?.Count > 0)
+
+                @if (Model.Features?.Count > 0)
                 {
-                    for (int i = 0; i < Model.Features.Count; ++i)
+                    for (int i = 0; i < Model.Features.Count; i++)
                     {
-                        @Html.LabelFor(n => n.Features[i].Name, Model.Features[i].Name)
-                        @Html.HiddenFor(n => n.Features[i].Name)
-                        @Html.TextBoxFor(v => v.Features[i].Value,
+                        @Html.LabelFor(m => m.Features[i].Name, Model.Features[i].Name)
+                        @Html.HiddenFor(m => m.Features[i].Name)
+
+                        @Html.TextBoxFor(
+                            m => m.Features[i].Value, null,
                             new { @class = "form-control" })
+
                     }
-                }*@
-                
-                <div id="featureList"></div>
-                
+                }
+
+
+                @*<div id="featureList">
+                        @if (Model.Features?.Count > 0)
+                        {
+                            for (int i = 0; i < Model.Features.Count; i++)
+                            {
+                                @Html.Label(Model.Features[i].Name)
+
+                                if (!string.IsNullOrEmpty(Model.Features[i].Value))
+                                {
+                                    <input type="text" name="Features[@i]"
+                                           value="@Model.Features[i].Value" class="form-control">
+                                }
+                                else
+                                {
+                                    <input type="text" name="Features[@i]" value="" class="form-control">
+                                }
+                            }
+                        }
+
+                    </div>*@
+
 
             </div>
         </div>
 
-        {
-            ViewBag.ImageToLoad = "productImg";
-        }
+        ViewBag.ImageToLoad = "productImg";
         @Html.Partial("UploadImg")
 
         <div class="panel-footer mt-3">
@@ -172,22 +234,34 @@
         $("#Product_Category").append(o);
     });
 
-    $(".dropdown-item").on("mousedown", function(e){
+
+
+    $(".dropdown-item").on("mousedown", function (e) {
         $("#dropdownMenuButton").text($(e.target).text());
-
-
-        let methodUrl = "/Admin/GetFeatureList/?categoryName=" + $(e.target).text();
-        $.ajax({
-            type: "POST",
-            url: methodUrl
-        }).done(function (data) {
-            $("#featureList").empty();
-            $("#featureList").append(data);
-        });
 
 
     });
 
 
+
+
+    function reloadEditWithFeatures() {
+
+        let methodUrl = "";
+
+        if ($("#productId").val() === 0) {
+            methodUrl = "/Admin/Edit/?categoryName="
+                + $("#dropdownMenuButton").text().trim();
+        } else {
+            methodUrl = "/Admin/Edit/?categoryName="
+                + $("#dropdownMenuButton").text().trim() + "&productId="
+                + $("#productId").val();
+        }
+
+        $.ajax({
+            type: "GET",
+            url: methodUrl
+        });
+    }
 
 </script>

@@ -1,21 +1,35 @@
 ﻿@model List<BoilerStoreMonolith.Domain.Entities.Feature>
 
 
-@foreach (var feature in Model)
-{
-    @Html.Label(feature.Name)
-    @Html.Hidden(feature.Name, feature.Value)
-    if (!string.IsNullOrEmpty(feature.Value))
+@*@foreach (var feature in Model)
     {
-        @Html.TextBox(feature.Name, feature.Value,
-            new { @class = "form-control" })
+        @Html.Label(feature.Name)
+        @Html.Hidden("Features", feature)
+        if (!string.IsNullOrEmpty(feature.Value))
+        {
+            @Html.TextBox(feature.Name, feature.Value,
+                new { @class = "form-control" })
+        }
+        else
+        {
+            @Html.TextBox(feature.Name, "",
+                new { @class = "form-control" })
+        }
+
+    }*@
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    @Html.Label(Model[i].Name)
+
+    if (!string.IsNullOrEmpty(Model[i].Value))
+    {
+        <input type="text" name="Features[@i]" value="@Model[i].Value" class="form-control">
     }
     else
     {
-        @Html.TextBox(feature.Name, "",
-            new { @class = "form-control" })
+        <input type="text" name="Features[@i]" value="" class="form-control">
     }
-
 }
 
 
