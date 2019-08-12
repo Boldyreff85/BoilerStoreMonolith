@@ -17,25 +17,29 @@ namespace BoilerStoreMonolith.Domain.Concrete
         }
         public void SaveProduct(Product product)
         {
-            if (product.ProductID == 0)
+            using (var context = new ApplicationContext())
             {
-                context.Products.Add(product);
-            }
-            else
-            {
-                Product dbEntry = context.Products.Find(product.ProductID);
-                if (dbEntry != null)
+                if (product.ProductID == 0)
                 {
-                    dbEntry.Title = product.Title;
-                    dbEntry.Description = product.Description;
-                    dbEntry.Price = product.Price;
-                    dbEntry.Category = product.Category;
-                    dbEntry.Firm = product.Firm;
-                    dbEntry.ImageData = product.ImageData;
-                    dbEntry.ImageMimeType = product.ImageMimeType;
+                    context.Products.Add(product);
                 }
+                else
+                {
+                    Product dbEntry = context.Products.Find(product.ProductID);
+                    if (dbEntry != null)
+                    {
+                        dbEntry.Title = product.Title;
+                        dbEntry.Description = product.Description;
+                        dbEntry.Price = product.Price;
+                        dbEntry.Category = product.Category;
+                        dbEntry.Firm = product.Firm;
+                        dbEntry.ImageData = product.ImageData;
+                        dbEntry.ImageMimeType = product.ImageMimeType;
+                    }
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
+
         }
 
 

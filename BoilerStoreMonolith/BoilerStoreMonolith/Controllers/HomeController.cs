@@ -87,8 +87,8 @@ namespace BoilerStoreMonolith.Controllers
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
 
-            //// filter by power
-            //products = OrderProductList(products, linkName, filter);
+            // filter by power
+            products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
 
@@ -121,7 +121,7 @@ namespace BoilerStoreMonolith.Controllers
             return View(productRepo.Products.FirstOrDefault(p => p.ProductID == productId));
         }
 
-        // выводим страницу каталога с 3 секциями (категории, производители и полный списко с пагинацией)
+        // выводим страницу каталога с 3 секциями (категории, производители и полный список с пагинацией)
         public ActionResult Catalogue(
             CatalogueViewModel model,
             string linkName,
@@ -141,7 +141,7 @@ namespace BoilerStoreMonolith.Controllers
 
 
             //// order by power
-            //products = OrderProductList(products, linkName, filter);
+            products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
 
