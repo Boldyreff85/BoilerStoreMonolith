@@ -1,11 +1,7 @@
 ﻿using BoilerStoreMonolith.Domain.Abstract;
 using BoilerStoreMonolith.Domain.Entities;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoilerStoreMonolith.Domain.Concrete
 {
@@ -32,6 +28,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
                 {
                     dbEntry.Title = product.Title;
                     dbEntry.Description = product.Description;
+                    dbEntry.Price = product.Price;
                     dbEntry.Category = product.Category;
                     dbEntry.Firm = product.Firm;
                     dbEntry.ImageData = product.ImageData;

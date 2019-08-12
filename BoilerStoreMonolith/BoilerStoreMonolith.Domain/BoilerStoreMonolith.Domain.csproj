@@ -130,6 +130,10 @@
     <Compile Include="Migrations\201908041248130_AddValidationToProduct.Designer.cs">
       <DependentUpon>201908041248130_AddValidationToProduct.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908121534453_AddedPriceToProductTable.cs" />
+    <Compile Include="Migrations\201908121534453_AddedPriceToProductTable.Designer.cs">
+      <DependentUpon>201908121534453_AddedPriceToProductTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -182,6 +186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908041248130_AddValidationToProduct.resx">
       <DependentUpon>201908041248130_AddValidationToProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908121534453_AddedPriceToProductTable.resx">
+      <DependentUpon>201908121534453_AddedPriceToProductTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

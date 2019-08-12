@@ -9,7 +9,7 @@
     <div class="panel-heading">
         <h3 class="text-center py-2">Редактирование товара</h3>
     </div>
-    @using (Html.BeginForm("Edit", "Admin", 
+    @using (Html.BeginForm("Edit", "Admin",
         FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <div class="panel-body">
@@ -39,6 +39,11 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(p => p.Product.Price)
+                    @Html.TextBoxFor(
+                        p => p.Product.Price, null,
+                        new {@class = "form-control", required = ""})
+
                     @if (Model.Features?.Count > 0)
                     {
                         for (int i = 0; i < Model.Features.Count; i++)
@@ -68,7 +73,7 @@
 
         <div class="panel-footer mt-3">
             <input type="submit" value="Сохранить" class="btn btn-primary" />
-            @Html.ActionLink("Отменить и вернуться к списку", 
+            @Html.ActionLink("Отменить и вернуться к списку",
                 "Index", null, new
             {
                 @class = "btn btn-default"
