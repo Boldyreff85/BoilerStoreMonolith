@@ -15,6 +15,7 @@ namespace BoilerStoreMonolith.Controllers
     {
         public int PageSize = 6;
         private IProductRepository productRepo;
+        private ICategoryFeatureRepository categoryFeatureRepo;
         private ICategoryRepository categoryRepo;
         private IFirmRepository firmRepo;
         private IInfoEntityRepository siteInfoRepo;
@@ -22,12 +23,14 @@ namespace BoilerStoreMonolith.Controllers
 
         public HomeController(
             IProductRepository _productRepo,
+        ICategoryFeatureRepository _categoryFeatureRepo,
             IFirmRepository _firmRepo,
             IInfoEntityRepository _siteInfoRepo,
             ICategoryRepository _categoryRepo
             )
         {
             productRepo = _productRepo;
+            categoryFeatureRepo = _categoryFeatureRepo;
             firmRepo = _firmRepo;
             categoryRepo = _categoryRepo;
             siteInfoRepo = _siteInfoRepo;
@@ -87,6 +90,24 @@ namespace BoilerStoreMonolith.Controllers
 
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
+
+
+            // тут получаем характеристики текущей категории
+            var categories = categoryRepo.Categories.ToList();
+            if (categories.Any())
+            {
+                var categoryId = categories
+                    .Where(c => c.Name == category)
+                    .Select(c => c.Id)
+                    .Single();
+
+                model.CategoryFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == categoryId)
+                    .Select(cf => cf.Name)
+                    .ToList();
+            }
+
+
 
             // filter by power
             products = OrderProductList(products, linkName, filter);
@@ -304,13 +325,25 @@ namespace BoilerStoreMonolith.Controllers
             }
             else if (value == "up")
             {
-                return products.OrderBy(s =>
-                    s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat());
+                foreach (var product in products)
+                {
+                    var featureName = product.GetType().GetProperty(propertyName);
+                    if (featureName != null)
+                        products = products.OrderBy(s =>
+                            s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat());
+                }
+                return products;
             }
             else
             {
-                return products.OrderByDescending(s =>
-                    s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat());
+                foreach (var product in products)
+                {
+                    var featureName = product.GetType().GetProperty(propertyName);
+                    if (featureName != null)
+                        products = products.OrderByDescending(s =>
+                            s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat());
+                }
+                return products;
             }
         }
 

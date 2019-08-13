@@ -1,21 +1,10 @@
-﻿@{
+﻿@model BoilerStoreMonolith.Models.CatalogueViewModel
+@{
     string actionName = this.ViewContext.RouteData.Values["action"].ToString();
 
     // defining filter link appearance
-    var powerLinkClass = "filter_icon nav-link text-dark font-weight-bold";
     var priceLinkClass = "filter_icon nav-link text-dark font-weight-bold";
-    if (ViewBag.LinkName == "Power")
-    {
-        if (ViewBag.filter == "down")
-        {
-            powerLinkClass = "icon-down filter_icon nav-link text-dark font-weight-bold";
-        }
-        else if (ViewBag.filter == "up")
-        {
-            powerLinkClass = "icon-up filter_icon nav-link text-dark font-weight-bold";
-        }
-    }
-    else if (ViewBag.LinkName == "Price")
+    if (ViewBag.LinkName == "Price")
     {
         if (ViewBag.filter == "down")
         {
@@ -50,6 +39,25 @@
                              },
                              new { @class = priceLinkClass })
     </li>
+
+    @foreach (var item in Model.CategoryFeatures)
+    {
+        <li class="nav-item">
+            @Html.ActionLink(item, actionName, "Home",
+                new
+                {
+                    category = ViewBag.Category,
+                    firm = ViewBag.Firm,
+                    filter = ViewBag.filter == "default" ||
+                             ViewBag.filter == "up" ?
+                        "down" : "up",
+                    linkName = item
+
+
+                },
+                new { @class = priceLinkClass })
+        </li>
+    }
 
     <li class="nav-item">
         <div class="dropdown">
