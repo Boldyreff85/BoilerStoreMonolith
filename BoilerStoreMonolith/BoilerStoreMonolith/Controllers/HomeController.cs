@@ -1,6 +1,7 @@
 ﻿using BoilerStoreMonolith.Domain.Abstract;
 using BoilerStoreMonolith.Domain.Concrete;
 using BoilerStoreMonolith.Domain.Entities;
+using BoilerStoreMonolith.Extensions;
 using BoilerStoreMonolith.Models;
 using MailKit.Net.Smtp;
 using MimeKit;
@@ -303,11 +304,13 @@ namespace BoilerStoreMonolith.Controllers
             }
             else if (value == "up")
             {
-                return products.OrderBy(s => s.GetType().GetProperty(propertyName).GetValue(s, null));
+                return products.OrderBy(s =>
+                    s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat());
             }
             else
             {
-                return products.OrderByDescending(s => s.GetType().GetProperty(propertyName).GetValue(s, null));
+                return products.OrderByDescending(s =>
+                    s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat());
             }
         }
 
