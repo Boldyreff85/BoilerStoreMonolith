@@ -81,7 +81,7 @@ namespace BoilerStoreMonolith.Controllers
             model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
             model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
 
-            if(firmName != null)
+            if (firmName != null)
                 model.Product.Firm = firmName;
 
             if (categoryName != null)
@@ -98,7 +98,7 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(AdminEditViewModel model,HttpPostedFileBase productImg = null)
+        public ActionResult Edit(AdminEditViewModel model, HttpPostedFileBase productImg = null)
         {
             if (ModelState.IsValid)
             {
@@ -144,7 +144,9 @@ namespace BoilerStoreMonolith.Controllers
             }
             else
             {
-                return View("Edit", model);
+                model.Categories = categoryRepo.Categories.Select(c => c.Name).ToList();
+                model.Firms = firmRepo.Firms.Select(c => c.Name).ToList();
+                return View(model);
             }
 
 
@@ -377,15 +379,15 @@ namespace BoilerStoreMonolith.Controllers
                     firm.ImageData, 0, firmImg.ContentLength);
             }
             firmRepo.SaveFirm(firm);
-            return RedirectToRoute(new{controller = "Admin", action="EditFirms"});
+            return RedirectToRoute(new { controller = "Admin", action = "EditFirms" });
         }
 
- 
+
         public ActionResult DeleteFirm(int firmId)
         {
 
             firmRepo.DeleteFirm(firmId);
-            return RedirectToRoute(new{controller = "Admin", action="EditFirms"});
+            return RedirectToRoute(new { controller = "Admin", action = "EditFirms" });
         }
 
 

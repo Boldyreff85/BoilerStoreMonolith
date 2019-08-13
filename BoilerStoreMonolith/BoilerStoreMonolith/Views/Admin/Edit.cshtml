@@ -42,7 +42,10 @@
                     @Html.LabelFor(p => p.Product.Price)
                     @Html.TextBoxFor(
                         p => p.Product.Price, null,
-                        new {@class = "form-control", required = ""})
+                        new {@class = "form-control", type = "number",
+                            min = "0",
+                            step = "0.01",
+                            required = ""})
 
                     @if (Model.Features?.Count > 0)
                     {
@@ -53,7 +56,11 @@
 
                             @Html.TextBoxFor(
                                 m => m.Features[i].Value, null,
-                                new {@class = "form-control", required = ""})
+                                new {@class = "form-control",
+                                    type = "number",
+                                    min = "0",
+                                    step = "0.001",
+                                    required = ""})
 
                         }
                     }
