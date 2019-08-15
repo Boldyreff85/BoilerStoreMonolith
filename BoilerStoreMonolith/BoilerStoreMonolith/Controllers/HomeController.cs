@@ -112,8 +112,8 @@ namespace BoilerStoreMonolith.Controllers
 
 
 
-            // order by power
-            products = OrderProductList(products, linkName, filter);
+            //// order by power
+            //products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
             var features = featureRepo.Features.ToList();
@@ -130,6 +130,8 @@ namespace BoilerStoreMonolith.Controllers
                     };
                     productWithFeaturesList.Add(prodWithFeatures);
                 }
+
+                productWithFeaturesList = OrderProductWithFeaturesList(productWithFeaturesList, linkName, filter);
 
                 model.ProductList = new ProductListViewModel
                 {
@@ -192,8 +194,8 @@ namespace BoilerStoreMonolith.Controllers
                     .ToList();
             }
 
-            // order by power
-            products = OrderProductList(products, linkName, filter);
+            //// order by power
+            //products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
             var features = featureRepo.Features.ToList();
@@ -209,20 +211,24 @@ namespace BoilerStoreMonolith.Controllers
                     };
                     productWithFeaturesList.Add(prodWithFeatures);
                 }
-
-                model.ProductList = new ProductListViewModel
-                {
-                    ProductWithFeaturesList = productWithFeaturesList
-                    .Skip((page - 1) * PageSize)
-                    .Take(PageSize),
-                    PagingInfo = new PagingInfo
-                    {
-                        CurrentPage = page,
-                        ItemsPerPage = PageSize,
-                        TotalItems = productWithFeaturesList.Count()
-                    }
-                };
             }
+
+            productWithFeaturesList = OrderProductWithFeaturesList(productWithFeaturesList, linkName, filter);
+
+            model.ProductList = new ProductListViewModel
+            {
+                ProductWithFeaturesList = productWithFeaturesList
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = productWithFeaturesList.Count()
+                }
+            };
+
+
 
 
             return View(model);
@@ -357,7 +363,54 @@ namespace BoilerStoreMonolith.Controllers
             }
         }
 
-
+        public List<ProductWithFeatures> OrderProductWithFeaturesList(
+            List<ProductWithFeatures> products,
+            string propertyName,
+            string value = "default")
+        {
+            if (value == "default" || string.IsNullOrEmpty(propertyName))
+            {
+                return products.OrderBy(p => p.Product.ProductID).ToList();
+            }
+            else if (value == "up")
+            {
+                if (propertyName == "Price")
+                {
+                    products = products
+                        .OrderBy(p => p.Product.Price.ToFloat())
+                        .ToList();
+                }
+                else
+                {
+                    products = products
+                        .OrderBy(p => p.Features
+                            .Where(f => f.Name == propertyName)
+                            .Select(f => f.Value.ToFloat())
+                            .Single()
+                        ).ToList();
+                }
+                return products;
+            }
+            else
+            {
+                if (propertyName == "Price")
+                {
+                    products = products
+                        .OrderByDescending(p => p.Product.Price.ToFloat())
+                        .ToList();
+                }
+                else
+                {
+                    products = products
+                        .OrderByDescending(p => p.Features
+                            .Where(f => f.Name == propertyName)
+                            .Select(f => f.Value.ToFloat())
+                            .Single()
+                        ).ToList();
+                }
+                return products;
+            }
+        }
 
         public List<Product> OrderProductList(
             List<Product> products,
