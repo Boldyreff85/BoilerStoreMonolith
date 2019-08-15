@@ -6,8 +6,13 @@ namespace BoilerStoreMonolith.Models
 
     public class ProductListViewModel
     {
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ProductWithFeatures> ProductWithFeaturesList { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 
+    public class ProductWithFeatures
+    {
+        public Product Product { get; set; }
+        public List<Feature> Features { get; set; }
+    }
 }

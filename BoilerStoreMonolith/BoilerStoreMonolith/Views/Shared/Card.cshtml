@@ -1,14 +1,22 @@
-﻿@model BoilerStoreMonolith.Domain.Entities.Product
+﻿@model BoilerStoreMonolith.Models.ProductWithFeatures
 
 @{
-    var imgSource = Url.Action("GetImage", "Home", new { productId = Model.ProductID });
+    var imgSource = Url.Action("GetImage", "Home", new { productId = Model.Product.ProductID });
 }
 
 <div class="boiler_card">
-    <div class="boiler-price pb-2 mx-auto">@Model.Price</div>
+    <div class="boiler-price pb-2 mx-auto">@Model.Product.Price</div>
+    @foreach (var item in Model.Features)
+    {
+        <div class="boiler-price pb-2 mx-auto">@item.Name - @item.Value</div>
+    }
     <img class="boiler_image" src=@imgSource>
-    @Html.ActionLink((string)Model.Title + " " + (string)Model.Firm + " " + (string)Model.Category,
-  "ProductPage", "Home", new { productId = Model.ProductID }, new { @class = "boiler_title" })
+    @Html.ActionLink((string)Model.Product.Title +
+                     " " + (string)Model.Product.Firm +
+                     " " + (string)Model.Product.Category,
+            "ProductPage", "Home",
+            new { productId = Model.Product.ProductID },
+            new { @class = "boiler_title" })
 </div>
 
 

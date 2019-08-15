@@ -15,6 +15,7 @@ namespace BoilerStoreMonolith.Controllers
     {
         public int PageSize = 6;
         private IProductRepository productRepo;
+        private IFeatureRepository featureRepo;
         private ICategoryFeatureRepository categoryFeatureRepo;
         private ICategoryRepository categoryRepo;
         private IFirmRepository firmRepo;
@@ -23,13 +24,15 @@ namespace BoilerStoreMonolith.Controllers
 
         public HomeController(
             IProductRepository _productRepo,
-        ICategoryFeatureRepository _categoryFeatureRepo,
+            IFeatureRepository _featureRepo,
+            ICategoryFeatureRepository _categoryFeatureRepo,
             IFirmRepository _firmRepo,
             IInfoEntityRepository _siteInfoRepo,
             ICategoryRepository _categoryRepo
             )
         {
             productRepo = _productRepo;
+            featureRepo = _featureRepo;
             categoryFeatureRepo = _categoryFeatureRepo;
             firmRepo = _firmRepo;
             categoryRepo = _categoryRepo;
@@ -86,15 +89,15 @@ namespace BoilerStoreMonolith.Controllers
             ViewBag.Filter = filter;
             ViewBag.LinkName = linkName;
 
-            var products = productRepo.Products;
+            var products = productRepo.Products.ToList();
 
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
 
-
             // тут получаем характеристики текущей категории
             var categories = categoryRepo.Categories.ToList();
-            if (categories.Any())
+            model.CategoryFeatures = new List<string>();
+            if (categories.Any() && !string.IsNullOrEmpty(category))
             {
                 var categoryId = categories
                     .Where(c => c.Name == category)
@@ -109,24 +112,36 @@ namespace BoilerStoreMonolith.Controllers
 
 
 
-            // filter by power
+            // order by power
             products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
+            var features = featureRepo.Features.ToList();
+            var productWithFeaturesList = new List<ProductWithFeatures>();
 
-            if (products.FirstOrDefault() != null)
+            if (products.Any())
             {
+                foreach (var item in products)
+                {
+                    var prodWithFeatures = new ProductWithFeatures
+                    {
+                        Product = item,
+                        Features = features.Where(f => f.ProductId == item.ProductID).ToList()
+                    };
+                    productWithFeaturesList.Add(prodWithFeatures);
+                }
+
                 model.ProductList = new ProductListViewModel
                 {
-                    Products = products
+                    ProductWithFeaturesList = productWithFeaturesList
                         .Skip((page - 1) * PageSize)
                         .Take(PageSize),
                     PagingInfo = new PagingInfo
                     {
                         CurrentPage = page,
                         ItemsPerPage = PageSize,
-                        TotalItems = products.Count()
-                    },
+                        TotalItems = productWithFeaturesList.Count()
+                    }
                 };
                 return PartialView("BoilerList", model);
             }
@@ -156,29 +171,59 @@ namespace BoilerStoreMonolith.Controllers
             ViewBag.LinkName = linkName;
             ViewBag.Category = category;
             ViewBag.Firm = firm;
-            var products = productRepo.Products;
+            var products = productRepo.Products.ToList();
 
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
             model.Firms = products.Select(n => n.Firm).ToList().Distinct();
 
+            // тут получаем характеристики текущей категории
+            var categories = categoryRepo.Categories.ToList();
+            model.CategoryFeatures = new List<string>();
+            if (categories.Any() && !string.IsNullOrEmpty(category))
+            {
+                var categoryId = categories
+                    .Where(c => c.Name == category)
+                    .Select(c => c.Id)
+                    .Single();
 
-            //// order by power
+                model.CategoryFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == categoryId)
+                    .Select(cf => cf.Name)
+                    .ToList();
+            }
+
+            // order by power
             products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
-
-            model.ProductList = new ProductListViewModel
+            var features = featureRepo.Features.ToList();
+            var productWithFeaturesList = new List<ProductWithFeatures>();
+            if (products.Any())
             {
-                Products = products
+                foreach (var item in products)
+                {
+                    var prodWithFeatures = new ProductWithFeatures
+                    {
+                        Product = item,
+                        Features = features.Where(f => f.ProductId == item.ProductID).ToList()
+                    };
+                    productWithFeaturesList.Add(prodWithFeatures);
+                }
+
+                model.ProductList = new ProductListViewModel
+                {
+                    ProductWithFeaturesList = productWithFeaturesList
                     .Skip((page - 1) * PageSize)
                     .Take(PageSize),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = page,
-                    ItemsPerPage = PageSize,
-                    TotalItems = products.Count()
-                }
-            };
+                    PagingInfo = new PagingInfo
+                    {
+                        CurrentPage = page,
+                        ItemsPerPage = PageSize,
+                        TotalItems = productWithFeaturesList.Count()
+                    }
+                };
+            }
+
 
             return View(model);
         }
@@ -314,14 +359,14 @@ namespace BoilerStoreMonolith.Controllers
 
 
 
-        public IEnumerable<Product> OrderProductList(
-            IEnumerable<Product> products,
+        public List<Product> OrderProductList(
+            List<Product> products,
             string propertyName,
             string value = "default")
         {
             if (value == "default" || propertyName == null)
             {
-                return products.OrderBy(p => p.ProductID);
+                return products.OrderBy(p => p.ProductID).ToList();
             }
             else if (value == "up")
             {
@@ -329,8 +374,10 @@ namespace BoilerStoreMonolith.Controllers
                 {
                     var featureName = product.GetType().GetProperty(propertyName);
                     if (featureName != null)
-                        products = products.OrderBy(s =>
-                            s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat());
+                        products = products
+                            .OrderBy(s =>
+                            s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat())
+                            .ToList();
                 }
                 return products;
             }
@@ -340,25 +387,27 @@ namespace BoilerStoreMonolith.Controllers
                 {
                     var featureName = product.GetType().GetProperty(propertyName);
                     if (featureName != null)
-                        products = products.OrderByDescending(s =>
-                            s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat());
+                        products = products
+                            .OrderByDescending(s =>
+                            s.GetType().GetProperty(propertyName).GetValue(s, null).ToString().ToFloat())
+                            .ToList();
                 }
                 return products;
             }
         }
 
-        public IEnumerable<Product> FilterProductList(
-            IEnumerable<Product> products,
+        public List<Product> FilterProductList(
+            List<Product> products,
             string category = null,
             string firm = null)
         {
             if (category != null)
             {
-                products = products.Where(p => p.Category == category);
+                products = products.Where(p => p.Category == category).ToList();
             }
             if (firm != null)
             {
-                products = products.Where(p => p.Firm == firm);
+                products = products.Where(p => p.Firm == firm).ToList();
             }
             return products;
         }
