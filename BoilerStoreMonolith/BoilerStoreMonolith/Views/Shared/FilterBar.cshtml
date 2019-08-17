@@ -1,21 +1,15 @@
 ﻿@model BoilerStoreMonolith.Models.CatalogueViewModel
 @{
+    /**/
+
     string actionName = this.ViewContext.RouteData.Values["action"].ToString();
 
     // defining filter link appearance
-    var priceLinkClass = "filter_icon nav-link text-dark font-weight-bold";
-    if (ViewBag.LinkName == "Price")
-    {
-        if (ViewBag.filter == "down")
-        {
-            priceLinkClass = "icon-down filter_icon nav-link text-dark font-weight-bold";
-        }
-        else if (ViewBag.filter == "up")
-        {
-            priceLinkClass = "icon-up filter_icon nav-link text-dark font-weight-bold";
-        }
-    }
+    var featureLinkClass = "filter_icon nav-link text-dark font-weight-bold";
+    var featureLinkClassIconDown = "icon-down filter_icon nav-link text-dark font-weight-bold";
+    var featureLinkClassIconUp = "icon-up filter_icon nav-link text-dark font-weight-bold";
 
+    var linkClass = featureLinkClass;
 }
 
 <ul class="nav">
@@ -25,38 +19,62 @@
     </li>
 
     <li class="nav-item">
+        @if (ViewBag.LinkName == "Price")
+        {
+            if (ViewBag.filter == "down")
+            {
+                linkClass = featureLinkClassIconDown;
+            }
+            else if (ViewBag.filter == "up")
+            {
+                linkClass = featureLinkClassIconUp;
+            }
+        }
+
+
         @Html.ActionLink("Цене", actionName, "Home",
-                             new
-                             {
-                                 category = ViewBag.Category,
-                                 firm = ViewBag.Firm,
-                                 filter = ViewBag.filter == "default" ||
-                                                ViewBag.filter == "up" ?
-                                                "down" : "up",
-                                 linkName = "Price"
+         new
+         {
+             category = ViewBag.Category,
+             firm = ViewBag.Firm,
+             filter = ViewBag.filter == "default" ||
+                            ViewBag.filter == "up" ?
+                            "down" : "up",
+             linkName = "Price"
 
 
-                             },
-                             new { @class = priceLinkClass })
+         },
+         new { @class = linkClass })
     </li>
 
     @foreach (var item in Model.CategoryFeatures)
     {
-        <li class="nav-item">
-            @Html.ActionLink(item, actionName, "Home",
-                new
-                {
-                    category = ViewBag.Category,
-                    firm = ViewBag.Firm,
-                    filter = ViewBag.filter == "default" ||
-                             ViewBag.filter == "up" ?
-                        "down" : "up",
-                    linkName = item
+        var catFeatureLinkClass = featureLinkClass;
+    <li class="nav-item">
+        @if (ViewBag.LinkName == item)
+        {
+            if (ViewBag.filter == "down")
+            {
+                catFeatureLinkClass = featureLinkClassIconDown;
+            }
+            else if (ViewBag.filter == "up")
+            {
+                catFeatureLinkClass = featureLinkClassIconUp;
+            }
+        }
+        @Html.ActionLink(item, actionName, "Home",
+            new
+            {
+                category = ViewBag.Category,
+                firm = ViewBag.Firm,
+                filter = ViewBag.filter == "default" ||
+                         ViewBag.filter == "up" ?
+                    "down" : "up",
+                linkName = item
+            },
+            new { @class = catFeatureLinkClass })
 
-
-                },
-                new { @class = priceLinkClass })
-        </li>
+    </li>
     }
 
     <li class="nav-item">
@@ -115,3 +133,5 @@
 
 
 </ul>
+
+
