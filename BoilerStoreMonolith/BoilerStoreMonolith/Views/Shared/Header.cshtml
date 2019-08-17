@@ -7,7 +7,9 @@
     <div class="container">
         <img class="logo" src="@Url.Action("GetImage", "Admin",
                     new { infoId = Model.InfoID, imgElementName = "logoImg" })" />
-        <div class="site-title">Оборудование в Воронеже</div>
+
+        @Html.ActionLink("Оборудование в Воронеже", "Index", "Home",
+                        null, new { @class = "site-title h5" })
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -41,46 +43,49 @@
                         </button>
                     </div>
                     @using (Html.BeginForm("WriteUs", "Home", FormMethod.Post,
-                        new { @class = "form-horizontal",
-                            id ="writeUs",
+                        new
+                        {
+                            @class = "form-horizontal",
+                            id = "writeUs",
                             role = "form",
-                            enctype = "multipart/form-data" }))
+                            enctype = "multipart/form-data"
+                        }))
                     {
                         <div class="modal-body">
                             <div class="form-group row">
                                 <label for="inputName" class="col-sm-2 col-form-label">Имя</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="Name" class="form-control" 
+                                    <input type="text" name="Name" class="form-control"
                                            id="inputName" placeholder="Имя" required>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="inputSurname" class="col-sm-2 col-form-label">Фамилия</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="LastName" class="form-control" 
+                                    <input type="text" name="LastName" class="form-control"
                                            id="inputSurname" placeholder="Фамилия (необязательно)">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="messageText">Сообщение</label>
-                                <textarea class="form-control" name="Message" 
+                                <textarea class="form-control" name="Message"
                                           id="messageText" rows="3" placeholder="Ваше сообщение" required></textarea>
                             </div>
                             <div class="form-group">
                                 <p class="text-center">Обратная связь</p>
                                 <div class="col-sm-10 m-auto">
-                                    <input type="email" name="Email" class="form-control m-auto text-center" 
+                                    <input type="email" name="Email" class="form-control m-auto text-center"
                                            id="inputEmail" placeholder="Email" required>
                                 </div>
                                 <p class="text-center mb-0">или</p>
                                 <div class="col-sm-10 m-auto">
-                                    <input type="tel" name="Phone" class="form-control m-auto text-center" 
+                                    <input type="tel" name="Phone" class="form-control m-auto text-center"
                                            id="inputPhone" placeholder="Телефон (необязательно)">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <input type="submit" value="Отправить" class="btn btn-info"/>
+                            <input type="submit" value="Отправить" class="btn btn-info" />
                         </div>
                     }
                 </div>

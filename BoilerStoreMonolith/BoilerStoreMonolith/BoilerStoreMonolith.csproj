@@ -280,6 +280,7 @@
     <Content Include="Views\Admin\Create.cshtml" />
     <Content Include="Views\Shared\CategoryDropdown.cshtml" />
     <Content Include="Views\Shared\FirmDropdown.cshtml" />
+    <Content Include="Views\Home\AboutCompany.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

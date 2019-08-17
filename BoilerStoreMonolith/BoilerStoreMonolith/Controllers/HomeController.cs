@@ -239,6 +239,11 @@ namespace BoilerStoreMonolith.Controllers
             return View(siteInfoRepo.InfoEntities.FirstOrDefault());
         }
 
+        public ActionResult AboutCompany()
+        {
+            return View(siteInfoRepo.InfoEntities.FirstOrDefault());
+        }
+
         public ActionResult Contacts()
         {
             return View(siteInfoRepo.InfoEntities.FirstOrDefault());

@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-center py-3">
     <ul class="nav nav-fill">
         <li class="nav-item mx-3">
-            @Html.ActionLink("Компания", "Index", "Home",
+            @Html.ActionLink("Главная", "Index", "Home",
                                     null, new { @class = "nav-link text-dark" })
         </li>
         <li class="nav-item mx-3">
@@ -10,7 +10,11 @@
                                     null, new { @class = "nav-link text-dark" })
         </li>
         <li class="nav-item mx-3">
-            @Html.ActionLink("Услуги", "Services", "Home",
+            @Html.ActionLink("Услуги и цены", "Services", "Home",
+                                    null, new { @class = "nav-link text-dark" })
+        </li>
+        <li class="nav-item mx-3">
+            @Html.ActionLink("О компании", "AboutCompany", "Home",
                                     null, new { @class = "nav-link text-dark" })
         </li>
         <li class="nav-item mx-3">

@@ -5,17 +5,17 @@
     string actionName = this.ViewContext.RouteData.Values["action"].ToString();
 
     // defining filter link appearance
-    var featureLinkClass = "filter_icon nav-link text-dark font-weight-bold";
-    var featureLinkClassIconDown = "icon-down filter_icon nav-link text-dark font-weight-bold";
-    var featureLinkClassIconUp = "icon-up filter_icon nav-link text-dark font-weight-bold";
+    var featureLinkClass = "filter_icon px-2 nav-link text-dark text-capitalize";
+    var featureLinkClassIconDown = "icon-down px-2 filter_icon nav-link text-dark text-capitalize";
+    var featureLinkClassIconUp = "icon-up px-2 filter_icon nav-link text-dark text-capitalize";
 
     var linkClass = featureLinkClass;
 }
 
 <ul class="nav">
 
-    <li class="nav-item nav-item d-flex align-items-center">
-        <div>Сортировать по:</div>
+    <li class="nav-item nav-item d-flex align-items-center pb-1 font-weight-bold mx-4">
+        <div>Отсортировать:</div>
     </li>
 
     <li class="nav-item">
@@ -32,7 +32,7 @@
         }
 
 
-        @Html.ActionLink("Цене", actionName, "Home",
+        @Html.ActionLink("Цена", actionName, "Home",
          new
          {
              category = ViewBag.Category,
@@ -50,36 +50,36 @@
     @foreach (var item in Model.CategoryFeatures)
     {
         var catFeatureLinkClass = featureLinkClass;
-    <li class="nav-item">
-        @if (ViewBag.LinkName == item)
-        {
-            if (ViewBag.filter == "down")
+        <li class="nav-item">
+            @if (ViewBag.LinkName == item)
             {
-                catFeatureLinkClass = featureLinkClassIconDown;
+                if (ViewBag.filter == "down")
+                {
+                    catFeatureLinkClass = featureLinkClassIconDown;
+                }
+                else if (ViewBag.filter == "up")
+                {
+                    catFeatureLinkClass = featureLinkClassIconUp;
+                }
             }
-            else if (ViewBag.filter == "up")
-            {
-                catFeatureLinkClass = featureLinkClassIconUp;
-            }
-        }
-        @Html.ActionLink(item, actionName, "Home",
-            new
-            {
-                category = ViewBag.Category,
-                firm = ViewBag.Firm,
-                filter = ViewBag.filter == "default" ||
-                         ViewBag.filter == "up" ?
-                    "down" : "up",
-                linkName = item
-            },
-            new { @class = catFeatureLinkClass })
+            @Html.ActionLink(item, actionName, "Home",
+                new
+                {
+                    category = ViewBag.Category,
+                    firm = ViewBag.Firm,
+                    filter = ViewBag.filter == "default" ||
+                             ViewBag.filter == "up" ?
+                        "down" : "up",
+                    linkName = item
+                },
+                new { @class = catFeatureLinkClass })
 
-    </li>
+        </li>
     }
 
     <li class="nav-item">
         <div class="dropdown">
-            <a class="btn dropdown-toggle text-dark font-weight-bold" href="#" role="button"
+            <a class="dropdown-toggle filter_icon px-2 nav-link text-dark text-capitalize" href="#" role="button"
                id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 @{
                     var categoryLabel = "категория";
@@ -106,7 +106,7 @@
     </li>
     <li class="nav-item">
         <div class="dropdown">
-            <a class="btn dropdown-toggle text-dark font-weight-bold" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a class="dropdown-toggle filter_icon px-2 nav-link text-dark text-capitalize" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 @{
                     var firmLabel = "Производитель";
                     if (ViewBag.Firm != null)

@@ -147,6 +147,7 @@ a.nav-link {
 
 .boiler_image {
     height: 150px;
+    width: 100%;
 }
 
 .boiler_title {
@@ -158,4 +159,8 @@ a.nav-link {
 
 .boiler-price{
     margin: .5rem 0;
+}
+
+.filter_icon{
+    font-size:18px;
 }
