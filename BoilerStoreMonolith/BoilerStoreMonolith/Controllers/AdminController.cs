@@ -38,10 +38,21 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(
+            AdminIndexListViewModel model,
+            string category = null,
+            string firm = null)
         {
-            var products = productRepo.Products.ToList();
-            return View(products);
+            ViewBag.Category = category;
+            ViewBag.Firm = firm;
+
+            model.Products = productRepo.Products.ToList();
+            model.Products = FilterProductList(model.Products, category, firm);
+
+            model.Categories = categoryRepo.Categories.Select(n => n.Name).Distinct().ToList();
+            model.Firms = firmRepo.Firms.Select(n => n.Name).Distinct().ToList();
+
+            return View(model);
         }
 
 
@@ -468,6 +479,23 @@ namespace BoilerStoreMonolith.Controllers
 
 
         // helpers
+
+        public List<Product> FilterProductList(
+            List<Product> products,
+            string category = null,
+            string firm = null)
+        {
+            if (category != null && category != "Категория")
+            {
+                products = products.Where(p => p.Category == category).ToList();
+            }
+            if (firm != null && firm != "Производитель")
+            {
+                products = products.Where(p => p.Firm == firm).ToList();
+            }
+            return products;
+        }
+
         public FileContentResult GetImageFromCategoryTable(int categoryId)
         {
             Category category = categoryRepo.Categories
