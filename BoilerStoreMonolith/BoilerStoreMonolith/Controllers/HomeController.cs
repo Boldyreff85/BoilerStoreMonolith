@@ -157,7 +157,13 @@ namespace BoilerStoreMonolith.Controllers
 
         public ActionResult ProductPage(int productId)
         {
-            return View(productRepo.Products.FirstOrDefault(p => p.ProductID == productId));
+            var model = new ProductWithFeatures
+            {
+                Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId),
+                Features = featureRepo.Features.Where(f => f.ProductId == productId).ToList()
+            };
+
+            return View(model);
         }
 
         // выводим страницу каталога с 3 секциями (категории, производители и полный список с пагинацией)

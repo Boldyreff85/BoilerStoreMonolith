@@ -55,7 +55,6 @@ namespace BoilerStoreMonolith.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         public ActionResult DeleteSelected(string[] productIds)
         {
@@ -143,6 +142,7 @@ namespace BoilerStoreMonolith.Controllers
                         {
                             Name = feature.Name,
                             Value = feature.Value,
+                            Unit = feature.Unit,
                             ProductId = product.ProductID
                         };
                         featureRepo.SaveFeature(productFeature);
@@ -207,6 +207,7 @@ namespace BoilerStoreMonolith.Controllers
                         {
                             Name = feature.Name,
                             Value = feature.Value,
+                            Unit = feature.Unit,
                             ProductId = product.ProductID
                         };
                         featureRepo.SaveFeature(productFeature);
@@ -426,7 +427,8 @@ namespace BoilerStoreMonolith.Controllers
                 featuresList.Add(new Feature
                 {
                     Name = catFeature,
-                    Value = ""
+                    Value = "",
+                    Unit = ""
                 });
             }
             return featuresList;
@@ -455,19 +457,28 @@ namespace BoilerStoreMonolith.Controllers
             foreach (var catFeature in catFeatures)
             {
                 var featureValue = "";
+                var featureUnit = "";
                 var prodFeatures = featureRepo.Features
                     .Where(f => f.Name == catFeature && f.ProductId == productId)
                     .ToList();
                 if (prodFeatures.Any())
+                {
                     featureValue = prodFeatures
                         .Where(f => f.Name == catFeature && f.ProductId == productId)
                         .Select(f => f.Value)
                         .Single();
+                    featureUnit = prodFeatures
+                        .Where(f => f.Name == catFeature && f.ProductId == productId)
+                        .Select(f => f.Unit)
+                        .Single();
+                }
+
 
                 featuresList.Add(new Feature
                 {
                     Name = catFeature,
-                    Value = featureValue ?? ""
+                    Value = featureValue ?? "",
+                    Unit = featureUnit ?? ""
                 });
             }
 

@@ -31,6 +31,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
                         dbEntry.Title = product.Title;
                         dbEntry.Description = product.Description;
                         dbEntry.Price = product.Price;
+                        dbEntry.Currency = product.Currency;
                         dbEntry.Category = product.Category;
                         dbEntry.Firm = product.Firm;
                         dbEntry.ImageData = product.ImageData;

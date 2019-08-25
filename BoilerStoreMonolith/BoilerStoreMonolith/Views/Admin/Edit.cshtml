@@ -40,12 +40,26 @@
 
                 <div class="form-group">
                     @Html.LabelFor(p => p.Product.Price)
-                    @Html.TextBoxFor(
-                        p => p.Product.Price, null,
-                        new {@class = "form-control", type = "number",
-                            min = "0",
-                            step = "0.01",
-                            required = ""})
+                    <div class="row">
+                        <div class="col">
+                            @Html.TextBoxFor(
+                                p => p.Product.Price, null,
+                                new {@class = "form-control", type = "number",
+                                    min = "0",
+                                    step = "0.01",
+                                    placeholder="Введите значение",
+                                    required = ""})
+                        </div>
+                        <div class="col">
+                            @Html.TextBoxFor(
+                                p => p.Product.Currency, null,
+                                new {@class = "form-control",
+                                    placeholder="Введите название валюты",
+                                    required = ""})
+                        </div>
+                    </div>
+
+
 
                     @if (Model.Features?.Count > 0)
                     {
@@ -54,14 +68,25 @@
                             @Html.LabelFor(m => m.Features[i].Name, Model.Features[i].Name)
                             @Html.HiddenFor(m => m.Features[i].Name)
 
-                            @Html.TextBoxFor(
-                                m => m.Features[i].Value, null,
-                                new {@class = "form-control",
-                                    type = "number",
-                                    min = "0",
-                                    step = "0.001",
-                                    required = ""})
-
+                            <div class="row">
+                                <div class="col">
+                                    @Html.TextBoxFor(
+                                        m => m.Features[i].Value, null,
+                                        new {@class = "form-control",
+                                            type = "number",
+                                            min = "0",
+                                            step = "0.001",
+                                            placeholder = "Введите значение",
+                                            required = ""})
+                                </div>
+                                <div class="col">
+                                    @Html.TextBoxFor(
+                                        m => m.Features[i].Unit, null,
+                                        new {@class = "form-control",
+                                            placeholder="Введите единицу измерения",
+                                            required = ""})
+                                </div>
+                            </div>
                         }
                     }
                 </div>
@@ -99,32 +124,32 @@
 
 
 
-    //$(".dropdown-item").on("mousedown", function (e) {
-    //    $("#dropdownMenuButton").text($(e.target).text());
+        //$(".dropdown-item").on("mousedown", function (e) {
+        //    $("#dropdownMenuButton").text($(e.target).text());
 
 
-    //});
+        //});
 
 
 
 
-    //function reloadEditWithFeatures() {
+        //function reloadEditWithFeatures() {
 
-    //    let methodUrl = "";
+        //    let methodUrl = "";
 
-    //    if ($("#productId").val() === 0) {
-    //        methodUrl = "/Admin/Edit/?categoryName="
-    //            + $("#dropdownMenuButton").text().trim();
-    //    } else {
-    //        methodUrl = "/Admin/Edit/?categoryName="
-    //            + $("#dropdownMenuButton").text().trim() + "&productId="
-    //            + $("#productId").val();
-    //    }
+        //    if ($("#productId").val() === 0) {
+        //        methodUrl = "/Admin/Edit/?categoryName="
+        //            + $("#dropdownMenuButton").text().trim();
+        //    } else {
+        //        methodUrl = "/Admin/Edit/?categoryName="
+        //            + $("#dropdownMenuButton").text().trim() + "&productId="
+        //            + $("#productId").val();
+        //    }
 
-    //    $.ajax({
-    //        type: "GET",
-    //        url: methodUrl
-    //    });
-    //}
+        //    $.ajax({
+        //        type: "GET",
+        //        url: methodUrl
+        //    });
+        //}
 
 </script>

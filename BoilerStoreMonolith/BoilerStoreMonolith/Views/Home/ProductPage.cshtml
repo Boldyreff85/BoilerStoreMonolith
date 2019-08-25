@@ -1,4 +1,4 @@
-﻿@model BoilerStoreMonolith.Domain.Entities.Product
+﻿@model BoilerStoreMonolith.Models.ProductWithFeatures
 @{
     ViewBag.Title = "ProductPage";
 }
@@ -10,9 +10,9 @@
 </style>
 
 @Html.Action("Breadcrumb", new {
-    category = Model.Category,
-    firm = Model.Firm,
-    title = Model.Title
+    category = Model.Product.Category,
+    firm = Model.Product.Firm,
+    title = Model.Product.Title
 })
 <div class="row bg-light m-3">
 
@@ -21,15 +21,17 @@
             <div class="col-md-4">
                 <img class="card-img bg-light"
                      src="@Url.Action("GetImage", "Home",
-                                 new { Model.ProductID })" />
+                                 new { Model.Product.ProductID })" />
             </div>
             <div class="col-md-8">
                 <div class="card-body">
 
-                    <p class="card-text">@Model.Firm, категория - @Model.Category </p>
-                    <h5 class="card-title">@Model.Title</h5>
-                     <br />
-                    <h6 class="card-text">@Model.Price</h6>
+                    <h5 class="card-title">@Model.Product.Title</h5>
+                    <h6 class="card-text">@Model.Product.Price @Model.Product.Currency</h6>
+                    @foreach (var item in Model.Features)
+                    {
+                        <div class="boiler-price mx-auto">@item.Name - @item.Value  @item.Unit</div>
+                    }
                 </div>
             </div>
         </div>
@@ -38,7 +40,7 @@
 
 
     <div class="container">
-        <pre>@Model.Description</pre>
+        <pre class="px-5">@Model.Product.Description</pre>
     </div>
 </div>
 

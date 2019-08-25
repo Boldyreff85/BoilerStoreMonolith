@@ -134,6 +134,14 @@
     <Compile Include="Migrations\201908121534453_AddedPriceToProductTable.Designer.cs">
       <DependentUpon>201908121534453_AddedPriceToProductTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908251250176_AddUnitOfFeature.cs" />
+    <Compile Include="Migrations\201908251250176_AddUnitOfFeature.Designer.cs">
+      <DependentUpon>201908251250176_AddUnitOfFeature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908251316105_AddUnitOfPrice.cs" />
+    <Compile Include="Migrations\201908251316105_AddUnitOfPrice.Designer.cs">
+      <DependentUpon>201908251316105_AddUnitOfPrice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -189,6 +197,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908121534453_AddedPriceToProductTable.resx">
       <DependentUpon>201908121534453_AddedPriceToProductTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908251250176_AddUnitOfFeature.resx">
+      <DependentUpon>201908251250176_AddUnitOfFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908251316105_AddUnitOfPrice.resx">
+      <DependentUpon>201908251316105_AddUnitOfPrice.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -26,6 +26,9 @@ namespace BoilerStoreMonolith.Domain.Entities
         [Required(ErrorMessage = "Введите цену")]
         [Display(Name = "Цена")]
         public string Price { get; set; }
+        [Required(ErrorMessage = "Введите название валюты")]
+        [Display(Name = "Валюта")]
+        public string Currency { get; set; }
 
         public byte[] ImageData { get; set; }
         public string ImageMimeType { get; set; }
