@@ -15,45 +15,54 @@
 
 @if (actionName != "Catalogue")
 {
-    @Html.Action("Breadcrumb","Home", 
+    @Html.Action("Breadcrumb","Home",
         new { category = ViewBag.Category, firm = ViewBag.Firm })
 }
 
-<div class="justify-content-center align-items-center flex-column w-100">
+<div class="row">
+    <div class="col-md-9 col-sm-12">
+        <div class="justify-content-center align-items-center flex-column w-100">
 
 
-    @if (actionName == "BoilerList")
-    {
-        <h4 class="text-center">Продукция компании @ViewBag.Firm категории @ViewBag.Category</h4>
-        <br />
-        <br />
-    }
+            @if (actionName == "BoilerList")
+            {
+                <h4 class="text-center">Продукция компании @ViewBag.Firm категории @ViewBag.Category</h4>
+                <br />
+                <br />
+            }
 
-    <table class="table table-borderless ">
+            <table class="productTable table table-borderless ">
 
-        @{
-            var productList = Model.ProductList.ProductWithFeaturesList.ToList();
-            var index = 0;
-        }
-
-        @Html.Partial("FilterBar")
-
-        @for (int i = 0; i < Model.ProductList.PagingInfo.ItemsPerPage && i < productList.Count; i++)
-        {
-            <tr>
-                @for (int j = 0; j < 3; j++)
-                {
-                    if (index >= productList.Count) { break; }
-
-                    <td>@Html.Partial("Card", productList[index])</td>
-                    index++;
+                @{
+                    var productList = Model.ProductList.ProductWithFeaturesList.ToList();
+                    var index = 0;
                 }
-            </tr>
-        }
-    </table>
 
-    @Html.Partial("Pagination", Model.ProductList.PagingInfo)
+                @Html.Partial("FilterBar")
 
+                @for (int i = 0; i < Model.ProductList.PagingInfo.ItemsPerPage && i < productList.Count; i++)
+                {
+                    <tr>
+                        @for (int j = 0; j < 3; j++)
+                        {
+                            if (index >= productList.Count) { break; }
+
+                            <td>@Html.Partial("Card", productList[index])</td>
+                            index++;
+                        }
+                    </tr>
+                }
+            </table>
+
+            @Html.Partial("Pagination", Model.ProductList.PagingInfo)
+
+        </div>
+    </div>
+    <div class="col-3">
+        @Html.Partial("RangeElement")
+    </div>
 </div>
+
+
 
 

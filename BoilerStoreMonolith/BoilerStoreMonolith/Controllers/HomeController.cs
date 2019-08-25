@@ -110,10 +110,18 @@ namespace BoilerStoreMonolith.Controllers
                     .ToList();
             }
 
+            // feature ranges
+            // получить минимальные и максимальные цены
+            model.FeatureRanges = new List<FeatureRange>();
+            model.FeatureRanges.Add(
+                new FeatureRange
+                {
+                    FeatureName = "Цена",
+                    From = products.Min(p=>p.Price),
+                    To = products.Max(p=>p.Price)
+                }
+            );
 
-
-            //// order by power
-            //products = OrderProductList(products, linkName, filter);
             // filter by category and firm
             products = FilterProductList(products, category, firm);
             var features = featureRepo.Features.ToList();
@@ -200,8 +208,18 @@ namespace BoilerStoreMonolith.Controllers
                     .ToList();
             }
 
-            //// order by power
-            //products = OrderProductList(products, linkName, filter);
+            // feature ranges
+            // получить минимальные и максимальные цены
+            model.FeatureRanges = new List<FeatureRange>();
+            model.FeatureRanges.Add(
+                new FeatureRange
+                {
+                    FeatureName = "Цена",
+                    From = products.Min(p=>p.Price),
+                    To = products.Max(p=>p.Price)
+                }
+            );
+
             // filter by category and firm
             products = FilterProductList(products, category, firm);
             var features = featureRepo.Features.ToList();

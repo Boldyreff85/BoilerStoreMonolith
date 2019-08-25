@@ -1,7 +1,5 @@
 ﻿html, body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-        "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 p, pre {
@@ -22,7 +20,7 @@ pre {
 }
 
 
-#messageText{
+#messageText {
     max-width: 100%;
 }
 
@@ -94,6 +92,10 @@ a.nav-link {
     text-align: center;
 }
 
+.card {
+    margin-bottom: 15px;
+}
+
 .services-cards {
     display: flex;
     flex-wrap: wrap;
@@ -112,8 +114,17 @@ a.nav-link {
     justify-content: space-around;
 }
 
-@media screen and (max-width: 400px) and (orientation: portrait) {
+.productTable {
+    width: 90%;
+}
 
+@media screen and (max-width: 1205px) {
+    .rangeBlock {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 400px) and (orientation: portrait) {
     .info-card .card-body {
         text-align: left;
         padding-left: 0;
@@ -139,11 +150,11 @@ a.nav-link {
 }
 
 .boiler_card {
-    width: 200px;
+    width: 180px;
     height: 310px;
     text-align: center;
     border: solid 1px #eee;
-    margin: 2rem 1rem;
+    margin: 1rem 0.1rem;
     background: #eee;
 }
 
@@ -162,6 +173,27 @@ a.nav-link {
     font-size: small;
 }
 
-.filter_icon{
-    font-size:18px;
+.filter_icon {
+    font-size: 18px;
+}
+
+.rangeBlock {
+    display:block;
+}
+
+.rangeLabel {
+    font-size: 13px;
+    height: 28px;
+    position: absolute;
+    line-height: 28px;
+    padding: 0 0 0 9px;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    display: block;
+}
+
+.rangeInput {
+    width: 92px;
+    padding-left: 29px;
 }

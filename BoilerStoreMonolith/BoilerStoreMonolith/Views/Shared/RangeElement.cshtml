@@ -1,0 +1,49 @@
+﻿@model BoilerStoreMonolith.Models.CatalogueViewModel
+
+
+<div class="rangeBlock">
+
+
+
+    @foreach (var item in Model.FeatureRanges)
+    {
+        <label class="featureLabel">@item.FeatureName</label>
+        <div class="row">
+            <div class="col-5 mx-1 px-0">
+                <label class="rangeLabel">от</label>
+                <input class="rangeInput" type="text" name="From" placeholder=@item.From>
+            </div>
+            <div class="col-5 mx-1 px-0">
+                <label class="rangeLabel">до</label>
+                <input class="rangeInput" type="text" name="To" placeholder=@item.To>
+            </div>
+        </div>
+    }
+
+    <button type="button" class="btn btn-light">
+        Показать
+    </button>
+
+    @*<p>
+            <label for="amount">@Model.:</label>
+            <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+
+        <div id="slider-range"></div>*@
+</div>
+
+<script>
+    $(function () {
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: 500,
+            values: [75, 300],
+            slide: function (event, ui) {
+                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+            }
+        });
+        $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+            " - $" + $("#slider-range").slider("values", 1));
+    });
+</script>
