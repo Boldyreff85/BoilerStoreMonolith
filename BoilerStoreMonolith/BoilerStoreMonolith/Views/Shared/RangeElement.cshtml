@@ -1,11 +1,28 @@
 ﻿@model BoilerStoreMonolith.Models.CatalogueViewModel
 
+@* проще всего тут будет написать постметоды для catalogue и boilerlist*@ 
 
 <div class="rangeBlock">
 
 
+    @for (int i = 0; i < Model.FeatureRanges.Count; i++)
+    {
+        <label class="featureLabel">@Model.FeatureRanges[i].FeatureName</label>
+        <div class="row">
+            <div class="col-5 mx-1 px-0">
+                <label class="rangeLabel">от</label>
+                <input class="rangeInput" type="text" name="FeatureRanges[@i].From" value="@Model.FeatureRanges[i].From" 
+                       placeholder=@Model.FeatureRanges[i].From>
+            </div>
+            <div class="col-5 mx-1 px-0">
+                <label class="rangeLabel">до</label>
+                <input class="rangeInput" type="text" name="To" placeholder=@Model.FeatureRanges[i].To>
+            </div>
+        </div>
+    }
+    
 
-    @foreach (var item in Model.FeatureRanges)
+    @*@foreach (var item in Model.FeatureRanges)
     {
         <label class="featureLabel">@item.FeatureName</label>
         <div class="row">
@@ -18,7 +35,7 @@
                 <input class="rangeInput" type="text" name="To" placeholder=@item.To>
             </div>
         </div>
-    }
+    }*@
 
     <button type="button" class="btn btn-light">
         Показать
