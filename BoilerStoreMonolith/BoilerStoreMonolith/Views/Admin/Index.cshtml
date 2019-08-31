@@ -9,7 +9,7 @@
     .productList {
         overflow-y: auto;
         overflow-x: hidden;
-        height: 70vh;
+        height: 65vh;
     }
 </style>
 
@@ -22,11 +22,11 @@
             FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
 
-        <div class="panel-heading">
-            <h3 class="text-center bg-light pt-2 pb-2 mb-0">Все товары</h3>
-            @Html.Partial("FilterBarAdmin")
+            <div class="panel-heading">
+                <h3 class="text-center bg-light pt-2 pb-2 mb-0">Все товары</h3>
+                @Html.Partial("FilterBarAdmin")
 
-        </div>
+            </div>
             <div class="productList panel-body">
                 <table class="table table-striped table-condensed table-bordered">
                     <tr>
@@ -40,34 +40,34 @@
 
                     @for (int i = 0; i < Model.Products.Count; i++)
                     {
-                    <tr>
-                        <td class="text-right">@Model.Products[i].ProductID</td>
+                        <tr>
+                            <td class="text-right">@Model.Products[i].ProductID</td>
 
-                        <td>
-                            @Html.ActionLink(Model.Products[i].Title, "Edit",
-                                new { Model.Products[i].ProductID})
-                        </td>
+                            <td>
+                                @Html.ActionLink(Model.Products[i].Title, "Edit",
+                                    new { Model.Products[i].ProductID})
+                            </td>
 
-                        <td class="text-right">@Model.Products[i].Category</td>
+                            <td class="text-right">@Model.Products[i].Category</td>
 
-                        <td class="text-right">@Model.Products[i].Firm</td>
+                            <td class="text-right">@Model.Products[i].Firm</td>
 
-                        <td class="text-right">
-                            <img class="img-thumbnail" width="80" height="80"
-                                 src="@Url.Action("GetImage", "Home",
+                            <td class="text-right">
+                                <img class="img-thumbnail" width="80" height="80"
+                                     src="@Url.Action("GetImage", "Home",
                                           new {Model.Products[i].ProductID})" />
-                        </td>
-                        <td class="text-center">
-                            @Html.CheckBox("productIds", new { value = @Model.Products[i].ProductID })
-                        </td>
-                    </tr>
+                            </td>
+                            <td class="text-center">
+                                @Html.CheckBox("productIds", new { value = @Model.Products[i].ProductID })
+                            </td>
+                        </tr>
                     }
                 </table>
 
 
             </div>
 
-
+            <br />
 
             <div class="panel-footer">
                 @Html.ActionLink("Добавить новый товар", "Create", null,
@@ -88,3 +88,4 @@
 
     </div>
 
+<br />

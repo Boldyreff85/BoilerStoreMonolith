@@ -196,6 +196,15 @@ namespace BoilerStoreMonolith.Controllers
                     productImg.InputStream.Read(
                         product.ImageData, 0, productImg.ContentLength);
                 }
+                else
+                {
+                    Category productCategory = categoryRepo.Categories
+                        .Single(c => c.Name == product.Category);
+
+                    product.ImageMimeType = productCategory.ImageMimeType;
+                    product.ImageData = productCategory.ImageData;
+
+                }
                 productRepo.SaveProduct(product);
 
                 // сохраняем features 

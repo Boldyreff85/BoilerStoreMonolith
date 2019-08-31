@@ -90,12 +90,13 @@
                 @{
                     ViewBag.ImageToLoad = "productImg";
                 }
+                <label class="text-success mt-3">Если картинка не выбрана, то будет использоваться картинка категории.</label>
                 @Html.Partial("UploadImg")
             </div>
 
         </div>
 
-        <div class="panel-footer mt-3">
+        <div class="panel-footer mt-4">
             <input type="submit" value="Сохранить" class="btn btn-primary" />
             @Html.ActionLink("Отменить и вернуться к списку",
                 "Index", "Admin",null, new
