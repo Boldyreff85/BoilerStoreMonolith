@@ -202,3 +202,8 @@ a.nav-link {
 #full_list {
     text-align: center;
 }
+
+.card-img-top {
+
+    height: 170px !important;
+}
