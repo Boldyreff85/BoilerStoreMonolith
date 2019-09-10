@@ -22,6 +22,19 @@
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 </head>
 
+@{
+    string actionName = this.ViewContext.RouteData.Values["action"].ToString();
+    var colWidth = "col-9";
+    if (actionName == "Index")
+    {
+        colWidth = "col-12";
+    }
+    else
+    {
+        colWidth = "col-9";
+    }
+}
+
 <body>
     @Html.Action("Header")
     <div class="container body-content main min-vh-100 px-0">
@@ -30,7 +43,7 @@
             <div class="col-3" id="sidebar-menu" style="display: none;">
                 @Html.Action("CatalogueTree", new { category = ViewBag.Category })
             </div>
-            <div class="col-9">
+            <div class=@colWidth>
                 @Html.Partial("Menu")
                 <div id="page-content">
                     @RenderBody()
