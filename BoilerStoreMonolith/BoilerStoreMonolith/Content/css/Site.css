@@ -94,6 +94,7 @@ a.nav-link {
 
 .card {
     margin-bottom: 15px;
+    height: 240px;
 }
 
 .services-cards {
@@ -196,4 +197,8 @@ a.nav-link {
 .rangeInput {
     width: 92px;
     padding-left: 29px;
+}
+
+#full_list {
+    text-align: center;
 }

@@ -1,14 +1,12 @@
 ﻿@model BoilerStoreMonolith.Models.CatalogueViewModel
 @{
-    ViewBag.Title = "Catalogue";
+                /**/
+
+                ViewBag.Title = "Catalogue";
 
 }
 
 
-<div class="d-flex justify-content-center align-items-center flex-column">
 
-    <h4 id="full_list">Каталог</h4>
-    @Html.Partial("BoilerList", Model)
-
-</div>
-
+<h4 id="full_list">Каталог продукции</h4>
+@Html.Partial("BoilerList", Model)
