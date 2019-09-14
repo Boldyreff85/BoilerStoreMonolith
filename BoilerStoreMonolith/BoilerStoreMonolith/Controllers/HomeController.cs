@@ -92,7 +92,16 @@ namespace BoilerStoreMonolith.Controllers
             var products = productRepo.Products.ToList();
 
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
-            model.Firms = products.Select(n => n.Firm).ToList().Distinct();
+            if (category != null)
+            {
+                model.Firms = products
+                    .Where(f => f.Category == category)
+                    .Select(n => n.Firm).ToList().Distinct();
+            }
+            else
+            {
+                model.Firms = products.Select(n => n.Firm).ToList().Distinct();
+            }
 
             // тут получаем характеристики текущей категории
             var categories = categoryRepo.Categories.ToList();
@@ -117,8 +126,8 @@ namespace BoilerStoreMonolith.Controllers
                 new FeatureRange
                 {
                     FeatureName = "Цена",
-                    From = products.Min(p=>p.Price),
-                    To = products.Max(p=>p.Price)
+                    From = products.Min(p => p.Price),
+                    To = products.Max(p => p.Price)
                 }
             );
 
@@ -190,7 +199,16 @@ namespace BoilerStoreMonolith.Controllers
             var products = productRepo.Products.ToList();
 
             model.Categories = products.Select(n => n.Category).ToList().Distinct();
-            model.Firms = products.Select(n => n.Firm).ToList().Distinct();
+            if (category != null)
+            {
+                model.Firms = products
+                    .Where(f => f.Category == category)
+                    .Select(n => n.Firm).ToList().Distinct();
+            }
+            else
+            {
+                model.Firms = products.Select(n => n.Firm).ToList().Distinct();
+            }
 
             // тут получаем характеристики текущей категории
             var categories = categoryRepo.Categories.ToList();
@@ -215,8 +233,8 @@ namespace BoilerStoreMonolith.Controllers
                 new FeatureRange
                 {
                     FeatureName = "Цена",
-                    From = products.Min(p=>p.Price),
-                    To = products.Max(p=>p.Price)
+                    From = products.Min(p => p.Price),
+                    To = products.Max(p => p.Price)
                 }
             );
 
@@ -251,10 +269,6 @@ namespace BoilerStoreMonolith.Controllers
                     TotalItems = productWithFeaturesList.Count()
                 }
             };
-
-
-
-
             return View(model);
         }
 
