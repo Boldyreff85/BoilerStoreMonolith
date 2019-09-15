@@ -65,7 +65,9 @@ namespace BoilerStoreMonolith.Domain.Concrete
                     category.Name + @" котёл со встроенным приготовлением горячей хозяйственной воды, \n
                                 Мощность аппарата регулируется модулирующей горелкой",
                     Category = category.Name,
-                    Firm = ""
+                    Firm = firms[0].Name,
+                    Price = "100",
+                    Currency = "Рублей"
                 };
                 products.Add(product);
             }
