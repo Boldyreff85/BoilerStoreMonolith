@@ -238,6 +238,32 @@ namespace BoilerStoreMonolith.Controllers
                 }
             );
 
+            foreach (var item in model.CategoryFeatures)
+            {
+
+                var from = featureRepo.Features
+                    .Where(f => f.Name == item)
+                    .Min(f => f.Value);
+
+                var to = featureRepo.Features
+                    .Where(f => f.Name == item)
+                    .Max(f => f.Value);
+
+                var unit = featureRepo.Features
+                    .Where(f => f.Name == item)
+                    .Select(f => f.Unit)
+                    .First();
+
+                model.FeatureRanges.Add(
+                new FeatureRange
+                {
+                    FeatureName = item,
+                    From = from,
+                    To = to,
+                    Unit = unit
+                });
+            }
+
             // filter by category and firm
             products = FilterProductList(products, category, firm);
             var features = featureRepo.Features.ToList();

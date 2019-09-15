@@ -16,5 +16,6 @@ namespace BoilerStoreMonolith.Models
         public string FeatureName { get; set; }
         public string From { get; set; }
         public string To { get; set; }
+        public string Unit { get; set; }
     }
 }
