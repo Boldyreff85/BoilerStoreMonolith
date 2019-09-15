@@ -41,14 +41,8 @@ namespace BoilerStoreMonolith.Controllers
 
         public ActionResult Index()
         {
-            var catList = categoryRepo.Categories.Distinct();
-            var siteInfo = siteInfoRepo.InfoEntities.FirstOrDefault();
-            IndexViewModel result = new IndexViewModel
-            {
-                Categories = catList.ToList(),
-                infoEntity = siteInfo
-            };
-            return View(result);
+            var catList = categoryRepo.Categories.Distinct().ToList();
+            return View(catList);
         }
 
         public ActionResult FirmList(string category, bool isAjax = false)
@@ -318,7 +312,8 @@ namespace BoilerStoreMonolith.Controllers
         [ChildActionOnly]
         public ActionResult Header()
         {
-            return PartialView("Header", siteInfoRepo.InfoEntities.FirstOrDefault());
+            var model = siteInfoRepo.InfoEntities.FirstOrDefault() ?? new InfoEntity();
+            return PartialView("Header", model);
         }
 
         public ActionResult Breadcrumb(string category = null, string firm = null, string title = null)
