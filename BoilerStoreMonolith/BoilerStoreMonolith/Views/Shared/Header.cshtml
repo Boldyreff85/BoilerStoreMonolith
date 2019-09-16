@@ -5,11 +5,16 @@
 
 <nav class="top-header navbar navbar-expand-lg py-4">
     <div class="container">
-        <img class="logo" src="@Url.Action("GetImage", "Admin",
-                    new { infoId = Model.InfoID, imgElementName = "logoImg" })" />
+        
+        <a href=@Url.Action("Index","Home")>
+                    
+            <img class="logo" src="@Url.Action("GetImage", "Admin",
+                                   new {infoId = Model.InfoID, imgElementName = "logoImg"})" />
+        </a>
+
 
         @Html.ActionLink("Оборудование в Воронеже", "Index", "Home",
-                        null, new { @class = "site-title h5" })
+            null, new {@class = "site-title h5"})
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,7 +29,7 @@
                     @Model.PhoneMain
                 </li>
                 <li class="nav-item mx-3 my-2 d-flex">
-                    <i class="fas fa-envelope mr-3" style="font-size:36px"></i>
+                    <i class="fas fa-envelope mr-3" style="font-size: 36px"></i>
                     <button type="button" class="btn btn-light" data-toggle="modal" data-target="#exampleModal">
                         Напишите нам
                     </button>
@@ -85,7 +90,7 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <input type="submit" value="Отправить" class="btn btn-info" />
+                            <input type="submit" value="Отправить" class="btn btn-info"/>
                         </div>
                     }
                 </div>

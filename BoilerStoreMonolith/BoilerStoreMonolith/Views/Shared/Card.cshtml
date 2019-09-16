@@ -4,17 +4,16 @@
     var imgSource = Url.Action("GetImage", "Home", new { productId = Model.Product.ProductID });
 }
 
+
 <div class="boiler_card">
+    <a href=@Url.Action("ProductPage",
+                "Home",
+                new { productId = Model.Product.ProductID}) class="boiler_title">
 
-    <img class="boiler_image" src=@imgSource>
-
-    @Html.ActionLink((string)Model.Product.Title,
-        "ProductPage", "Home",
-        new { productId = Model.Product.ProductID },
-        new { @class = "boiler_title" })
+        <img src=@imgSource class="boiler_image" />
+    </a>
 
     <div class="boiler_title">@Model.Product.Price @Model.Product.Currency</div>
-
     @foreach (var item in Model.Features)
     {
         <div class="boiler-price mx-auto">@item.Name - @item.Value  @item.Unit</div>
