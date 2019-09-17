@@ -10,46 +10,48 @@
     @using (Html.BeginForm("EditSiteInfo", "Admin",
                              FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-    <div class="panel-body">
-        @foreach (var property in ViewData.ModelMetadata.Properties)
-        {
-            switch (property.PropertyName)
+        <div class="panel-body">
+            @foreach (var property in ViewData.ModelMetadata.Properties)
             {
-                case "InfoID":
-                case "ImageData":
-                case "ImageMimeType":
-                case "ImageData2":
-                case "ImageMimeType2":
-                    // do nothing
-                    break;
-                default:
-                    <div class="form-group">
-                        <label>@(property.DisplayName ?? property.PropertyName)</label>
-                        @if (property.PropertyName == "CompanyInfo" ||
-                            property.PropertyName == "Services")
-                        {
-                            @Html.TextArea(property.PropertyName, null,
-                                        new { @class = "form-control", rows = 5 })
-                        }
-                        else if (property.PropertyName == "Password")
-                        {
-                            <label>В случае с gmail тут указывается пароль приложений или app specific password.</label>
-                            <label>Получить такой пароль можно в настройках аутентификации аккаунта google.</label>
-                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
-                        }
-                        else
-                        {
-                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
-                        }
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>
-                    break;
+                switch (property.PropertyName)
+                {
+                    case "InfoID":
+                    case "ImageData":
+                    case "ImageMimeType":
+                    case "ImageData2":
+                    case "ImageMimeType2":
+                        // do nothing
+                        break;
+                    default:
+                        <div class="form-group">
+                            <label>@(property.DisplayName ?? property.PropertyName)</label>
+                            @if (property.PropertyName == "CompanyInfo" ||
+                                property.PropertyName == "Services")
+                            {
+                                @Html.TextArea(property.PropertyName, null,
+                                            new { @class = "form-control", rows = 5 })
+                            }
+                            else if (property.PropertyName == "Password")
+                            {
+                                <label>В случае с gmail тут указывается пароль приложений или app specific password.</label>
+                                <label>Получить такой пароль можно в настройках аутентификации аккаунта google.</label>
+                                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                            }
+                            else
+                            {
+                                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                            }
+                            @Html.ValidationMessage(property.PropertyName)
+                        </div>
+                        break;
+                }
             }
-        }
 
-        @Html.Partial("LoadImages", Model)
+            @Html.Partial("LoadImages", Model)
 
-    </div>
+        </div>
+
+        <br />
 
         <div class="panel-footer mt-3">
             <input type="submit" value="Сохранить" class="btn btn-primary" />
@@ -58,6 +60,7 @@
                @class = "btn btn-default"
            })
         </div>
-
+        <br />
+        <br />
     }
 </div>

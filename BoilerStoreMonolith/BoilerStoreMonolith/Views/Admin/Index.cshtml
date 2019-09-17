@@ -5,13 +5,6 @@
 }
 
 
-<style>
-    .productList {
-        overflow-y: auto;
-        overflow-x: hidden;
-        height: 65vh;
-    }
-</style>
 
 @if (TempData["ProductDeletionStatus"] != null)
 {
@@ -69,15 +62,26 @@
 
             <br />
 
-            <div class="panel-footer">
+            <div class="panel-footer d-flex flex-wrap">
                 @Html.ActionLink("Добавить новый товар", "Create", null,
-                    new {@class = "btn btn-secondary"})
+                    new {@class = "btn btn-secondary m-1 smallBtn" })
 
                 @Html.ActionLink("Редактировать информацию сайта", "EditSiteInfo", null,
-                    new {@class = "btn btn-secondary ml-4"})
+                    new {@class = "btn btn-secondary m-1 smallBtn" })
+
+                @Html.ActionLink("Редактировать категории",
+                    "IndexCategories",
+                    "Admin",
+                    null,
+                    new{@class= "btn btn-secondary m-1 smallBtn" })
+
+                @Html.ActionLink("Редактировать фирмы",
+                    "EditFirms", "Admin",
+                    null,
+                    new{@class= "btn btn-secondary m-1 smallBtn" })
 
                 <input type="submit"
-                       class="btn btn-secondary ml-4"
+                       class="btn btn-secondary m-1 smallBtn"
                        value="Удалить выбранные товары" />
 
 
@@ -88,4 +92,3 @@
 
     </div>
 
-<br />
