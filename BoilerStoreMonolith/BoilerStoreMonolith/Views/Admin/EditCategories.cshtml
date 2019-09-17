@@ -13,7 +13,7 @@
     @using (Html.BeginForm("EditCategories", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 
     {
-        <div class="panel-body">
+        <div class="otherLists panel-body">
             @Html.HiddenFor(m => m.Category.Id)
             @Html.HiddenFor(m => m.Category.ImageData)
             @Html.HiddenFor(m => m.Category.ImageMimeType)

@@ -208,3 +208,19 @@ a.nav-link {
 
     height: 170px !important;
 }
+
+.productList {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 70vh;
+}
+
+.otherLists {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 60vh;
+}
+
+.smallBtn{
+    font-size:small;
+}
