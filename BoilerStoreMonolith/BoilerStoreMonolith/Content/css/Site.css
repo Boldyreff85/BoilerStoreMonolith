@@ -11,6 +11,11 @@ pre {
     white-space: pre-wrap;
 }
 
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
 .main {
     min-width: 65vw !important;
 }
@@ -94,7 +99,7 @@ a.nav-link {
 
 .card {
     margin-bottom: 15px;
-    height: 240px;
+    padding: 30px;
 }
 
 .services-cards {
@@ -151,18 +156,24 @@ a.nav-link {
 }
 
 .boiler_card {
-    width: 180px;
-    height: 310px;
+    max-width: 300px;
+    height: 300px;
     text-align: center;
-    border: solid 1px #eee;
+    border: solid 1px #ddd;
     margin: 1rem 0.1rem;
-    background: #eee;
+    border-radius: 5px;
 }
 
-.boiler_image {
-    height: 150px;
-    width: 100%;
-}
+    .boiler_card:hover {
+        box-shadow: #ddd 0px 0px 5px 3px;
+    }
+
+    .boiler_card .image-wrapper {
+        height: 220px;
+        width: 150px;
+        margin: 0 auto;
+        padding-top: 50px;
+    }
 
 .boiler_title {
     text-align: center;
@@ -180,7 +191,7 @@ a.nav-link {
 }
 
 .rangeBlock {
-    display:block;
+    display: block;
 }
 
 .rangeLabel {
@@ -205,7 +216,6 @@ a.nav-link {
 }
 
 .card-img-top {
-
     height: 170px !important;
 }
 

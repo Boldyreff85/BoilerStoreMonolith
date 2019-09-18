@@ -2,8 +2,10 @@
 using BoilerStoreMonolith.Domain.Concrete;
 using BoilerStoreMonolith.Domain.Entities;
 using BoilerStoreMonolith.Models;
+using ImageMagick;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -35,6 +37,25 @@ namespace BoilerStoreMonolith.Controllers
             featureRepo = _featureRepo;
             siteInfoRepo = _siteInfoRepo;
             firmRepo = _firmRepo;
+        }
+
+        public static byte[] resizeImage(HttpPostedFileBase image)
+        {
+            using (MagickImage resultImage = new MagickImage())
+            {
+                MagickGeometry size = new MagickGeometry(300, 300);
+                System.Drawing.Bitmap sourceimage = (Bitmap)Image.FromStream(image.InputStream);
+                resultImage.Read(sourceimage);
+                resultImage.Resize(size);
+                resultImage.Format = MagickFormat.Jpeg;
+
+                return resultImage.ToByteArray();
+            }
+        }
+
+        public static bool validateImage(HttpPostedFileBase image)
+        {
+            return image != null && image.ContentLength > 0 && (image.ContentType == "image/jpeg" || image.ContentType == "image/png");
         }
 
         [HttpGet]
@@ -115,14 +136,13 @@ namespace BoilerStoreMonolith.Controllers
                 ///////////////////////////////  processing products table ///////////////////////////////
                 // сохраняем товар
                 Product product = model.Product;
-                if (productImg != null)
+                bool isImageValid = validateImage(productImg);
+                if (isImageValid)
                 {
-
                     product.ImageMimeType = productImg.ContentType;
-                    product.ImageData = new byte[productImg.ContentLength];
-                    productImg.InputStream.Read(
-                        product.ImageData, 0, productImg.ContentLength);
+                    product.ImageData = resizeImage(productImg);
                 }
+
                 productRepo.SaveProduct(product);
 
                 /////////////////////////////// processing features table ///////////////////////////////
@@ -188,22 +208,17 @@ namespace BoilerStoreMonolith.Controllers
             {
                 // сохраняем товар
                 Product product = model.Product;
-                if (productImg != null)
+                bool isImageValid = validateImage(productImg);
+                if (isImageValid)
                 {
-
                     product.ImageMimeType = productImg.ContentType;
-                    product.ImageData = new byte[productImg.ContentLength];
-                    productImg.InputStream.Read(
-                        product.ImageData, 0, productImg.ContentLength);
+                    product.ImageData = resizeImage(productImg);
                 }
                 else
                 {
-                    Category productCategory = categoryRepo.Categories
-                        .Single(c => c.Name == product.Category);
-
+                    Category productCategory = categoryRepo.Categories.Single(c => c.Name == product.Category);
                     product.ImageMimeType = productCategory.ImageMimeType;
                     product.ImageData = productCategory.ImageData;
-
                 }
                 productRepo.SaveProduct(product);
 
