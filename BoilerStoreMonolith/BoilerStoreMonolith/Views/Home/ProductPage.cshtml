@@ -27,11 +27,11 @@
                 <div class="card-body">
 
                     <h5 class="card-title">@Model.Product.Title</h5>
-                    <h6 class="card-text">@Model.Product.Price @Model.Product.Currency</h6>
                     @foreach (var item in Model.Features)
                     {
-                        <div class="boiler-price mx-auto">@item.Name - @item.Value  @item.Unit</div>
+                        <div class="">@item.Name: @item.Value  @item.Unit</div>
                     }
+                    <div class="product-price">@Model.Product.Price @Model.Product.Currency</div>
                 </div>
             </div>
         </div>
@@ -40,10 +40,6 @@
 
 
     <div class="container">
-        <pre class="px-5">@Model.Product.Description</pre>
+        <pre>@Model.Product.Description</pre>
     </div>
 </div>
-
-
-
-

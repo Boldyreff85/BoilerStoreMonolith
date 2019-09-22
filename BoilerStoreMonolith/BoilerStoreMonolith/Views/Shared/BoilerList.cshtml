@@ -31,38 +31,28 @@
                 <br />
             }
 
-            <table class="productTable table table-borderless m-auto">
+            @Html.Partial("FilterBar")
 
+            <div class="product-list">
                 @{
                     var productList = Model.ProductList.ProductWithFeaturesList.ToList();
                     var index = 0;
                 }
 
-                @Html.Partial("FilterBar")
-
                 @for (int i = 0; i < Model.ProductList.PagingInfo.ItemsPerPage && i < productList.Count; i++)
                 {
-                    <tr>
-                        @for (int j = 0; j < 3; j++)
-                        {
-                            if (index >= productList.Count) { break; }
+                    if (index >= productList.Count) { break; }
 
-                            <td>@Html.Partial("Card", productList[index])</td>
-                            index++;
-                        }
-                    </tr>
+                    @Html.Partial("Card", productList[index])
+                    index++;
                 }
-            </table>
+            </div>
 
             @Html.Partial("Pagination", Model.ProductList.PagingInfo)
 
         </div>
     </div>
     @*<div class="col-2">
-        @Html.Partial("RangeElement")
-    </div>*@
+            @Html.Partial("RangeElement")
+        </div>*@
 </div>
-
-
-
-
