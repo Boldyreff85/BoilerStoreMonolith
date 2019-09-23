@@ -5,35 +5,38 @@
 }
 
 <div class="panel">
-    <div class="panel-heading">
-
-        <h3 class="text-center py-2">Редактирование списка производителей</h3>
-
-        <div class="form-group row my-4">
-
-            @Html.TextBoxFor(m=>m.NewFirmName,
-                new
-                {
-                    @class = "form-control col-sm-6",
-                    placeholder = "Введите название производителя",
-                    required=""
-                })
-            <div class="col-4">
-                @{
-                    ViewBag.ImageToLoad = "firmImg";
-                }
-                @Html.Partial("UploadImgById")
-            </div>
-            <div class="col-2">
-                <input type="submit" value="Добавить" class="btn btn-default m-auto">
-            </div>
-        </div>
-
-    </div>
 
     @using (Html.BeginForm("EditFirms", "Admin", FormMethod.Post,
-        new { enctype = "multipart/form-data" }))
+    new { enctype = "multipart/form-data" }))
     {
+
+        <div class="panel-heading">
+
+            <h3 class="text-center py-2">Редактирование списка производителей</h3>
+
+            <div class="form-group row my-4">
+
+                @Html.TextBoxFor(m=>m.NewFirmName,
+                    new
+                    {
+                        @class = "form-control col-sm-6",
+                        placeholder = "Введите название производителя",
+                        required=""
+                    })
+                <div class="col-4">
+                    @{
+                        ViewBag.ImageToLoad = "firmImg";
+                    }
+                    @Html.Partial("UploadImgById")
+                </div>
+                <div class="col-2">
+                    <input type="submit" value="Добавить" class="btn btn-default m-auto">
+                </div>
+            </div>
+
+        </div>
+
+
 
         <div class="otherLists panel-body">
 

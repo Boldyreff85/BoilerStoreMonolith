@@ -410,9 +410,7 @@ namespace BoilerStoreMonolith.Controllers
             if (firmImg != null)
             {
                 firm.ImageMimeType = firmImg.ContentType;
-                firm.ImageData = new byte[firmImg.ContentLength];
-                firmImg.InputStream.Read(
-                    firm.ImageData, 0, firmImg.ContentLength);
+                firm.ImageData = resizeImage(firmImg);
             }
             firmRepo.SaveFirm(firm);
             return RedirectToRoute(new { controller = "Admin", action = "EditFirms" });

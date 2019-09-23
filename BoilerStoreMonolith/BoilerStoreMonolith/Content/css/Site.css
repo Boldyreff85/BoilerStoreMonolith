@@ -300,6 +300,7 @@ img {
 
 .card-img-top {
     margin: 10px;
+    height: 100px !important;
 }
 
 .productList {

@@ -32,11 +32,13 @@
                             new {firm = @Model[i].Name, 
                                 category = ViewBag.Category})>
 
-                    <img src="@Url.Action("GetImageFromFirmTable",
+                    <div class="card-img-top">
+                        <img src="@Url.Action("GetImageFromFirmTable",
                                   "Admin",
                                   new {firmName = Model[i].Name})"
-                         class="card-img-top"
-                         alt="@ViewBag.Category"/>
+                             alt="@ViewBag.Category" />
+                    </div>
+
                     <div class="card-body">
                         <h5 class="card-title text-center">@Model[i].Name</h5>
                     </div>
