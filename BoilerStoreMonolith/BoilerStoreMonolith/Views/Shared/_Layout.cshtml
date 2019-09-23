@@ -12,6 +12,7 @@
     <link href="~/Content/css/font-awesome.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/css/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="~/Scripts/jquery-3.0.0.js"></script>
@@ -31,29 +32,27 @@
     }
     else
     {
-        colWidth = "col-9";
+        colWidth = "col-md-9";
     }
 }
 
 <body>
     @Html.Action("Header")
     <div class="container body-content main min-vh-100 px-0">
-
+        @Html.Partial("Menu")
         <div class="row central my-3 mx-auto">
             <div class="col-3" id="sidebar-menu" style="display: none;">
                 @Html.Action("CatalogueTree", new { category = ViewBag.Category })
             </div>
             <div class=@colWidth>
-                @Html.Partial("Menu")
                 <div id="page-content">
                     @RenderBody()
                 </div>
 
             </div>
         </div>
-        @Html.Action("Footer")
     </div>
+    @Html.Action("Footer")
 </body>
 <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
 </html>
-

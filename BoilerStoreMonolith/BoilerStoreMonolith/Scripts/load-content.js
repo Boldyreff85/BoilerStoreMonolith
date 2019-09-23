@@ -38,7 +38,6 @@ $(function () {
 // Hide sidebar on home page
 $(
     function () {
-        console.log(1)
         if (window.location.pathname !== "/") {
             $($('#sidebar-menu')[0]).show();
         }
