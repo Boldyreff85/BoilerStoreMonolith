@@ -17,11 +17,14 @@
                 <a href=@Url.Action("FirmList",
                             "Home",
                             new { category = Model[i].Name })>
-                    <img src="@Url.Action("GetImageFromCategoryTable",
+
+                    <div class="card-img-top">
+                        <img src="@Url.Action("GetImageFromCategoryTable",
                                   "Admin",
                                   new {categoryId = Model[i].Id})"
-                         class="card-img-top"
-                         alt="Настенные" />
+                             alt="Настенные" />
+                    </div>
+
                     <div class="card-body">
                         <h5 class="card-title text-center">@Model[i].Name</h5>
                     </div>
