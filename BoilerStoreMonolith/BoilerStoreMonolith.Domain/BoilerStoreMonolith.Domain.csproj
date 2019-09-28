@@ -151,6 +151,10 @@
     <Compile Include="Migrations\201909281356339_ChangeFeatures.Designer.cs">
       <DependentUpon>201909281356339_ChangeFeatures.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909281442243_ChangeCategoryFeatures.cs" />
+    <Compile Include="Migrations\201909281442243_ChangeCategoryFeatures.Designer.cs">
+      <DependentUpon>201909281442243_ChangeCategoryFeatures.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -218,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909281356339_ChangeFeatures.resx">
       <DependentUpon>201909281356339_ChangeFeatures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909281442243_ChangeCategoryFeatures.resx">
+      <DependentUpon>201909281442243_ChangeCategoryFeatures.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

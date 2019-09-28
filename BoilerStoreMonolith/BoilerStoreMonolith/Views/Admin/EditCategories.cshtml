@@ -3,6 +3,11 @@
 @{
     ViewBag.Title = "EditCategories";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var catFeatures = new List<string>
+    {
+        "Мощность", "Объём", "Масса"
+    };
 }
 
 
@@ -17,7 +22,7 @@
             @Html.HiddenFor(m => m.Category.Id)
             @Html.HiddenFor(m => m.Category.ImageData)
             @Html.HiddenFor(m => m.Category.ImageMimeType)
-            <div class="form-group row my-4">
+            <div class="form-group row m-3">
                 <label for="inputName" class="col-sm-4 col-form-label text-center">Название категории</label>
                 @Html.TextBoxFor(m => m.Category.Name,
                     new
@@ -39,33 +44,32 @@
             <div class="form-group row m-3">
                 <label for="inputName" class="col col-form-label text-center">Характеристики категории</label>
             </div>
-
-            <div class="form-group row m-auto">
-                <div class="col align-self-center">
-                    <input type="text" class="form-control" id="inputSpec" placeholder="Введите название характеристики">
-                </div>
-                <button id="addSpecBtn" type="button" class="btn btn-default m-auto">Добавить</button>
+            
+            <div class="form-group row m-3">
+                @Html.Partial("FeaturesDropdown")
             </div>
+
+            <br />
 
             <div class="form-group row m-auto">
                 <div class="col align-self-center">
                     <ul id="specsList" class="list-group list-group-flush">
-                        @if (Model.CategoryFeaturesNames != null)
+                        @if (catFeatures != null)
                         {
 
                             @*Features[0].Name*@
-                            for (int i = 0; i < Model.CategoryFeaturesNames.Count; i++)
+                            for (int i = 0; i < catFeatures.Count; i++)
                             {
                                 <li class="list-group-item d-flex">
                                     <div class="inputSpecVal">
-                                        @Model.CategoryFeaturesNames[i]
+                                        @catFeatures[i]
                                     </div>
                                     <button type="button" class="specClose ml-auto"
                                             aria-label="Close">
                                         Х
                                     </button>
                                     <input class="CategoryFeaturesNames" type="hidden" name="CategoryFeaturesNames[@i]"
-                                           value="@Model.CategoryFeaturesNames[i]" />
+                                           value="@catFeatures[i]" />
                                 </li>
                             }
 
@@ -76,9 +80,9 @@
 
             </div>
 
-            <div class="modal-footer d-flex justify-content-center">
+            @*<div class="modal-footer d-flex justify-content-center">
                 <input type="submit" value="Отправить" class="btn btn-info">
-            </div>
+            </div>*@
 
         </div>
 

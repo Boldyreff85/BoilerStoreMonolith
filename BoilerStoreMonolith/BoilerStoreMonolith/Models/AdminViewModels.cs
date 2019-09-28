@@ -27,6 +27,7 @@ namespace BoilerStoreMonolith.Models
     {
         public Category Category { get; set; }
         public List<string> CategoryFeaturesNames { get; set; }
+        public List<int> CategoryFeaturesIds { get; set; }
         public string ImageToLoad { get; set; }
     }
 

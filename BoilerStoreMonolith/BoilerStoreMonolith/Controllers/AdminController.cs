@@ -298,8 +298,15 @@ namespace BoilerStoreMonolith.Controllers
 
             model.Category = categoryRepo.Categories.Single(c => c.Id == categoryId);
 
-            model.CategoryFeaturesNames = categoryFeatureRepo.CategoryFeatures
-                .Where(cf => cf.CategoryId == categoryId).Select(cfn => cfn.Name).ToList();
+            var catFeatureIds = categoryFeatureRepo.CategoryFeatures
+                .Where(cf => cf.CategoryId == categoryId)
+                .Select(cf => cf.FeatureId)
+                .ToList();
+
+            model.CategoryFeaturesNames = catFeatureIds.Join(featureRepo.Features,
+                p => p,
+                t => t.Id,
+                (p, t) => t.Name).ToList();
 
             return View(model);
         }
@@ -309,7 +316,6 @@ namespace BoilerStoreMonolith.Controllers
             EditCategoriesViewModel model,
             HttpPostedFileBase categoryImg = null)
         {
-
             if (categoryImg != null)
             {
                 model.Category.ImageMimeType = categoryImg.ContentType;
@@ -321,7 +327,7 @@ namespace BoilerStoreMonolith.Controllers
             categoryRepo.SaveCategory(model.Category);
 
             // saving category features
-            if (model.CategoryFeaturesNames?.Count > 0)
+            if (model.CategoryFeaturesIds?.Count > 0)
             {
                 //// clear table
                 //if (categoryFeatureRepo.CategoryFeatures?.Any() == true)
@@ -335,18 +341,16 @@ namespace BoilerStoreMonolith.Controllers
                 if (categoryFeatures.Any())
                     categoryFeatureRepo.DeleteCategoryFeatures(categoryFeatures);
 
-
-                foreach (var categoryFeaturesName in model.CategoryFeaturesNames)
+                foreach (var featureId in model.CategoryFeaturesIds)
                 {
                     var catFeature = new CategoryFeature
                     {
-                        Name = categoryFeaturesName,
-                        CategoryId = model.Category.Id
+                        CategoryId = model.Category.Id,
+                        FeatureId = featureId
                     };
                     categoryFeatureRepo.SaveCategoryFeature(catFeature);
                 }
             }
-
 
             return RedirectToAction("IndexCategories");
         }
@@ -428,6 +432,7 @@ namespace BoilerStoreMonolith.Controllers
         public List<ProductFeature> GetCategoryFeatureList(string categoryName)
         {
             var categories = categoryRepo.Categories.ToList();
+            var catFeatureIds = new List<int>();
             var catFeatures = new List<string>();
             // getting category features
             if (categories.Any() && categoryName != null)
@@ -436,10 +441,14 @@ namespace BoilerStoreMonolith.Controllers
                     .Where(c => c.Name == categoryName)
                     .Select(c => c.Id)
                     .Single();
-                catFeatures = categoryFeatureRepo.CategoryFeatures
+                catFeatureIds = categoryFeatureRepo.CategoryFeatures
                     .Where(cf => cf.CategoryId == categoryId)
-                    .Select(cf => cf.Name)
+                    .Select(cf => cf.FeatureId)
                     .ToList();
+                catFeatures = catFeatureIds.Join(featureRepo.Features,
+                    p => p,
+                    t => t.Id,
+                    (p, t) => t.Name).ToList();
             }
 
             var featuresList = new List<ProductFeature>();
@@ -460,6 +469,7 @@ namespace BoilerStoreMonolith.Controllers
         {
 
             var categories = categoryRepo.Categories.ToList();
+            var catFeatureIds = new List<int>();
             var catFeatures = new List<string>();
             // getting category features
             if (categories.Any() && categoryName != null)
@@ -468,10 +478,16 @@ namespace BoilerStoreMonolith.Controllers
                     .Where(c => c.Name == categoryName)
                     .Select(c => c.Id)
                     .Single();
-                catFeatures = categoryFeatureRepo.CategoryFeatures
+
+                catFeatureIds = categoryFeatureRepo.CategoryFeatures
                     .Where(cf => cf.CategoryId == categoryId)
-                    .Select(cf => cf.Name)
+                    .Select(cf => cf.FeatureId)
                     .ToList();
+
+                catFeatures = catFeatureIds.Join(featureRepo.Features,
+                    p => p,
+                    t => t.Id,
+                    (p, t) => t.Name).ToList();
             }
 
             var featuresList = new List<ProductFeature>();
@@ -505,6 +521,16 @@ namespace BoilerStoreMonolith.Controllers
             }
 
             return featuresList;
+        }
+
+        // *************************************************************************************
+        // ******** features ********
+
+        [HttpGet]
+        public ActionResult EditFeatures()
+        {
+
+            return View();
         }
 
 

@@ -1,0 +1,87 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var catFeatures = new List<string>
+    {
+        "Мощность", "Объём", "Масса"
+    };
+}
+
+
+<div class="panel">
+
+    @using (Html.BeginForm("EditFirms", "Admin", FormMethod.Post,
+    new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="panel-heading">
+
+            <h3 class="text-center py-2">Редактирование общего списка характеристик</h3>
+
+            <div class="form-group row  ml-5 my-5">
+
+                @Html.TextBox("name", "",
+                    new
+                    {
+                        @class = "form-control col-8",
+                        placeholder = "Введите название характеристики",
+                        required=""
+                    })
+
+       
+                <div class="col-4">
+                    <input type="submit" value="Добавить" class="btn btn-default m-auto">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="otherLists panel-body">
+
+            <div class="form-group row m-auto">
+                <div class="col align-self-center">
+                    <ul id="specsList" class="list-group list-group-flush">
+                        @if (catFeatures != null)
+                        {
+                            for (int i = 0; i < catFeatures.Count; i++)
+                            {
+                                <li class="list-group-item d-flex">
+                                    <div class="inputSpecVal">
+                                        @catFeatures[i]
+                                    </div>
+                                    <button type="button" class="specClose ml-auto"
+                                            aria-label="Close">
+                                        Х
+                                    </button>
+                                    <input class="CategoryFeaturesNames" type="hidden" name="CategoryFeaturesNames[@i]"
+                                           value="@catFeatures[i]" />
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <br />
+
+        <div class="panel-footer">
+
+            @Html.ActionLink("Отменить и вернуться к списку",
+                "Index", null, new
+                {
+                    @class = "btn btn-default m-1 smallBtn"
+                })
+        </div>
+
+        <br />
+
+    }
+
+
+
+</div>

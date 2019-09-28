@@ -27,7 +27,8 @@ namespace BoilerStoreMonolith.Domain.Concrete
                     if (dbEntry != null)
                     {
                         dbEntry.Id = categoryFeature.Id;
-                        dbEntry.Name = categoryFeature.Name;
+                        dbEntry.CategoryId = categoryFeature.CategoryId;
+                        dbEntry.FeatureId = categoryFeature.FeatureId;
                     }
                 } 
                 context.SaveChanges();

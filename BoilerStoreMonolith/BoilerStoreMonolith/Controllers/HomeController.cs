@@ -107,10 +107,14 @@ namespace BoilerStoreMonolith.Controllers
                     .Select(c => c.Id)
                     .Single();
 
-                model.CategoryFeatures = categoryFeatureRepo.CategoryFeatures
+                var catFeatureIds = categoryFeatureRepo.CategoryFeatures
                     .Where(cf => cf.CategoryId == categoryId)
-                    .Select(cf => cf.Name)
+                    .Select(cf => cf.FeatureId)
                     .ToList();
+                model.CategoryFeatures = catFeatureIds.Join(featureRepo.Features,
+                    p => p,
+                    t => t.Id,
+                    (p, t) => t.Name).ToList();
             }
 
             // feature ranges
@@ -214,10 +218,14 @@ namespace BoilerStoreMonolith.Controllers
                     .Select(c => c.Id)
                     .Single();
 
-                model.CategoryFeatures = categoryFeatureRepo.CategoryFeatures
+                var catFeatureIds = categoryFeatureRepo.CategoryFeatures
                     .Where(cf => cf.CategoryId == categoryId)
-                    .Select(cf => cf.Name)
+                    .Select(cf => cf.FeatureId)
                     .ToList();
+                model.CategoryFeatures = catFeatureIds.Join(featureRepo.Features,
+                    p => p,
+                    t => t.Id,
+                    (p, t) => t.Name).ToList();
             }
 
             // feature ranges
