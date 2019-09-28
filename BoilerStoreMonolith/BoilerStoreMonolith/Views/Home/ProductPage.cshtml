@@ -27,7 +27,7 @@
                 <div class="card-body">
 
                     <h5 class="card-title">@Model.Product.Title</h5>
-                    @foreach (var item in Model.Features)
+                    @foreach (var item in Model.ProductFeatures)
                     {
                         <div class="">@item.Name: @item.Value  @item.Unit</div>
                     }

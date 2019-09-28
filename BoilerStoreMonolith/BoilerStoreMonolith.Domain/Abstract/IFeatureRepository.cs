@@ -3,11 +3,11 @@ using BoilerStoreMonolith.Domain.Entities;
 
 namespace BoilerStoreMonolith.Domain.Abstract
 {
-    public interface IFeatureRepository
+    public interface IProductFeatureRepository
     {
-        IEnumerable<Feature> Features { get; }
-        void SaveFeature(Feature feature);
-        Feature DeleteFeature(int featureId);
-        List<Feature> DeleteFeatures(List<Feature> featuresToDelete);
+        IEnumerable<ProductFeature> Features { get; }
+        void SaveFeature(ProductFeature feature);
+        ProductFeature DeleteFeature(int featureId);
+        List<ProductFeature> DeleteFeatures(List<ProductFeature> featuresToDelete);
     }
 }

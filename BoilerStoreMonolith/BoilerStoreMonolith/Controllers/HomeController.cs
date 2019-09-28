@@ -15,7 +15,7 @@ namespace BoilerStoreMonolith.Controllers
     {
         public int PageSize = 6;
         private IProductRepository productRepo;
-        private IFeatureRepository featureRepo;
+        private IProductFeatureRepository featureRepo;
         private ICategoryFeatureRepository categoryFeatureRepo;
         private ICategoryRepository categoryRepo;
         private IFirmRepository firmRepo;
@@ -24,7 +24,7 @@ namespace BoilerStoreMonolith.Controllers
 
         public HomeController(
             IProductRepository _productRepo,
-            IFeatureRepository _featureRepo,
+            IProductFeatureRepository _featureRepo,
             ICategoryFeatureRepository _categoryFeatureRepo,
             IFirmRepository _firmRepo,
             IInfoEntityRepository _siteInfoRepo,
@@ -137,7 +137,7 @@ namespace BoilerStoreMonolith.Controllers
                     var prodWithFeatures = new ProductWithFeatures
                     {
                         Product = item,
-                        Features = features.Where(f => f.ProductId == item.ProductID).ToList()
+                        ProductFeatures = features.Where(f => f.ProductId == item.ProductID).ToList()
                     };
                     productWithFeaturesList.Add(prodWithFeatures);
                 }
@@ -171,7 +171,7 @@ namespace BoilerStoreMonolith.Controllers
             var model = new ProductWithFeatures
             {
                 Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId),
-                Features = featureRepo.Features.Where(f => f.ProductId == productId).ToList()
+                ProductFeatures = featureRepo.Features.Where(f => f.ProductId == productId).ToList()
             };
 
             return View(model);
@@ -269,7 +269,7 @@ namespace BoilerStoreMonolith.Controllers
                     var prodWithFeatures = new ProductWithFeatures
                     {
                         Product = item,
-                        Features = features.Where(f => f.ProductId == item.ProductID).ToList()
+                        ProductFeatures = features.Where(f => f.ProductId == item.ProductID).ToList()
                     };
                     productWithFeaturesList.Add(prodWithFeatures);
                 }
@@ -447,7 +447,7 @@ namespace BoilerStoreMonolith.Controllers
                 else
                 {
                     products = products
-                        .OrderBy(p => p.Features
+                        .OrderBy(p => p.ProductFeatures
                             .Where(f => f.Name == propertyName)
                             .Select(f => f.Value.ToFloat())
                             .Single()
@@ -466,7 +466,7 @@ namespace BoilerStoreMonolith.Controllers
                 else
                 {
                     products = products
-                        .OrderByDescending(p => p.Features
+                        .OrderByDescending(p => p.ProductFeatures
                             .Where(f => f.Name == propertyName)
                             .Select(f => f.Value.ToFloat())
                             .Single()

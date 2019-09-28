@@ -5,22 +5,22 @@ using BoilerStoreMonolith.Domain.Entities;
 
 namespace BoilerStoreMonolith.Domain.Concrete
 {
-    public class FeatureRepository : IFeatureRepository
+    public class ProductFeatureRepository : IProductFeatureRepository
     {
 
         private ApplicationContext context = new ApplicationContext();
 
-        public IEnumerable<Feature> Features => context.Features;
+        public IEnumerable<ProductFeature> Features => context.ProductFeatures;
 
-        public void SaveFeature(Feature feature)
+        public void SaveFeature(ProductFeature feature)
         {
             if (feature.Id == 0)
             {
-                context.Features.Add(feature);
+                context.ProductFeatures.Add(feature);
             }
             else
             {
-                Feature dbEntry = context.Features.Find(feature.Id);
+                ProductFeature dbEntry = context.ProductFeatures.Find(feature.Id);
                 if (dbEntry != null)
                 {
                     dbEntry.Id = feature.Id;
@@ -32,28 +32,28 @@ namespace BoilerStoreMonolith.Domain.Concrete
             context.SaveChanges();
         }
 
-        public Feature DeleteFeature(int featureId)
+        public ProductFeature DeleteFeature(int featureId)
         {
-            Feature dbEntry = context.Features.Find(featureId);
+            ProductFeature dbEntry = context.ProductFeatures.Find(featureId);
             if (dbEntry != null)
             {
-                context.Features.Remove(dbEntry);
+                context.ProductFeatures.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
         }
 
-        public List<Feature> DeleteFeatures(List<Feature> featuresToDelete)
+        public List<ProductFeature> DeleteFeatures(List<ProductFeature> featuresToDelete)
         {
-            var removedFeatures = new List<Feature>();
+            var removedFeatures = new List<ProductFeature>();
             using (var context = new ApplicationContext())
             {
                 foreach (var feature in featuresToDelete)
                 {
-                    Feature dbEntry = context.Features.Find(feature.Id);
+                    ProductFeature dbEntry = context.ProductFeatures.Find(feature.Id);
                     if (dbEntry != null)
                     {
-                        context.Features.Remove(dbEntry);
+                        context.ProductFeatures.Remove(dbEntry);
                         context.SaveChanges();
                         removedFeatures.Add(dbEntry);
                     }

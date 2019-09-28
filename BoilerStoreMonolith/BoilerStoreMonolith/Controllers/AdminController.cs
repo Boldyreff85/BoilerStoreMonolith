@@ -17,7 +17,7 @@ namespace BoilerStoreMonolith.Controllers
         private IProductRepository productRepo;
         private ICategoryRepository categoryRepo;
         private ICategoryFeatureRepository categoryFeatureRepo;
-        private IFeatureRepository featureRepo;
+        private IProductFeatureRepository featureRepo;
         private IInfoEntityRepository siteInfoRepo;
         private IFirmRepository firmRepo;
         private ApplicationContext context = new ApplicationContext();
@@ -26,7 +26,7 @@ namespace BoilerStoreMonolith.Controllers
             IProductRepository _productRepo,
             ICategoryRepository _categoryRepo,
             ICategoryFeatureRepository _categoryFeatureRepo,
-            IFeatureRepository _featureRepo,
+            IProductFeatureRepository _featureRepo,
             IInfoEntityRepository _siteInfoRepo,
             IFirmRepository _firmRepo
         )
@@ -118,11 +118,11 @@ namespace BoilerStoreMonolith.Controllers
             if (categoryName != null)
             {
                 model.Product.Category = categoryName;
-                model.Features = GetFeatureList(categoryName, productId);
+                model.ProductFeatures = GetFeatureList(categoryName, productId);
             }
             else
             {
-                model.Features = GetFeatureList(model.Product.Category, productId);
+                model.ProductFeatures = GetFeatureList(model.Product.Category, productId);
             }
 
             return View(model);
@@ -154,11 +154,11 @@ namespace BoilerStoreMonolith.Controllers
                     featureRepo.DeleteFeatures(prodFeatures);
                 }
                 // saving features of product
-                if (model.Features?.Count > 0)
+                if (model.ProductFeatures?.Count > 0)
                 {
-                    foreach (var feature in model.Features)
+                    foreach (var feature in model.ProductFeatures)
                     {
-                        var productFeature = new Feature
+                        var productFeature = new ProductFeature
                         {
                             Name = feature.Name,
                             Value = feature.Value,
@@ -195,7 +195,7 @@ namespace BoilerStoreMonolith.Controllers
             model.Product.Category = categoryName ?? model.Categories[0];
             model.Product.Firm = firmName ?? model.Firms[0];
 
-            model.Features = GetCategoryFeatureList(model.Product.Category);
+            model.ProductFeatures = GetCategoryFeatureList(model.Product.Category);
 
             return View(model);
         }
@@ -223,11 +223,11 @@ namespace BoilerStoreMonolith.Controllers
                 productRepo.SaveProduct(product);
 
                 // сохраняем features 
-                if (model.Features?.Count > 0)
+                if (model.ProductFeatures?.Count > 0)
                 {
-                    foreach (var feature in model.Features)
+                    foreach (var feature in model.ProductFeatures)
                     {
-                        var productFeature = new Feature
+                        var productFeature = new ProductFeature
                         {
                             Name = feature.Name,
                             Value = feature.Value,
@@ -425,7 +425,7 @@ namespace BoilerStoreMonolith.Controllers
         }
 
 
-        public List<Feature> GetCategoryFeatureList(string categoryName)
+        public List<ProductFeature> GetCategoryFeatureList(string categoryName)
         {
             var categories = categoryRepo.Categories.ToList();
             var catFeatures = new List<string>();
@@ -442,11 +442,11 @@ namespace BoilerStoreMonolith.Controllers
                     .ToList();
             }
 
-            var featuresList = new List<Feature>();
+            var featuresList = new List<ProductFeature>();
             // feeding feature list with newly created items containing names
             foreach (var catFeature in catFeatures)
             {
-                featuresList.Add(new Feature
+                featuresList.Add(new ProductFeature
                 {
                     Name = catFeature,
                     Value = "",
@@ -456,7 +456,7 @@ namespace BoilerStoreMonolith.Controllers
             return featuresList;
         }
 
-        public List<Feature> GetFeatureList(string categoryName, int productId)
+        public List<ProductFeature> GetFeatureList(string categoryName, int productId)
         {
 
             var categories = categoryRepo.Categories.ToList();
@@ -474,7 +474,7 @@ namespace BoilerStoreMonolith.Controllers
                     .ToList();
             }
 
-            var featuresList = new List<Feature>();
+            var featuresList = new List<ProductFeature>();
             // feeding feature list with newly created items containing names
             foreach (var catFeature in catFeatures)
             {
@@ -496,7 +496,7 @@ namespace BoilerStoreMonolith.Controllers
                 }
 
 
-                featuresList.Add(new Feature
+                featuresList.Add(new ProductFeature
                 {
                     Name = catFeature,
                     Value = featureValue ?? "",
