@@ -28,7 +28,7 @@ namespace BoilerStoreMonolith.Models
         public Category Category { get; set; }
         public List<string> CategoryFeaturesNames { get; set; }
         public List<int> CategoryFeaturesIds { get; set; }
-        public string ImageToLoad { get; set; }
+        public List<Feature> Features { get; set; }
     }
 
 
@@ -48,4 +48,19 @@ namespace BoilerStoreMonolith.Models
         public List<Firm> Firms { get; set; }
         public string NewFirmName { get; set; }
     }
+
+    // features view models
+
+    public class IndexFeaturesViewModel
+    {
+        public List<Feature> Features { get; set; }
+        public string NewFeatureName { get; set; }
+    }
+
+    public class EditFeaturesViewModel
+    {
+        public List<int> featuresIds { get; set; }
+    }
+
+
 }

@@ -57,9 +57,11 @@
     <Compile Include="Concrete\CategoryRepository.cs" />
     <Compile Include="Abstract\ICategoryRepository.cs" />
     <Compile Include="Concrete\FeatureRepository.cs" />
+    <Compile Include="Abstract\IFeatureRepository.cs" />
+    <Compile Include="Concrete\ProductFeatureRepository.cs" />
     <Compile Include="Concrete\FirmRepository.cs" />
     <Compile Include="Abstract\IFirmRepository.cs" />
-    <Compile Include="Abstract\IFeatureRepository.cs" />
+    <Compile Include="Abstract\IProductFeatureRepository.cs" />
     <Compile Include="Abstract\ICategoryFeatureRepository.cs" />
     <Compile Include="Concrete\InfoEntityRepository.cs" />
     <Compile Include="Concrete\ProductRepository.cs" />

@@ -1,0 +1,13 @@
+﻿@model BoilerStoreMonolith.Models.AddCategoryFeatureViewModel
+
+<li class="list-group-item d-flex">
+    <div class="inputSpecVal">
+        @Model.featureName
+    </div>
+    <button type="button" class="specClose ml-auto"
+            aria-label="Close">
+        Х
+    </button>
+    <input class="CategoryFeaturesNames" type="hidden" name="@Model.featureId"
+           value="@Model.featureId" />
+</li>

@@ -1,33 +1,28 @@
-﻿@{
-    var features = new List<string>
-{
-"one", "two", "three"
-};
+﻿@model BoilerStoreMonolith.Models.EditCategoriesViewModel
+@{
+    string actionName = this.ViewContext.RouteData.Values["action"].ToString();
 }
 
+<div class="col-4 m-auto"> Выберите характеристику из списка:   </div>
 
-<div class="col-3 m-auto"> Выберите характеристику из списка:   </div>
-
-<div class="col-3 m-auto text-center">
-    @if (features?.Any() == true)
+<div class="col-4 m-auto text-center">
+    @if (Model.Features?.Any() == true)
     {
         <div class="dropdown">
             <button class="btn btn-transparent dropdown-toggle" type="button"
                     id="dropdownMenuButton" data-toggle="dropdown"
+                    data-featureId="@Model.Features[0].Id"
                     aria-haspopup="true" aria-expanded="false">
-                @features[0]
+                @Model.Features[0].Name
             </button>
+
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                @foreach (var item in features)
+                @foreach (var item in Model.Features)
                 {
 
-                    @Html.ActionLink(item,
-                        "", "",
-                        new
-                        {
+                    <a href="#" data-featureId="@item.Id" class="dropdown-item">@item.Name</a>
 
-                        },
-                        new{@class= "dropdown-item" })
+
                 }
             </div>
         </div>
@@ -37,6 +32,7 @@
         <div class="dropdown">
             <button class="btn btn-transparent dropdown-toggle" type="button"
                     id="dropdownMenuButton" data-toggle="dropdown"
+                    data-featureId=""
                     aria-haspopup="true" aria-expanded="false">
                 Нет доступных категорий.
             </button>
@@ -47,7 +43,7 @@
 
 </div>
 
-<div class="col-3 m-auto pl-5">
+<div class="col-2 m-auto pl-5">
     @Html.ActionLink("Редактировать",
         "EditFeatures",
         "Admin",
@@ -55,8 +51,52 @@
         new{@class= "btn btn-secondary" })
 </div>
 
-<div class="col-3 m-auto pl-5">
+<div class="col-2 m-auto pl-5">
     <button id="addSpecBtn" type="button" class="btn btn-default m-auto">Добавить</button>
 </div>
 
+<script>
 
+    $(".dropdown-item").on("mousedown", function (e) {
+        $("#dropdownMenuButton").text($(e.target).text());
+        $("#dropdownMenuButton").attr("data-featureId", $(e.target).attr("data-featureId"));
+
+    });
+
+    $("#addSpecBtn").click(function () {
+
+        let featureName = $("#dropdownMenuButton").text().trim();
+        let featureId = $("#dropdownMenuButton").attr("data-featureId");
+        let ListIndex = $("#specsList").children().length;
+
+
+        let featureItem =
+            '<li class="list-group-item d-flex">' +
+            '<div class="inputSpecVal">' + featureName + '</div>' +
+            '<button type="button" class="specClose ml-auto" aria-label="Close">' +
+            'Х</button>' +
+            '<input class="CategoryFeaturesIds" type="hidden" ' + 
+            'name="CategoryFeaturesIds[' + ListIndex + ']"' +
+
+            'value="' + featureId + '" />' +
+            '</li>'
+
+        $("#specsList").append(featureItem);
+
+    });
+
+    $('body').on("click", '.specClose',
+        function (e) {
+            let target = $(e.target);
+            let specItem = target.parent().siblings('.inputSpecVal')[0];
+            console.log($(specItem).text() + " removed");
+            $(target.parent()).remove();
+
+
+            let specsListItems = $(".CategoryFeaturesIds");
+            for (var i = 0; i < specsListItems.length; i++) {
+                $(specsListItems[i]).attr('name', "CategoryFeaturesIds[" + i + "]");
+            }
+        });
+
+</script>

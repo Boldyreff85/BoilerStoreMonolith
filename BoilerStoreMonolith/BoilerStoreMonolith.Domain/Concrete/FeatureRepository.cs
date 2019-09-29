@@ -5,55 +5,56 @@ using BoilerStoreMonolith.Domain.Entities;
 
 namespace BoilerStoreMonolith.Domain.Concrete
 {
-    public class ProductFeatureRepository : IProductFeatureRepository
+    public class FeatureRepository : IFeatureRepository
     {
 
         private ApplicationContext context = new ApplicationContext();
 
-        public IEnumerable<ProductFeature> Features => context.ProductFeatures;
+        public IEnumerable<Feature> Features => context.Features;
 
-        public void SaveFeature(ProductFeature feature)
+        public void SaveFeature(Feature feature)
         {
-            if (feature.Id == 0)
+            // делаем предварительную обрезку пустых символов
+            feature.Name = feature.Name.Trim();
+            // тут добавим проверку на уже имеющееся имя
+            if (feature.Id == 0 && !context.Features.Any(f => f.Name == feature.Name))
             {
-                context.ProductFeatures.Add(feature);
+                context.Features.Add(feature);
             }
             else
             {
-                ProductFeature dbEntry = context.ProductFeatures.Find(feature.Id);
+                Feature dbEntry = context.Features.Find(feature.Id);
                 if (dbEntry != null)
                 {
                     dbEntry.Id = feature.Id;
                     dbEntry.Name = feature.Name;
-                    dbEntry.Value = feature.Value;
-                    dbEntry.Unit = feature.Unit;
                 }
             }
             context.SaveChanges();
         }
 
-        public ProductFeature DeleteFeature(int featureId)
+        public Feature DeleteFeature(int featureId)
         {
-            ProductFeature dbEntry = context.ProductFeatures.Find(featureId);
+            Feature dbEntry = context.Features.Find(featureId);
             if (dbEntry != null)
             {
-                context.ProductFeatures.Remove(dbEntry);
+                context.Features.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;
         }
 
-        public List<ProductFeature> DeleteFeatures(List<ProductFeature> featuresToDelete)
+        public List<Feature> DeleteFeatures(List<Feature> featuresToDelete)
         {
-            var removedFeatures = new List<ProductFeature>();
+            var removedFeatures = new List<Feature>();
             using (var context = new ApplicationContext())
             {
                 foreach (var feature in featuresToDelete)
                 {
-                    ProductFeature dbEntry = context.ProductFeatures.Find(feature.Id);
+                    Feature dbEntry = context.Features.Find(feature.Id);
                     if (dbEntry != null)
                     {
-                        context.ProductFeatures.Remove(dbEntry);
+                        context.Features.Remove(dbEntry);
                         context.SaveChanges();
                         removedFeatures.Add(dbEntry);
                     }

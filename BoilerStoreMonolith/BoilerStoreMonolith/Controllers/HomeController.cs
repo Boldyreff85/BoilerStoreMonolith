@@ -15,8 +15,9 @@ namespace BoilerStoreMonolith.Controllers
     {
         public int PageSize = 6;
         private IProductRepository productRepo;
-        private IProductFeatureRepository featureRepo;
+        private IProductFeatureRepository productFeatureRepo;
         private ICategoryFeatureRepository categoryFeatureRepo;
+        private IFeatureRepository featureRepo;
         private ICategoryRepository categoryRepo;
         private IFirmRepository firmRepo;
         private IInfoEntityRepository siteInfoRepo;
@@ -24,16 +25,18 @@ namespace BoilerStoreMonolith.Controllers
 
         public HomeController(
             IProductRepository _productRepo,
-            IProductFeatureRepository _featureRepo,
+            IProductFeatureRepository _productFeatureRepo,
             ICategoryFeatureRepository _categoryFeatureRepo,
+            IFeatureRepository _featureRepo,
             IFirmRepository _firmRepo,
             IInfoEntityRepository _siteInfoRepo,
             ICategoryRepository _categoryRepo
             )
         {
             productRepo = _productRepo;
-            featureRepo = _featureRepo;
+            productFeatureRepo = _productFeatureRepo;
             categoryFeatureRepo = _categoryFeatureRepo;
+            featureRepo = _featureRepo;
             firmRepo = _firmRepo;
             categoryRepo = _categoryRepo;
             siteInfoRepo = _siteInfoRepo;
@@ -111,7 +114,7 @@ namespace BoilerStoreMonolith.Controllers
                     .Where(cf => cf.CategoryId == categoryId)
                     .Select(cf => cf.FeatureId)
                     .ToList();
-                model.CategoryFeatures = catFeatureIds.Join(featureRepo.Features,
+                model.CategoryFeatures = catFeatureIds.Join(productFeatureRepo.ProductFeatures,
                     p => p,
                     t => t.Id,
                     (p, t) => t.Name).ToList();
@@ -131,7 +134,7 @@ namespace BoilerStoreMonolith.Controllers
 
             // filter by category and firm
             products = FilterProductList(products, category, firm);
-            var features = featureRepo.Features.ToList();
+            var prodFeatures = productFeatureRepo.ProductFeatures.ToList();
             var productWithFeaturesList = new List<ProductWithFeatures>();
 
             if (products.Any())
@@ -141,7 +144,7 @@ namespace BoilerStoreMonolith.Controllers
                     var prodWithFeatures = new ProductWithFeatures
                     {
                         Product = item,
-                        ProductFeatures = features.Where(f => f.ProductId == item.ProductID).ToList()
+                        ProductFeatures = prodFeatures.Where(f => f.ProductId == item.ProductID).ToList()
                     };
                     productWithFeaturesList.Add(prodWithFeatures);
                 }
@@ -175,7 +178,7 @@ namespace BoilerStoreMonolith.Controllers
             var model = new ProductWithFeatures
             {
                 Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId),
-                ProductFeatures = featureRepo.Features.Where(f => f.ProductId == productId).ToList()
+                ProductFeatures = productFeatureRepo.ProductFeatures.Where(f => f.ProductId == productId).ToList()
             };
 
             return View(model);
@@ -222,7 +225,7 @@ namespace BoilerStoreMonolith.Controllers
                     .Where(cf => cf.CategoryId == categoryId)
                     .Select(cf => cf.FeatureId)
                     .ToList();
-                model.CategoryFeatures = catFeatureIds.Join(featureRepo.Features,
+                model.CategoryFeatures = catFeatureIds.Join(productFeatureRepo.ProductFeatures,
                     p => p,
                     t => t.Id,
                     (p, t) => t.Name).ToList();
@@ -243,15 +246,15 @@ namespace BoilerStoreMonolith.Controllers
             foreach (var item in model.CategoryFeatures)
             {
 
-                var from = featureRepo.Features
+                var from = productFeatureRepo.ProductFeatures
                     .Where(f => f.Name == item)
                     .Min(f => f.Value);
 
-                var to = featureRepo.Features
+                var to = productFeatureRepo.ProductFeatures
                     .Where(f => f.Name == item)
                     .Max(f => f.Value);
 
-                var unit = featureRepo.Features
+                var unit = productFeatureRepo.ProductFeatures
                     .Where(f => f.Name == item)
                     .Select(f => f.Unit)
                     .First();
@@ -268,7 +271,7 @@ namespace BoilerStoreMonolith.Controllers
 
             // filter by category and firm
             products = FilterProductList(products, category, firm);
-            var features = featureRepo.Features.ToList();
+            var prodFeatures = productFeatureRepo.ProductFeatures.ToList();
             var productWithFeaturesList = new List<ProductWithFeatures>();
             if (products.Any())
             {
@@ -277,7 +280,7 @@ namespace BoilerStoreMonolith.Controllers
                     var prodWithFeatures = new ProductWithFeatures
                     {
                         Product = item,
-                        ProductFeatures = features.Where(f => f.ProductId == item.ProductID).ToList()
+                        ProductFeatures = prodFeatures.Where(f => f.ProductId == item.ProductID).ToList()
                     };
                     productWithFeaturesList.Add(prodWithFeatures);
                 }

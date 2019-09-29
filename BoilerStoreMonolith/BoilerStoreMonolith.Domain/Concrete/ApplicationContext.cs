@@ -43,6 +43,9 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
             };
 
+            db.Categories.AddRange(categories);
+            db.SaveChanges();
+
             List<Firm> firms = new List<Firm>() {
                 new Firm()
                 {
@@ -53,6 +56,9 @@ namespace BoilerStoreMonolith.Domain.Concrete
                     Name = "WIESSMANN"
                 }
             };
+
+            db.Firms.AddRange(firms);
+            db.SaveChanges();
 
             List<Product> products = new List<Product>();
 

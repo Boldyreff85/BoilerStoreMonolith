@@ -56,17 +56,17 @@
                                 required = ""})
                     </div>
                 </div>
-                @if (Model.Features?.Count > 0)
+                @if (Model.ProductFeatures?.Count > 0)
                 {
-                    for (int i = 0; i < Model.Features.Count; i++)
+                    for (int i = 0; i < Model.ProductFeatures.Count; i++)
                     {
-                        @Html.LabelFor(m => m.Features[i].Name, Model.Features[i].Name)
-                        @Html.HiddenFor(m => m.Features[i].Name)
+                        @Html.LabelFor(m => m.ProductFeatures[i].Name, Model.ProductFeatures[i].Name)
+                        @Html.HiddenFor(m => m.ProductFeatures[i].Name)
 
                         <div class="row">
                             <div class="col">
                                 @Html.TextBoxFor(
-                                    m => m.Features[i].Value, null,
+                                    m => m.ProductFeatures[i].Value, null,
                                     new {@class = "form-control",
                                         type = "number",
                                         min = "0",
@@ -76,7 +76,7 @@
                             </div>
                             <div class="col">
                                 @Html.TextBoxFor(
-                                    m => m.Features[i].Unit, null,
+                                    m => m.ProductFeatures[i].Unit, null,
                                     new {@class = "form-control",
                                         placeholder="Введите единицу измерения",
                                         required = ""})

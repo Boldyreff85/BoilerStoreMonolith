@@ -310,7 +310,7 @@ img {
 }
 
 .otherLists {
-    overflow-y: auto;
+    overflow-y: overlay;
     overflow-x: hidden;
     height: 60vh;
 }

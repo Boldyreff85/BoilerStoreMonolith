@@ -17,7 +17,8 @@ namespace BoilerStoreMonolith.Controllers
         private IProductRepository productRepo;
         private ICategoryRepository categoryRepo;
         private ICategoryFeatureRepository categoryFeatureRepo;
-        private IProductFeatureRepository featureRepo;
+        private IProductFeatureRepository productFeatureRepo;
+        private IFeatureRepository featureRepo;
         private IInfoEntityRepository siteInfoRepo;
         private IFirmRepository firmRepo;
         private ApplicationContext context = new ApplicationContext();
@@ -26,7 +27,8 @@ namespace BoilerStoreMonolith.Controllers
             IProductRepository _productRepo,
             ICategoryRepository _categoryRepo,
             ICategoryFeatureRepository _categoryFeatureRepo,
-            IProductFeatureRepository _featureRepo,
+            IFeatureRepository _featureRepo,
+            IProductFeatureRepository _productFeatureRepo,
             IInfoEntityRepository _siteInfoRepo,
             IFirmRepository _firmRepo
         )
@@ -35,6 +37,7 @@ namespace BoilerStoreMonolith.Controllers
             categoryRepo = _categoryRepo;
             categoryFeatureRepo = _categoryFeatureRepo;
             featureRepo = _featureRepo;
+            productFeatureRepo = _productFeatureRepo;
             siteInfoRepo = _siteInfoRepo;
             firmRepo = _firmRepo;
         }
@@ -92,10 +95,10 @@ namespace BoilerStoreMonolith.Controllers
                 // удаляем товар по id 
                 productRepo.DeleteProduct(id);
                 // и его features если есть
-                var prodFeatures = featureRepo.Features
+                var prodFeatures = productFeatureRepo.ProductFeatures
                     .Where(pf => pf.ProductId == id).ToList();
                 if (prodFeatures.Any())
-                    featureRepo.DeleteFeatures(prodFeatures);
+                    productFeatureRepo.DeleteFeatures(prodFeatures);
                 count++;
             }
 
@@ -114,16 +117,10 @@ namespace BoilerStoreMonolith.Controllers
 
             if (firmName != null)
                 model.Product.Firm = firmName;
-
             if (categoryName != null)
-            {
                 model.Product.Category = categoryName;
-                model.ProductFeatures = GetFeatureList(categoryName, productId);
-            }
-            else
-            {
-                model.ProductFeatures = GetFeatureList(model.Product.Category, productId);
-            }
+
+            model.ProductFeatures = GetProductFeatures(productId, model.Product.Category);
 
             return View(model);
         }
@@ -142,16 +139,25 @@ namespace BoilerStoreMonolith.Controllers
                     product.ImageMimeType = productImg.ContentType;
                     product.ImageData = resizeImage(productImg);
                 }
+                else
+                {
+                    Category productCategory = categoryRepo.Categories.Single(c => c.Name == product.Category);
+                    product.ImageMimeType = productCategory.ImageMimeType;
+                    product.ImageData = productCategory.ImageData;
+                }
+
+
+
 
                 productRepo.SaveProduct(product);
 
                 /////////////////////////////// processing features table ///////////////////////////////
                 // clearing product features from table
-                var prodFeatures = featureRepo.Features
+                var prodFeatures = productFeatureRepo.ProductFeatures
                     .Where(pf => pf.ProductId == product.ProductID).ToList();
                 if (prodFeatures.Any())
                 {
-                    featureRepo.DeleteFeatures(prodFeatures);
+                    productFeatureRepo.DeleteFeatures(prodFeatures);
                 }
                 // saving features of product
                 if (model.ProductFeatures?.Count > 0)
@@ -165,7 +171,7 @@ namespace BoilerStoreMonolith.Controllers
                             Unit = feature.Unit,
                             ProductId = product.ProductID
                         };
-                        featureRepo.SaveFeature(productFeature);
+                        productFeatureRepo.SaveFeature(productFeature);
                     }
                 }
 
@@ -234,7 +240,7 @@ namespace BoilerStoreMonolith.Controllers
                             Unit = feature.Unit,
                             ProductId = product.ProductID
                         };
-                        featureRepo.SaveFeature(productFeature);
+                        productFeatureRepo.SaveFeature(productFeature);
                     }
                 }
                 return RedirectToAction("Index");
@@ -293,20 +299,24 @@ namespace BoilerStoreMonolith.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditCategories(EditCategoriesViewModel model, int categoryId)
+        public ActionResult EditCategories(
+            EditCategoriesViewModel model,
+            int categoryId)
         {
 
             model.Category = categoryRepo.Categories.Single(c => c.Id == categoryId);
 
-            var catFeatureIds = categoryFeatureRepo.CategoryFeatures
+            model.CategoryFeaturesIds = categoryFeatureRepo.CategoryFeatures
                 .Where(cf => cf.CategoryId == categoryId)
                 .Select(cf => cf.FeatureId)
                 .ToList();
 
-            model.CategoryFeaturesNames = catFeatureIds.Join(featureRepo.Features,
+            model.CategoryFeaturesNames = model.CategoryFeaturesIds.Join(featureRepo.Features,
                 p => p,
                 t => t.Id,
                 (p, t) => t.Name).ToList();
+
+            model.Features = featureRepo.Features.ToList();
 
             return View(model);
         }
@@ -323,17 +333,11 @@ namespace BoilerStoreMonolith.Controllers
                 categoryImg.InputStream.Read(
                     model.Category.ImageData, 0, categoryImg.ContentLength);
             }
-
             categoryRepo.SaveCategory(model.Category);
 
             // saving category features
             if (model.CategoryFeaturesIds?.Count > 0)
             {
-                //// clear table
-                //if (categoryFeatureRepo.CategoryFeatures?.Any() == true)
-                //    categoryFeatureRepo
-                //        .DeleteCategoryFeatures(categoryFeatureRepo.CategoryFeatures.ToList());
-
                 // clear features if this category
                 var categoryFeatures = categoryFeatureRepo.CategoryFeatures
                     .Where(cf => cf.CategoryId == model.Category.Id)
@@ -355,14 +359,18 @@ namespace BoilerStoreMonolith.Controllers
             return RedirectToAction("IndexCategories");
         }
 
-        public ViewResult CreateCategory()
+        [HttpGet]
+        public ActionResult CreateCategory()
         {
             var model = new EditCategoriesViewModel
             {
-                Category = new Category()
+                Category = new Category(),
+                Features = featureRepo.Features.ToList()
             };
             return View("EditCategories", model);
+
         }
+
 
         [HttpPost]
         public ActionResult DeleteCategoriesSelected(string[] categoriesIds)
@@ -373,7 +381,8 @@ namespace BoilerStoreMonolith.Controllers
                 return RedirectToAction("IndexCategories");
             }
 
-            List<int> ids = categoriesIds.Where(ch => ch != "false").Select(x => Int32.Parse(x)).ToList();
+            List<int> ids = categoriesIds.Where(ch => ch != "false")
+                .Select(x => Int32.Parse(x)).ToList();
             var count = 0;
 
             // находим и удаляем категории
@@ -385,6 +394,13 @@ namespace BoilerStoreMonolith.Controllers
                     context.Categories.Remove(dbEntry);
                     context.SaveChanges();
                 }
+
+                // удаляем features категории
+                var catFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == id)
+                    .ToList();
+                categoryFeatureRepo.DeleteCategoryFeatures(catFeatures);
+
                 count++;
             }
 
@@ -435,7 +451,7 @@ namespace BoilerStoreMonolith.Controllers
             var catFeatureIds = new List<int>();
             var catFeatures = new List<string>();
             // getting category features
-            if (categories.Any() && categoryName != null)
+            if (categoryRepo.Categories.Any(c => c.Name == categoryName))
             {
                 var categoryId = categories
                     .Where(c => c.Name == categoryName)
@@ -465,7 +481,49 @@ namespace BoilerStoreMonolith.Controllers
             return featuresList;
         }
 
-        public List<ProductFeature> GetFeatureList(string categoryName, int productId)
+        public List<ProductFeature> GetProductFeatures(int productId, string categoryName)
+        {
+            // сначала получаем список фич категории
+
+            var catFeatures = new List<string>();
+            var prodFeatures = new List<ProductFeature>();
+            var result = new List<ProductFeature>();
+
+            if (categoryRepo.Categories.Any(c => c.Name == categoryName))
+            {
+                var categoryId = categoryRepo.Categories
+                .Where(c => c.Name == categoryName)
+                .Select(c => c.Id)
+                .Single();
+
+                catFeatures = categoryFeatureRepo.CategoryFeatures
+                    .Where(cf => cf.CategoryId == categoryId)
+                    .Select(cf =>
+                            featureRepo.Features
+                                .Where(f => f.Id == cf.FeatureId)
+                                .Select(f => f.Name).Single())
+                    .ToList();
+
+                // далее получаем список фич продукта
+                prodFeatures = productFeatureRepo.ProductFeatures
+                    .Where(f => f.ProductId == productId)
+                    .ToList();
+
+                // далее делаем join двух списков
+
+                result = catFeatures.Join(prodFeatures,
+                       p => p,
+                       t => t.Name,
+                       (p, t) => t).ToList();
+            }
+
+            if (result.Count == 0)
+                result = GetCategoryFeatureList(categoryName);
+
+            return result;
+        }
+
+        public List<ProductFeature> GetFeatureList_(string categoryName, int productId)
         {
 
             var categories = categoryRepo.Categories.ToList();
@@ -484,7 +542,7 @@ namespace BoilerStoreMonolith.Controllers
                     .Select(cf => cf.FeatureId)
                     .ToList();
 
-                catFeatures = catFeatureIds.Join(featureRepo.Features,
+                catFeatures = catFeatureIds.Join(productFeatureRepo.ProductFeatures,
                     p => p,
                     t => t.Id,
                     (p, t) => t.Name).ToList();
@@ -496,7 +554,7 @@ namespace BoilerStoreMonolith.Controllers
             {
                 var featureValue = "";
                 var featureUnit = "";
-                var prodFeatures = featureRepo.Features
+                var prodFeatures = productFeatureRepo.ProductFeatures
                     .Where(f => f.Name == catFeature && f.ProductId == productId)
                     .ToList();
                 if (prodFeatures.Any())
@@ -530,8 +588,30 @@ namespace BoilerStoreMonolith.Controllers
         public ActionResult EditFeatures()
         {
 
-            return View();
+            var model = new IndexFeaturesViewModel
+            {
+                Features = featureRepo.Features.ToList()
+            };
+            return View(model);
         }
+
+        [HttpPost]
+        public ActionResult EditFeatures(IndexFeaturesViewModel model)
+        {
+            var feature = new Feature();
+            feature.Name = model.NewFeatureName;
+
+            featureRepo.SaveFeature(feature);
+            return RedirectToRoute(new { controller = "Admin", action = "EditFeatures" });
+        }
+
+        public ActionResult DeleteFeature(int featureId)
+        {
+
+            featureRepo.DeleteFeature(featureId);
+            return RedirectToRoute(new { controller = "Admin", action = "EditFeatures" });
+        }
+
 
 
         // *************************************************************************************

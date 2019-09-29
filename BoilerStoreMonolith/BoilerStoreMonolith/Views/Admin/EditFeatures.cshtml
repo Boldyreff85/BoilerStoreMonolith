@@ -1,16 +1,16 @@
-﻿@{
+﻿@model BoilerStoreMonolith.Models.IndexFeaturesViewModel
+@{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
     var catFeatures = new List<string>
-    {
-        "Мощность", "Объём", "Масса"
-    };
+{
+"Мощность", "Объём", "Масса"
+};
 }
-
 
 <div class="panel">
 
-    @using (Html.BeginForm("EditFirms", "Admin", FormMethod.Post,
+    @using (Html.BeginForm("EditFeatures", "Admin", FormMethod.Post,
     new { enctype = "multipart/form-data" }))
     {
 
@@ -20,7 +20,7 @@
 
             <div class="form-group row  ml-5 my-5">
 
-                @Html.TextBox("name", "",
+                @Html.TextBoxFor(m=>m.NewFeatureName,
                     new
                     {
                         @class = "form-control col-8",
@@ -28,7 +28,6 @@
                         required=""
                     })
 
-       
                 <div class="col-4">
                     <input type="submit" value="Добавить" class="btn btn-default m-auto">
                 </div>
@@ -38,25 +37,24 @@
 
         <div class="otherLists panel-body">
 
-            <div class="form-group row m-auto">
+            <div class="form-group row mx-5">
                 <div class="col align-self-center">
                     <ul id="specsList" class="list-group list-group-flush">
-                        @if (catFeatures != null)
+   
+
+
+                        @foreach (var item in Model.Features)
                         {
-                            for (int i = 0; i < catFeatures.Count; i++)
-                            {
-                                <li class="list-group-item d-flex">
-                                    <div class="inputSpecVal">
-                                        @catFeatures[i]
-                                    </div>
-                                    <button type="button" class="specClose ml-auto"
-                                            aria-label="Close">
-                                        Х
-                                    </button>
-                                    <input class="CategoryFeaturesNames" type="hidden" name="CategoryFeaturesNames[@i]"
-                                           value="@catFeatures[i]" />
-                                </li>
-                            }
+                            <li class="list-group-item d-flex">
+                                <div class="inputSpecVal">
+                                    @item.Name
+                                </div>
+
+                                @Html.ActionLink("X",
+                                    "DeleteFeature", "Admin",
+                                    new{ featureId = item.Id},
+                                    new{ @class="ml-auto" })
+                            </li>
                         }
                     </ul>
                 </div>
@@ -82,6 +80,5 @@
 
     }
 
-
-
 </div>
+
