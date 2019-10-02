@@ -19,6 +19,7 @@ namespace BoilerStoreMonolith.Controllers
         private ICategoryFeatureRepository categoryFeatureRepo;
         private IProductFeatureRepository productFeatureRepo;
         private IFeatureRepository featureRepo;
+        private IDescriptionFeatureRepository descriptionFeatureRepo;
         private IInfoEntityRepository siteInfoRepo;
         private IFirmRepository firmRepo;
         private ApplicationContext context = new ApplicationContext();
@@ -28,6 +29,7 @@ namespace BoilerStoreMonolith.Controllers
             ICategoryRepository _categoryRepo,
             ICategoryFeatureRepository _categoryFeatureRepo,
             IFeatureRepository _featureRepo,
+            IDescriptionFeatureRepository _descriptionFeatureRepo,
             IProductFeatureRepository _productFeatureRepo,
             IInfoEntityRepository _siteInfoRepo,
             IFirmRepository _firmRepo
@@ -37,6 +39,7 @@ namespace BoilerStoreMonolith.Controllers
             categoryRepo = _categoryRepo;
             categoryFeatureRepo = _categoryFeatureRepo;
             featureRepo = _featureRepo;
+            descriptionFeatureRepo = _descriptionFeatureRepo;
             productFeatureRepo = _productFeatureRepo;
             siteInfoRepo = _siteInfoRepo;
             firmRepo = _firmRepo;

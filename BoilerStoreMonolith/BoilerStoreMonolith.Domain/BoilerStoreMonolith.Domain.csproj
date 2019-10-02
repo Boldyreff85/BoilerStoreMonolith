@@ -56,8 +56,10 @@
     <Compile Include="Concrete\CategoryFeatureRepository.cs" />
     <Compile Include="Concrete\CategoryRepository.cs" />
     <Compile Include="Abstract\ICategoryRepository.cs" />
+    <Compile Include="Concrete\DescriptionFeatureRepository.cs" />
     <Compile Include="Concrete\FeatureRepository.cs" />
     <Compile Include="Abstract\IFeatureRepository.cs" />
+    <Compile Include="Abstract\IDescriptionFeatureRepository.cs" />
     <Compile Include="Concrete\ProductFeatureRepository.cs" />
     <Compile Include="Concrete\FirmRepository.cs" />
     <Compile Include="Abstract\IFirmRepository.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\CategoryFeature.cs" />
     <Compile Include="Entities\CategorySpec.cs" />
+    <Compile Include="Entities\DescriptionFeature.cs" />
     <Compile Include="Entities\Feature.cs" />
     <Compile Include="Entities\Firm.cs" />
     <Compile Include="Entities\InfoEntity.cs" />
@@ -157,6 +160,10 @@
     <Compile Include="Migrations\201909281442243_ChangeCategoryFeatures.Designer.cs">
       <DependentUpon>201909281442243_ChangeCategoryFeatures.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910021643311_DescriptionFeature.cs" />
+    <Compile Include="Migrations\201910021643311_DescriptionFeature.Designer.cs">
+      <DependentUpon>201910021643311_DescriptionFeature.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -227,6 +234,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909281442243_ChangeCategoryFeatures.resx">
       <DependentUpon>201909281442243_ChangeCategoryFeatures.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910021643311_DescriptionFeature.resx">
+      <DependentUpon>201910021643311_DescriptionFeature.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
