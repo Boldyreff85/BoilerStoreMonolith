@@ -28,14 +28,22 @@
 
                 <div class="form-group">
                     @Html.LabelFor(p => p.Product.Title)
+
                     @Html.TextBoxFor(
                         p => p.Product.Title, null,
                         new {@class = "form-control", required = ""})
-
-                    @Html.LabelFor(p => p.Product.Description)
+                </div>
+                
+                <div class="form-group description">
+                    <div class="text-center h5 mt-3 mb-3">
+                        @Html.LabelFor(p => p.Product.Description)
+                    </div>
+                    
                     @Html.TextAreaFor(
                         p => p.Product.Description, 10, 1,
                         new {@class = "form-control", required = ""})
+
+                    @Html.Partial("DescriptionFeaturesInputTable")
                 </div>
 
                 <div class="form-group">

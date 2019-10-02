@@ -492,7 +492,9 @@ namespace BoilerStoreMonolith.Controllers
             var prodFeatures = new List<ProductFeature>();
             var result = new List<ProductFeature>();
 
-            if (categoryRepo.Categories.Any(c => c.Name == categoryName))
+            if (categoryRepo.Categories.Any(c => c.Name == categoryName) && 
+                categoryFeatureRepo.CategoryFeatures.Any() && 
+                featureRepo.Features.Any())
             {
                 var categoryId = categoryRepo.Categories
                 .Where(c => c.Name == categoryName)

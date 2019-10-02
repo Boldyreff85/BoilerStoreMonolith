@@ -331,6 +331,7 @@
     <Content Include="Views\Shared\FeaturesDropdown.cshtml" />
     <Content Include="Views\Admin\EditFeatures.cshtml" />
     <Content Include="Views\Shared\FeaturesItem.cshtml" />
+    <Content Include="Views\Shared\DescriptionFeaturesInputTable.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
