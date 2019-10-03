@@ -17,8 +17,6 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public void SaveFeature(DescriptionFeature descriptionFeature)
         {
-            // делаем предварительную обрезку пустых символов
-            descriptionFeature.Name = descriptionFeature.Name.Trim();
             // тут добавим проверку на уже имеющееся имя
             if (descriptionFeature.Id == 0 && !context.DescriptionFeatures.Any(f => f.Name == descriptionFeature.Name))
             {
@@ -31,6 +29,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
                 {
                     dbEntry.Id = descriptionFeature.Id;
                     dbEntry.Name = descriptionFeature.Name;
+                    dbEntry.Value = descriptionFeature.Value;
                     dbEntry.ProductId = descriptionFeature.ProductId;
                 }
             }

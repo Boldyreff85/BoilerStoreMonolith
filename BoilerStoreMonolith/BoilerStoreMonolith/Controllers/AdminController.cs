@@ -124,7 +124,8 @@ namespace BoilerStoreMonolith.Controllers
                 model.Product.Category = categoryName;
 
             model.ProductFeatures = GetProductFeatures(productId, model.Product.Category);
-            model.DescriptionFeatures = descriptionFeatureRepo.DescriptionFeatures.ToList();
+            model.DescriptionFeatures = descriptionFeatureRepo.DescriptionFeatures
+                .Where(df => df.ProductId == productId).ToList();
             return View(model);
         }
 
@@ -149,10 +150,25 @@ namespace BoilerStoreMonolith.Controllers
                     product.ImageData = productCategory.ImageData;
                 }
 
-
-
-
                 productRepo.SaveProduct(product);
+
+                /////////////////////////////// processing description features table ///////////////////////////////
+                if (model.DescriptionFeatures?.Count > 0)
+                {
+                    // очищаем предварительно список
+                    var listToClear = descriptionFeatureRepo.DescriptionFeatures
+                        .Where(df => df.ProductId == product.ProductID).ToList();
+                    if (listToClear?.Count > 0)
+                        descriptionFeatureRepo.DeleteDescriptionFeatures(listToClear);
+
+                    foreach (var descFeature in model.DescriptionFeatures)
+                    {
+                        // добавляем принадлежность к товару
+                        descFeature.ProductId = product.ProductID;
+                        descriptionFeatureRepo.SaveFeature(descFeature);
+                    }
+                }
+
 
                 /////////////////////////////// processing features table ///////////////////////////////
                 // clearing product features from table
@@ -492,8 +508,8 @@ namespace BoilerStoreMonolith.Controllers
             var prodFeatures = new List<ProductFeature>();
             var result = new List<ProductFeature>();
 
-            if (categoryRepo.Categories.Any(c => c.Name == categoryName) && 
-                categoryFeatureRepo.CategoryFeatures.Any() && 
+            if (categoryRepo.Categories.Any(c => c.Name == categoryName) &&
+                categoryFeatureRepo.CategoryFeatures.Any() &&
                 featureRepo.Features.Any())
             {
                 var categoryId = categoryRepo.Categories
