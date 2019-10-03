@@ -1,13 +1,39 @@
-﻿@{
+﻿@model BoilerStoreMonolith.Models.AdminEditViewModel
+@{
     Layout = null;
 }
 
 <div class="container">
     <div class="row clearfix">
         <div class="col-md-12 table-responsive">
-            <table class="table table-hover table-sortable" id="tab_logic">
+            <table class="table table-hover table-sortable" id="descFeaturesTable">
                 <div class="text-center h5 mt-3 mb-3">Введите общие характеристики товара</div>
-                <tbody></tbody>
+                <tbody>
+                    @for (int i = 0; i < Model.DescriptionFeatures.Count; i++)
+                    {
+                    <tr>
+
+
+                        <td>
+                            <input type="text" name="DescriptionFeatures[@i].Name" value=@Model.DescriptionFeatures[i].Name
+                                   placeholder="Введите название характеристики" class="DescriptionFeaturesNames form-control" required="">
+                        </td>
+                        <td>
+                            <input type="text" name="DescriptionFeatures[@i].Value" value=@Model.DescriptionFeatures[i].Value
+                                   placeholder="Введите значение" class="DescriptionFeaturesValues form-control" required="">
+                        </td>
+
+
+
+                        <td data-name="del" class="td-row-remove">
+                            <button class="btn btn-danger glyphicon glyphicon-remove row-remove">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+
+                </tbody>
             </table>
             <a id="add_row" class="btn btn-light ml-4">Добавить ряд</a>
         </div>
@@ -15,35 +41,52 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        $("#add_row").on("click", function() {
+    $(document).ready(function () {
+        $("#add_row").on("click", function () {
+
+            let featuresNumber = $("#descFeaturesTable tbody").children().length;
 
             let newRow = $(
                 "<tr>" +
-                "<td data-name='name'>" +
-                "<input type='text' name='name0'  placeholder='Введите название характеристики' class='form-control' required/>" +
+                "<td>" +
+                "<input type='text' name='DescriptionFeatures[" + featuresNumber + 
+                "].Name'  value='' placeholder='Введите название характеристики' class='DescriptionFeaturesNames form-control' required/>" +
                 "</td>" +
-                "<td data-name='mail'>" +
-                "<input type='text' name='mail0' placeholder='Введите значение' class='form-control' required/>" +
+                "<td>" +
+                "<input type='text' name='DescriptionFeatures[" + featuresNumber + 
+                "].Value' value='' placeholder='Введите значение' class='DescriptionFeaturesValues form-control' required/>" +
                 "</td>" +
-                "<td data-name='del' class='td-row-remove'>" +
+                "<td class='td-row-remove'>" +
                 "<button name='del0' class='btn btn-danger glyphicon glyphicon-remove row-remove'><span aria-hidden='true'>×</span></button>" +
                 "</td>" +
-                "</tr>") ;
+                "</tr>");
 
-            $(newRow).appendTo($('#tab_logic'));
+            $(newRow).appendTo($('#descFeaturesTable'));
 
-            $(newRow).find("td button.row-remove").on("click", function() {
-                $(this).closest("tr").remove();
-            });
+
+        });
+
+        $(document).on("click", "td button.row-remove", function () {
+            $(this).closest("tr").remove();
+
+
+            // тут восстанавливаем имена после удаления одного из айтемов
+            let descFeaturesNamesItems = $(".DescriptionFeaturesNames");
+            let descFeaturesValuesItems = $(".DescriptionFeaturesValues");
+
+            for (var i = 0; i < descFeaturesNamesItems.length; i++) {
+                $(descFeaturesNamesItems[i]).attr('name', "DescriptionFeatures[" + i + "].Name");
+                $(descFeaturesValuesItems[i]).attr('name', "DescriptionFeatures[" + i + "].Value");
+            }
+
         });
 
         // Sortable Code
-        var fixHelperModified = function(e, tr) {
+        var fixHelperModified = function (e, tr) {
             var $originals = tr.children();
             var $helper = tr.clone();
 
-            $helper.children().each(function(index) {
+            $helper.children().each(function (index) {
                 $(this).width($originals.eq(index).width())
             });
 

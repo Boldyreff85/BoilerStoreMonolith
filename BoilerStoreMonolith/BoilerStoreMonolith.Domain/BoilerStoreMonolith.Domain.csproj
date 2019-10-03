@@ -164,6 +164,10 @@
     <Compile Include="Migrations\201910021643311_DescriptionFeature.Designer.cs">
       <DependentUpon>201910021643311_DescriptionFeature.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201910031851126_AddProductId.cs" />
+    <Compile Include="Migrations\201910031851126_AddProductId.Designer.cs">
+      <DependentUpon>201910031851126_AddProductId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -237,6 +241,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201910021643311_DescriptionFeature.resx">
       <DependentUpon>201910021643311_DescriptionFeature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201910031851126_AddProductId.resx">
+      <DependentUpon>201910031851126_AddProductId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

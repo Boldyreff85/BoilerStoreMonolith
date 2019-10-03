@@ -31,6 +31,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
                 {
                     dbEntry.Id = descriptionFeature.Id;
                     dbEntry.Name = descriptionFeature.Name;
+                    dbEntry.ProductId = descriptionFeature.ProductId;
                 }
             }
             context.SaveChanges();

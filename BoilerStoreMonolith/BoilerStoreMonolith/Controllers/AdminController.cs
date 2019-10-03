@@ -124,7 +124,7 @@ namespace BoilerStoreMonolith.Controllers
                 model.Product.Category = categoryName;
 
             model.ProductFeatures = GetProductFeatures(productId, model.Product.Category);
-
+            model.DescriptionFeatures = descriptionFeatureRepo.DescriptionFeatures.ToList();
             return View(model);
         }
 
