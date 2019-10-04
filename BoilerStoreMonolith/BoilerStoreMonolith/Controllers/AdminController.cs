@@ -9,12 +9,14 @@ using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Ninject.Infrastructure.Language;
 
 namespace BoilerStoreMonolith.Controllers
 {
     [Authorize]
     public class AdminController : Controller
     {
+        public int PageSize = 6;
         private IProductRepository productRepo;
         private ICategoryRepository categoryRepo;
         private ICategoryFeatureRepository categoryFeatureRepo;
@@ -68,18 +70,45 @@ namespace BoilerStoreMonolith.Controllers
         [HttpGet]
         public ActionResult Index(
             AdminIndexListViewModel model,
+            int page = 1,
             string category = null,
             string firm = null)
         {
             ViewBag.Category = category;
             ViewBag.Firm = firm;
 
-            model.Products = productRepo.Products.ToList();
-            model.Products = FilterProductList(model.Products, category, firm);
-
-            model.Categories = categoryRepo.Categories.Select(n => n.Name).Distinct().ToList();
-            model.Firms = firmRepo.Firms.Select(n => n.Name).Distinct().ToList();
-
+            var products = productRepo.Products.ToList();
+            // тут определяем категории и фирмы в фильтре
+            var categories = categoryRepo.Categories.Select(n => n.Name).Distinct().ToList();
+            var firms = new List<string>();
+            if (category != null)
+            {
+                firms = products
+                    .Where(p => p.Category == category)
+                    .Select(p => p.Firm).Distinct().ToList();
+            }
+            else
+            {
+                firms = products
+                    .Select(p => p.Firm).Distinct().ToList();
+            }
+            // общее количество товара
+            ViewBag.ProductsCount = products.Count;
+            // фильтруем список 
+            products = FilterProductList(products, category, firm);
+            // реализуем пагинацию при создании view модели
+            model = new AdminIndexListViewModel
+            {
+                Products = products.Skip((page - 1) * PageSize).Take(PageSize).ToList(),
+                Categories = categories,
+                Firms = firms,
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = page,
+                    ItemsPerPage = PageSize,
+                    TotalItems = products.Count()
+                }
+            };
             return View(model);
         }
 

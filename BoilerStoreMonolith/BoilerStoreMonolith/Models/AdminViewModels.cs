@@ -18,6 +18,7 @@ namespace BoilerStoreMonolith.Models
         public List<Product> Products { get; set; }
         public List<string> Categories { get; set; }
         public List<string> Firms { get; set; }
+        public PagingInfo PagingInfo { get; set; }
     }
 
 
