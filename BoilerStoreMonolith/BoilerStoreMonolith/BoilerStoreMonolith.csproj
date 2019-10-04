@@ -255,17 +255,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Abstract\IAuthProvider.cs" />
+    <Compile Include="Infrastructure\Concrete\FormsAuthProvider.cs" />
     <Compile Include="Infrastructure\NinjectRegistrations.cs" />
     <Compile Include="Models\AdminViewModels.cs" />
     <Compile Include="Models\CatalogueTreeViewModel.cs" />
     <Compile Include="Models\CatalogueViewModel.cs" />
     <Compile Include="Models\HomeViewModels.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
     <Compile Include="Models\WriteUsViewModel.cs" />
@@ -332,6 +336,8 @@
     <Content Include="Views\Admin\EditFeatures.cshtml" />
     <Content Include="Views\Shared\FeaturesItem.cshtml" />
     <Content Include="Views\Shared\DescriptionFeaturesInputTable.cshtml" />
+    <Content Include="Views\Shared\DescriptionFeaturesOutputTable.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

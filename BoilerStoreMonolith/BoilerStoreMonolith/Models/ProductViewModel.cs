@@ -14,5 +14,6 @@ namespace BoilerStoreMonolith.Models
     {
         public Product Product { get; set; }
         public List<ProductFeature> ProductFeatures { get; set; }
+        public List<DescriptionFeature> DescriptionFeatures { get; set; }
     }
 }

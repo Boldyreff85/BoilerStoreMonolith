@@ -1,5 +1,7 @@
 ﻿using BoilerStoreMonolith.Domain.Abstract;
 using BoilerStoreMonolith.Domain.Concrete;
+using BoilerStoreMonolith.Infrastructure.Abstract;
+using BoilerStoreMonolith.Infrastructure.Concrete;
 using Ninject.Modules;
 
 namespace BoilerStoreMonolith.Infrastructure
@@ -16,6 +18,7 @@ namespace BoilerStoreMonolith.Infrastructure
             Bind<IDescriptionFeatureRepository>().To<DescriptionFeatureRepository>();
             Bind<IProductFeatureRepository>().To<ProductFeatureRepository>();
             Bind<ICategoryFeatureRepository>().To<CategoryFeatureRepository>();
+            Bind<IAuthProvider>().To<FormsAuthProvider>();
         }
     }
 }

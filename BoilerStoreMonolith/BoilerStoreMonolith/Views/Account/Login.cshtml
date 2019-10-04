@@ -1,0 +1,28 @@
+﻿@model BoilerStoreMonolith.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Admin: Log In";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<br />
+<br />
+<div class="panel">
+
+    <div class="panel-body w-50">
+        <div class="text-center h5 mt-3 mb-3">Зона администрирования</div>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary()
+            <div class="form-group">
+                <label>Логин:</label>
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Пароль:</label>
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+            <input type="submit" value="Войти" class="btn btn-primary" />
+        }
+    </div>
+</div>

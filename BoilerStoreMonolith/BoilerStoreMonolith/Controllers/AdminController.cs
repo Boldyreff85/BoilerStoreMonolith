@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace BoilerStoreMonolith.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private IProductRepository productRepo;
@@ -221,6 +222,7 @@ namespace BoilerStoreMonolith.Controllers
             model.Product.Firm = firmName ?? model.Firms[0];
 
             model.ProductFeatures = GetCategoryFeatureList(model.Product.Category);
+            model.DescriptionFeatures = new List<DescriptionFeature>();
 
             return View(model);
         }
@@ -246,6 +248,17 @@ namespace BoilerStoreMonolith.Controllers
                     product.ImageData = productCategory.ImageData;
                 }
                 productRepo.SaveProduct(product);
+
+                /////////////////////////////// processing description features table ///////////////////////////////
+                if (model.DescriptionFeatures?.Count > 0)
+                {
+                    foreach (var descFeature in model.DescriptionFeatures)
+                    {
+                        // добавляем принадлежность к товару
+                        descFeature.ProductId = product.ProductID;
+                        descriptionFeatureRepo.SaveFeature(descFeature);
+                    }
+                }
 
                 // сохраняем features 
                 if (model.ProductFeatures?.Count > 0)

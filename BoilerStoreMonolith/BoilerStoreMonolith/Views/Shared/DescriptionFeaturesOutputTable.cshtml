@@ -1,0 +1,15 @@
+﻿@model BoilerStoreMonolith.Models.ProductWithFeatures
+
+<table class="table table-striped">
+    <div class="text-center h5 mt-3 mb-3">Характеристики</div>
+    <tbody>
+
+        @foreach (var descriptionFeature in Model.DescriptionFeatures)
+        {
+        <tr>
+            <td>@descriptionFeature.Name</td>
+            <td>@descriptionFeature.Value</td>
+        </tr>
+        }
+    </tbody>
+</table>

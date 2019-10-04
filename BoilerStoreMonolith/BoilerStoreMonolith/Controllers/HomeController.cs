@@ -18,6 +18,7 @@ namespace BoilerStoreMonolith.Controllers
         private IProductFeatureRepository productFeatureRepo;
         private ICategoryFeatureRepository categoryFeatureRepo;
         private IFeatureRepository featureRepo;
+        private IDescriptionFeatureRepository descriptionFeatureRepo;
         private ICategoryRepository categoryRepo;
         private IFirmRepository firmRepo;
         private IInfoEntityRepository siteInfoRepo;
@@ -28,6 +29,7 @@ namespace BoilerStoreMonolith.Controllers
             IProductFeatureRepository _productFeatureRepo,
             ICategoryFeatureRepository _categoryFeatureRepo,
             IFeatureRepository _featureRepo,
+            IDescriptionFeatureRepository _descriptionFeatureRepo,
             IFirmRepository _firmRepo,
             IInfoEntityRepository _siteInfoRepo,
             ICategoryRepository _categoryRepo
@@ -37,6 +39,7 @@ namespace BoilerStoreMonolith.Controllers
             productFeatureRepo = _productFeatureRepo;
             categoryFeatureRepo = _categoryFeatureRepo;
             featureRepo = _featureRepo;
+            descriptionFeatureRepo = _descriptionFeatureRepo;
             firmRepo = _firmRepo;
             categoryRepo = _categoryRepo;
             siteInfoRepo = _siteInfoRepo;
@@ -175,10 +178,15 @@ namespace BoilerStoreMonolith.Controllers
 
         public ActionResult ProductPage(int productId)
         {
+            // определяем список DescriptionFeatures
+            var descFeatures = descriptionFeatureRepo.DescriptionFeatures
+                                   .Where(df => df.ProductId == productId) ?? new List<DescriptionFeature>();
+
             var model = new ProductWithFeatures
             {
                 Product = productRepo.Products.FirstOrDefault(p => p.ProductID == productId),
-                ProductFeatures = productFeatureRepo.ProductFeatures.Where(f => f.ProductId == productId).ToList()
+                ProductFeatures = productFeatureRepo.ProductFeatures.Where(f => f.ProductId == productId).ToList(),
+                DescriptionFeatures = descFeatures.ToList() 
             };
 
             return View(model);

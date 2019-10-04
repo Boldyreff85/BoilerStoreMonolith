@@ -33,6 +33,8 @@
                 @Html.TextAreaFor(
                     p => p.Product.Description, 10, 1,
                     new {@class = "form-control", required = ""})
+
+                @Html.Partial("DescriptionFeaturesInputTable", Model)
             </div>
 
             <div class="form-group">
