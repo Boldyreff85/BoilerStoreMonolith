@@ -17,8 +17,7 @@ namespace BoilerStoreMonolith.Domain.Concrete
 
         public void SaveFeature(DescriptionFeature descriptionFeature)
         {
-            // тут добавим проверку на уже имеющееся имя
-            if (descriptionFeature.Id == 0 && !context.DescriptionFeatures.Any(f => f.Name == descriptionFeature.Name))
+            if (descriptionFeature.Id == 0)
             {
                 context.DescriptionFeatures.Add(descriptionFeature); 
             }
