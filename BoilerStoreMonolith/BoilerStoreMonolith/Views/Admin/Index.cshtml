@@ -48,7 +48,7 @@
                             <td class="text-right">
                                 <img class="img-thumbnail" width="80" height="80"
                                      src="@Url.Action("GetImage", "Home",
-                                          new {Model.Products[i].ProductID})" />
+                                              new {Model.Products[i].ProductID})" />
                             </td>
                             <td class="text-center">
                                 @Html.CheckBox("productIds", new { value = @Model.Products[i].ProductID })
@@ -57,8 +57,12 @@
                     }
                 </table>
 
-                @Html.Partial("Pagination", Model.PagingInfo)
+
             </div>
+
+            <br />
+
+            @Html.Partial("Pagination", Model.PagingInfo)
 
             <br />
 
@@ -89,6 +93,8 @@
             </div>
 
         }
+
+        <br />
 
     </div>
 
