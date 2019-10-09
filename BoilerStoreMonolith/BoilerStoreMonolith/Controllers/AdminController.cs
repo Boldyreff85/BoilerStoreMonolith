@@ -13,7 +13,7 @@ using Ninject.Infrastructure.Language;
 
 namespace BoilerStoreMonolith.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AdminController : Controller
     {
         public int PageSize = 6;
@@ -182,15 +182,15 @@ namespace BoilerStoreMonolith.Controllers
 
                 productRepo.SaveProduct(product);
 
+                // очищаем предварительно список
+                var listToClear = descriptionFeatureRepo.DescriptionFeatures
+                    .Where(df => df.ProductId == product.ProductID).ToList();
+                if (listToClear?.Count > 0)
+                    descriptionFeatureRepo.DeleteDescriptionFeatures(listToClear);
+
                 /////////////////////////////// processing description features table ///////////////////////////////
                 if (model.DescriptionFeatures?.Count > 0)
                 {
-                    // очищаем предварительно список
-                    var listToClear = descriptionFeatureRepo.DescriptionFeatures
-                        .Where(df => df.ProductId == product.ProductID).ToList();
-                    if (listToClear?.Count > 0)
-                        descriptionFeatureRepo.DeleteDescriptionFeatures(listToClear);
-
                     foreach (var descFeature in model.DescriptionFeatures)
                     {
                         // добавляем принадлежность к товару
